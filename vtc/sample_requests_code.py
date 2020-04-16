@@ -3,8 +3,8 @@ import time
 from src.apis.authorization_decision_api import AuthorizationDecisionApi
 from src.configuration import Configuration
 config = Configuration()
-config.username = 'NMYDWL6L5U9QYXW32XC521ngSwC3bI63mEO8Jq-yPtlcNqrPY'
-config.password = 'XfwywU6BA2G41gX72Ttzeb8BzJP'
+config.username = '<visa_username>'
+config.password = '<visa_password>'
 config.cert_file = '/Users/amalsalim/.ssh/cert.pem'
 config.key_file = '/Users/amalsalim/.ssh/key_d4411dc7-56a6-425e-ae19-4654fe5d6590.pem'
 config.csCertPath = '/Users/amalsalim/.ssh/VDPCA-SBX.pem'
@@ -20,8 +20,8 @@ url = "https://sandbox.api.visa.com/vdp/helloworld"
 verify_ca = '/Users/amalsalim/.ssh/VDPCA-SBX.pem'
 private_key = '/Users/amalsalim/.ssh/key_d4411dc7-56a6-425e-ae19-4654fe5d6590.pem'
 client_cert = '/Users/amalsalim/.ssh/cert.pem'
-username = 'NMYDWL6L5U9QYXW32XC521ngSwC3bI63mEO8Jq-yPtlcNqrPY'
-password = 'XfwywU6BA2G41gX72Ttzeb8BzJP'
+username = '<visa_username>'
+password = '<visa_password>'
 
 r = requests.get(url, verify=(verify_ca), cert=(client_cert, private_key), auth=(username, password))
 
@@ -112,8 +112,8 @@ import base64
 from python_hmac_auth import HmacAuth
 
 
-client_id = 'nxSQlrNk4eghDO3gSsKRNPiHsjfZIxuU'
-client_pass = '3FlQh2dDY35c3NK3kHMPABeoxPc5r4KU'
+client_id = '<amex_client_id>'
+client_pass = '<amex_password>'
 
 ts = str(round(time.time() * 1000))
 resource = '/payments/digital/v1/token/spend_controls/inquiry_results'
@@ -142,4 +142,24 @@ r = s.post(url, data=body)
 
 
 == Command to compile and execute java code ==
+
 javac io/aexp/api/client/core/security/authentication/*.java; javac -cp ".:jar/*" SpendControlVaultClient.java; java -cp ".:jar/*" SpendControlVaultClient
+
+
+
+== Command to work with OfxClient ==
+
+from ofxtools.scripts.ofxget import request_stmt
+from collections import col
+
+args = collections.ChainMap({'server': 'amex', 'verbose': 0, 'dtstart': '20180101', 'dtend': '20180630', 'request': 'stmt'}, {'ofxhome': '424', 'url': 'https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload', 'version': 211, 'org': 'AMEX', 'fid': '3101', 'user': '<amex_user_id>', 'creditcard': ['MXN9H8ZEJMXQBNP|68001'], 'clientuid': 'fba0c15d-5eda-4960-9002-73a11058eb28'}, {'url': 'https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload', 'org': 'AMEX', 'fid': '3101', 'brokerid': None}, {'verbose': 0, 'server': '', 'url': '', 'ofxhome': '', 'version': 203, 'org': '', 'fid': '', 'appid': '', 'appver': '', 'language': '', 'bankid': '', 'brokerid': '', 'unclosedelements': False, 'pretty': False, 'user': '', 'clientuid': '', 'checking': [], 'savings': [], 'moneymrkt': [], 'creditline': [], 'creditcard': [], 'investment': [], 'dtstart': '', 'dtend': '', 'dtasof': '', 'inctran': True, 'incbal': True, 'incpos': True, 'incoo': False, 'all': False, 'years': [], 'acctnum': '', 'recid': '', 'dryrun': False, 'unsafe': False, 'write': False, 'savepass': False})
+
+== Command to request credit card statements ==
+
+from ofxtools.Client import CcStmtRq, OFXClient
+
+client = OFXClient(url='https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload', userid='<amex_username>', clientuid='<amex_client_uid>', org='AMEX', fid='3101', version=211, appid='QWIN', appver='2700', language='ENG', prettyprint='False', close_elements='True', bankid='None', brokerid='None')
+
+stmtrq = [CcStmtRq(acctid="<amex_account_number>", dtstart="20180101", dtend="20180601", inctran=True)]
+client.request_statements('amex_password', *stmtrq).read().decode()
+
