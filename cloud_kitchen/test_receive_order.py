@@ -7,12 +7,10 @@ from receive_order import ReceiveOrder
 class TestDb(unittest.TestCase):
     def setUp(self):
         self.ingest_file = "./test_orders.json"
-        item = {"id": "order_id", "test_key": "test_key_val"}
         self.db = db
-        self.db.create_order(item)
 
     def tearDown(self):
-        pass
+        self.db = {}
 
     def test_ingest_data(self):
         self.r_order = ReceiveOrder(self.ingest_file)

@@ -19,12 +19,12 @@ class TestDb(unittest.TestCase):
         self.assertEqual(self.db.processing_orders["order_id"], item)
 
     def test_add_entry_negative(self):
-        item = {"test_key": "test_key_val"}
+        item = {"test_key": "test_key_val_neg"}
         with self.assertRaises(KeyError):
             self.db.create_order(item)
 
     def test_remove_entry(self):
-        order = {'test_val': {'id': 'test_val', 'test_key': 'test_key_val'}}
+        order = {'test_val': {'id': 'test_val', 'test_key': 'test_key_val_rem'}}
         self.db.processing_orders = order
         self.db.delete_order(['test_val'])
         self.assertEqual(self.db.processing_orders, {})

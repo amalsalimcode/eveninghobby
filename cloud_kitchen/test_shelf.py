@@ -7,7 +7,10 @@ from unittest.mock import MagicMock, patch
 from shelf import Shelf
 
 
-class MyTestCase(unittest.TestCase):
+class TestShelf(unittest.TestCase):
+
+    def setUp(self):
+        db.processing_orders = {}
 
     def test_insert_overflow(self):
         # ensure that when inserting item at max, existing item goes to
@@ -15,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         self.shelf = Shelf(0, 1, 'test')
         with patch.object(db.ProcessingOrders, 'create_order', return_value=None) as mock_method:
             with patch.object(db.ProcessingOrders, 'update_order', return_value=True) as mock_method2:
-                self.shelf.insert_item({"id": "test_food"})
+                self.shelf.insert_item({"id": "test_food", "shelf": "test"})
                 self.assertEqual(mock_method.call_args_list[0][0][0]['shelf'], 'test')
                 self.assertEqual(mock_method2.call_args_list[0][0][2], 'overflow')
 

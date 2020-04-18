@@ -17,8 +17,6 @@ def thread_process_order():
     2. Place the item in the appropriate shelf once the order is received
     """
 
-    o_shelf = OverflowShelf()
-
     # shelf map doesn't contain overflow, since overflow
     # is used by any of the following three once its full
     shelf_map = {"frozen": FrozenShelf(),
@@ -57,12 +55,6 @@ if __name__ == "__main__":
     logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                         datefmt='%Y-%m-%d:%H:%M:%S',
                         level=logging.DEBUG)
-
-    # format = "%(asctime)s: %(message)s"
-    # logger.debug("This is a debug log")
-    # logger.info("This is an info log")
-    # logger.critical("This is critical")
-    # logger.error("An error occurred")
 
     r_order = ReceiveOrder("./orders.json")
     r_order.ingest_data()

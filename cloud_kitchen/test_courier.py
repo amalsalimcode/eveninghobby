@@ -5,7 +5,7 @@ from courier import Courier
 from unittest.mock import MagicMock, patch
 
 
-class MyTestCase(unittest.TestCase):
+class TestCourier(unittest.TestCase):
 
     def setUp(self):
         self.courier = Courier()
