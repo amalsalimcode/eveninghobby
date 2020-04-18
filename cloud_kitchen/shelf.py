@@ -18,7 +18,7 @@ class Shelf:
         self.shelfDecayModifier = shelf_decay_modifier
         self.type = shelf_type
 
-    def insert_item(self, food, overflow_shelf):
+    def insert_item(self, food):
         """
         Place the food in shelf. If no space available,
         make space. Once the food is placed in shelf, then
@@ -28,7 +28,7 @@ class Shelf:
         logger.info("{} shelf: received request to insert"
                     "food: {}".format(self.type, food["id"]))
 
-        self.check_make_space_in_shelf(overflow_shelf)
+        self.check_make_space_in_shelf()
 
         # update with shelf_type. Primary data that will tell
         # courier where is the food placed
@@ -46,7 +46,7 @@ class Shelf:
                  self.shelfDecayModifier * orderAge)/food["shelfLife"]
         return value <= 0
 
-    def check_make_space_in_shelf(self, overflow_shelf):
+    def check_make_space_in_shelf(self):
         """
         Check to see if space exists. This means two things
             1. Are there any decayed items? if so trash (del entry) it
@@ -62,7 +62,7 @@ class Shelf:
 
         logger.debug("{} shelf: Not enough space to put food".format(self.type))
         order_id = self.retrieve_any_order_id()
-        self.move_order(order_id, overflow_shelf)
+        self.move_order(order_id)
 
     def get_available_space(self):
         """
@@ -85,10 +85,10 @@ class Shelf:
             if db.get_processing_data(id_each)["shelf"] == self.type:
                 return id_each
 
-        logger.error("couldn't find any order that can be moved"
+        logger.error("couldn't find any order that can be moved "
                      "shelf type: {}".format(self.type))
 
-    def move_order(self, order_id, overflow_shelf):
+    def move_order(self, order_id):
         """
         Move the food from current shelf to overflow
         NOTE: This function will not work for overflow class and needs
@@ -141,7 +141,7 @@ class OverflowShelf(Shelf):
     def __init__(self):
         Shelf.__init__(self, 15, 2, 'overflow')
 
-    def move_order(self, order_id, idx):
+    def move_order(self, order_id):
         """
         For overflow shelf moving an order means trashing (del entry) it
         """

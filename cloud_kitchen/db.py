@@ -9,6 +9,9 @@ class ProcessingOrders:
     The data here means all orders which are received by the system
     The data entry remains until it has been picked up by a courier,
     or the entry is considered decayed
+
+    Note: This is a singleton class because currently we don't want multiple
+    instances of the database. All entries have a single source
     """
     __instance = None
 
@@ -29,7 +32,10 @@ class ProcessingOrders:
         return self.processing_orders.keys()
 
     def delete_order(self, order_id):
+        orders = self.get_orders_in_process()
         for each_id in order_id:
+            if each_id not in orders:
+                raise Exception("requested order {} for deletion doesn't exist".format(each_id))
             logger.info("removing the following food items completely! {}"
                         .format(each_id))
             self.processing_orders.pop(each_id, None)

@@ -29,9 +29,20 @@ class Courier:
         order_id = db.get_orders_in_process()
         for each_id in order_id:
             food_item = db.get_processing_data(each_id)
+
+            # retrieve food order's wait time
+            try:
+                wait_time = food_item["courier_wait_time"]
+            except KeyError:
+                # corner case: happens at 1%. the wait time is still being generated
+                # should be ready within next cycle
+                logger.debug("order {} courier wait time is still being "
+                             "processed".format(order_id))
+                continue
+
             # check if the courier has arrived for the food_item
             # and if so process them for removal from shelf
-            if curr_time >= food_item["courier_wait_time"]:
+            if curr_time >= wait_time:
                 ready_courier.append(food_item)
                 del_courier_id.append(each_id)
 
@@ -50,6 +61,6 @@ class Courier:
         """
         courier_wait_delta = random.randint(self.min_wait, self.max_wait)
         courier_wait_time = int(time.time()) + courier_wait_delta
-        logger.info("created a courier request for order id {}."
-                    "wait time for courier: {}".format(order_id, courier_wait_time))
+        logger.info("created a courier request for order id {}. "
+                    "wait time for courier: {}".format(order_id, courier_wait_delta))
         db.update_order(order_id, "courier_wait_time", courier_wait_time)

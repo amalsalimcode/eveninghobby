@@ -2,12 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ebba77c4-bd1b-4eed-b53a-b9da0bd63713" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../vtc/sample_requests_code.py" beforeDir="false" afterPath="$PROJECT_DIR$/../vtc/sample_requests_code.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_courier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_db.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_receive_order.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_shelf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/courier.py" beforeDir="false" afterPath="$PROJECT_DIR$/courier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shelf.py" beforeDir="false" afterPath="$PROJECT_DIR$/shelf.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="Python Unit Test" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -42,13 +58,17 @@
       <screen x="0" y="23" width="1867" height="1057" />
     </state>
     <state x="577" y="111" key="SettingsEditor/0.23.1867.1057@0.23.1867.1057" timestamp="1587158281181" />
-    <state x="655" y="248" width="782" height="550" key="find.popup" timestamp="1587171058247">
+    <state x="623" y="259" key="com.intellij.ide.util.TipDialog" timestamp="1587182425717">
       <screen x="0" y="23" width="1867" height="1057" />
     </state>
-    <state x="655" y="248" width="782" height="550" key="find.popup/0.23.1867.1057@0.23.1867.1057" timestamp="1587171058247" />
-    <state x="640" y="263" width="670" height="676" key="search.everywhere.popup" timestamp="1587170300579">
+    <state x="623" y="259" key="com.intellij.ide.util.TipDialog/0.23.1867.1057@0.23.1867.1057" timestamp="1587182425717" />
+    <state x="655" y="248" width="782" height="550" key="find.popup" timestamp="1587182221321">
       <screen x="0" y="23" width="1867" height="1057" />
     </state>
-    <state x="640" y="263" width="670" height="676" key="search.everywhere.popup/0.23.1867.1057@0.23.1867.1057" timestamp="1587170300579" />
+    <state x="655" y="248" width="782" height="550" key="find.popup/0.23.1867.1057@0.23.1867.1057" timestamp="1587182221321" />
+    <state x="640" y="263" width="670" height="676" key="search.everywhere.popup" timestamp="1587182436337">
+      <screen x="0" y="23" width="1867" height="1057" />
+    </state>
+    <state x="640" y="263" width="670" height="676" key="search.everywhere.popup/0.23.1867.1057@0.23.1867.1057" timestamp="1587182436337" />
   </component>
 </project>

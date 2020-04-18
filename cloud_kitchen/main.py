@@ -34,7 +34,7 @@ def thread_process_order():
 
         for order in nxt_order:
             # insert the food in appropriate shelf
-            shelf_map[order["temp"]].insert_item(order, o_shelf)
+            shelf_map[order["temp"]].insert_item(order)
             # signal a courier to come and pick up food
             courier.generate_new_courier(order["id"])
 
