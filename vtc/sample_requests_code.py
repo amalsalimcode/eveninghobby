@@ -163,3 +163,5 @@ client = OFXClient(url='https://online.americanexpress.com/myca/ofxdl/desktop/de
 stmtrq = [CcStmtRq(acctid="<amex_account_number>", dtstart="20180101", dtend="20180601", inctran=True)]
 client.request_statements('amex_password', *stmtrq).read().decode()
 
+vim ~/Library/Preferences/ofxtools/ofxget.cfg
+
