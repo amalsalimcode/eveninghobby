@@ -17,7 +17,7 @@ const PasscodeInput = props => {
 
     const reEnterPassHandler = (entered_text) => {
         setErrorMsg("")
-        if (entered_text.length >= 4 && 
+        if (entered_text.length >= passCode.length && 
             entered_text != passCode) {
                 setErrorMsg("The passcodes don't match")
         }
