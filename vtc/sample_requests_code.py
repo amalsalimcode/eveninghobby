@@ -138,7 +138,7 @@ s.headers["Authorization"] = auth
 s.headers["x-amex-request-id"] = str(uuid.uuid1())
 
 url = "https://api.qasb.americanexpress.com/payments/digital/v1/token/spend_controls/inquiry_results"
-r = s.post(url, data=body)
+r = s.post(url, body)
 
 
 == Command to compile and execute java code ==
