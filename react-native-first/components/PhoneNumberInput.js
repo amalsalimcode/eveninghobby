@@ -38,15 +38,15 @@ const PhoneNumberInputs = props => {
 
     }
 
-    function on_blur(data) {
+    function on_blur() {
         let absolute_number = formattedNumber.replace(/[^0-9]/g, '');
         if (absolute_number.length == 10 || absolute_number.length == 11) {
             setAbsoluteNumber(absolute_number)
+            props.setNumber(absolute_number)
         } else {
-            console.log("phone number is not filled in")
+            props.setNumber("not_valid_anymore")
         }
-        console.log("hi amal")
-        console.log(absoluteNumber)
+        console.log("number set: " + absolute_number)
     }
 
     return (
@@ -60,6 +60,7 @@ const PhoneNumberInputs = props => {
                 onChangeText={on_change}
                 value={formattedNumber}
                 onBlur={on_blur}
+                keyboardType="phone-pad"
             />
         </View>
     )
@@ -69,7 +70,7 @@ const PhoneNumberInputs = props => {
 const styles = StyleSheet.create({
     input: {
         width: "80%",
-        height: "12%"
+        height: 100
     },
 });
 

@@ -10,13 +10,17 @@ const PasscodeInput = props => {
 
     const enterPassHandler = (entered_text) => {
         setPassCode(entered_text.replace(/[^0-9]/g, ''));
+        props.setCode('')
     }
 
     const reEnterPassHandler = (entered_text) => {
         setErrorMsg("")
         if (entered_text.length >= passCode.length && 
             entered_text != passCode) {
+            props.setCode('')
                 setErrorMsg("The passcodes don't match")
+        } else {
+            props.setCode(entered_text)
         }
     }
 
@@ -54,7 +58,7 @@ const PasscodeInput = props => {
 const styles = StyleSheet.create({
     input: {
         width: "80%",
-        height: "12%"
+        height: 100
     },
     inputs: {
     }

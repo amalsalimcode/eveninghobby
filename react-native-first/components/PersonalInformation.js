@@ -1,26 +1,51 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements';
 import PhoneNumberInputs from './PhoneNumberInput'
 import PasscodeInput from './PassCodeInput';
 
 const PersonalInformation = props => {
-
   const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
+  const [code, setCode] = useState('')
+
+  useEffect(() => { keyboard_avoid = false; })
+  let keyboard_avoid = false;
+  function needs_keyboard_avoid() {
+    keyboard_avoid = true;
+  }
+
+  const next_button_pressed = () => {
+    console.log(name + number + code)
+    if (name && number && code) {
+      console.log("both name and numbers and code are filled in")
+      props.setProfile({"name": name, "number": number, "code": code})
+      props.setScreen(1)
+      return
+    } else {
+      console.log("not all fields are filled in")
+    }
+    props.setScreen(1)
+  }
 
   return (
-    <View style={styles.personal_info}>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={-150}
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.personal_info}>
+
       <View style={styles.input}>
-        <Input
+        <Input 
           label="Name"
           placeholder='Amal Salim'
           errorStyle={{ color: 'maroon' }}
           errorMessage=''
+          onChangeText={setName}
         />
       </View>
 
-      <PhoneNumberInputs />
-      <PasscodeInput />
+      <PhoneNumberInputs setNumber={setNumber}/>
+      <PasscodeInput setCode={setCode} />
 
       <View style={{ padding: 20 }}>
         <Button raised
@@ -29,12 +54,12 @@ const PersonalInformation = props => {
             backgroundColor: "rgba(120, 160, 201, 0.5)",
             borderRadius: 10, height: 40, width: 40, borderRadius: 80
           }}
-          onPress={props.setPersonalInfo.bind(this, 1)}
+          onPress={next_button_pressed}
           rounded={false}
           disabled={false}
         />
       </View>
-    </View>
+    </KeyboardAvoidingView >
   )
 }
 
@@ -48,7 +73,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "80%",
-    height: "12%"
+    height: 100
   }
 });
 
