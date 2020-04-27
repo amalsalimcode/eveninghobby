@@ -9,10 +9,7 @@ const PasscodeInput = props => {
     const [errorMsg, setErrorMsg] = useState('')
 
     const enterPassHandler = (entered_text) => {
-        if (entered_text.length > 4) {
-            return
-        }
-        setPassCode(entered_text);
+        setPassCode(entered_text.replace(/[^0-9]/g, ''));
     }
 
     const reEnterPassHandler = (entered_text) => {
@@ -34,6 +31,7 @@ const PasscodeInput = props => {
                     onChangeText={enterPassHandler}
                     secureTextEntry={true}
                     value={passCode}
+                    maxLength={4}
                 />
             </View>
             <View style={styles.input}>
