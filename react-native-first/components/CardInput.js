@@ -4,24 +4,33 @@ import { CreditCardInput } from "react-native-input-credit-card";
 import { Icon, Button } from 'react-native-elements';
 
 
-const CardInfo = props => {
+const CardInput = props => {
+
+    const [isValid, setIsValid] = useState(false);
 
     function on_change(data) {
-        console.log(data)
+        if (data["valid"]) {
+            props.setCardInfo(data)
+            setIsValid(true)
+        }
     }
 
-    const onChange = on_change
+    function go_next() {
+        if (isValid) {
+            props.setCardInput(2)
+        }
+    }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.card_info}>
-                <CreditCardInput onChange={onChange} requiresName={true} />
+                <CreditCardInput onChange={on_change} requiresName={true} />
                 <View style={styles.nav_button}>
                     <View style={{ marginRight: "2%" }}>
                         <Button raised
                             icon={<Icon name="navigate-before" />}
                             buttonStyle={styles.nav_icon_style}
-                            onPress={props.setCardInfo.bind(this, 0)}
+                            onPress={props.setCardInput.bind(this, 0)}
                             rounded={false}
                         />
                     </View>
@@ -29,7 +38,7 @@ const CardInfo = props => {
                         <Button raised
                             icon={<Icon name="navigate-next" />}
                             buttonStyle={styles.nav_icon_style}
-                            onPress={props.setCardInfo.bind(this, 0)}
+                            onPress={go_next}
                             rounded={false}
                         />
                     </View>
@@ -58,4 +67,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CardInfo
+export default CardInput

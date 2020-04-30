@@ -2,9 +2,9 @@
  * Sample component code
  */
 
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native'
-import {Input} from 'react-native-elements'
+import { Input } from 'react-native-elements'
 import { AsYouType } from 'libphonenumber-js'
 
 
@@ -12,6 +12,15 @@ const PhoneNumberInputs = props => {
 
     const [formattedNumber, setFormattedNumber] = useState('')
     const [absoluteNumber, setAbsoluteNumber] = useState('')
+
+    /*
+     * If the user clicked next and then previous,
+     * show them the data that was filled in
+     */
+    useEffect(() => {
+        setAbsoluteNumber(props.number)
+        setFormattedNumber(new AsYouType('US').input(props.number));
+      }, []);
 
     function on_change(data) {
         /* 
@@ -44,7 +53,7 @@ const PhoneNumberInputs = props => {
             setAbsoluteNumber(absolute_number)
             props.setNumber(absolute_number)
         } else {
-            props.setNumber("not_valid_anymore")
+            props.setNumber("")
         }
         console.log("number set: " + absolute_number)
     }
@@ -64,7 +73,6 @@ const PhoneNumberInputs = props => {
             />
         </View>
     )
-
 }
 
 const styles = StyleSheet.create({

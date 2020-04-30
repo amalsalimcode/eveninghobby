@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native'
 import { Input } from 'react-native-elements'
 
@@ -7,6 +7,15 @@ const PasscodeInput = props => {
 
     const [passCode, setPassCode] = useState('')
     const [errorMsg, setErrorMsg] = useState('')
+
+    /*
+     * If the user clicked next and then previous,
+     * show them the data that was filled in
+     */
+    useEffect(() => {
+        props.setCode("")
+      }, []);
+
 
     const enterPassHandler = (entered_text) => {
         setPassCode(entered_text.replace(/[^0-9]/g, ''));
@@ -19,7 +28,9 @@ const PasscodeInput = props => {
             entered_text != passCode) {
             props.setCode('')
                 setErrorMsg("The passcodes don't match")
-        } else {
+        }
+
+        if (entered_text == passCode) {
             props.setCode(entered_text)
         }
     }
@@ -36,6 +47,7 @@ const PasscodeInput = props => {
                     secureTextEntry={true}
                     value={passCode}
                     maxLength={4}
+                    keyboardType="number-pad"
                 />
             </View>
             <View style={styles.input}>
@@ -48,6 +60,7 @@ const PasscodeInput = props => {
                     secureTextEntry={true}
                     errorStyle={{ color: 'maroon' }}
                     errorMessage={errorMsg}
+                    keyboardType="number-pad"
                 />
             </View>
         </>

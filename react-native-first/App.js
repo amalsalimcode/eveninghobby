@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput } from 'react-native';
 import { Button, Icon } from 'react-native-elements'
 import PersonalInformation from './components/PersonalInformation'
-import CardInfo from './components/CardInfo'
+import CardInput from './components/CardInput'
 
 
 
@@ -13,16 +13,19 @@ export default function App() {
    * backend, saying whether this person is new or not
    */
   const [currentScreen, setCurrentScreen] = useState(0);
-  const [profileInfo, setProfileInfo] = useState({})
+  const [profileInfo, setProfileInfo] = useState({ "name": "", "number": "", "code": "" })
+  const [cardInfo, setCardInfo] = useState({})
 
   let screen;
   if (currentScreen == 0) {
     screen = (<PersonalInformation setProfile={setProfileInfo}
-      setScreen={setCurrentScreen} />)
+      curProfile={profileInfo} setScreen={setCurrentScreen} />)
   } else if (currentScreen == 1) {
-    screen = (<CardInfo setCardInfo={setCurrentScreen} />)
+    screen = (<CardInput setCardInput={setCurrentScreen} setCardInfo={setCardInfo}/>)
   } else {
-    screen = (<View></View>)
+    console.log(profileInfo)
+    console.log(cardInfo)
+    screen = (<View><Text>You are done</Text></View>)
   }
 
   return (
