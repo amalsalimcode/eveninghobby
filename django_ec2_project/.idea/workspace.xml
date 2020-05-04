@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3576edbd-3d77-44dd-9917-a3179411ddef" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/django_ec2_project/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vtc/sample_requests_code.py" beforeDir="false" afterPath="$PROJECT_DIR$/../vtc/sample_requests_code.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1bQlMpcnRy4Q7NEkljJYcJM90dl" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3576edbd-3d77-44dd-9917-a3179411ddef" name="Default Changelist" comment="" />
+      <created>1588572152945</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588572152945</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="480" y="281" key="FileChooserDialogImpl" timestamp="1588572239534">
+      <screen x="0" y="23" width="1867" height="1057" />
+    </state>
+    <state x="480" y="281" key="FileChooserDialogImpl/0.23.1867.1057@0.23.1867.1057" timestamp="1588572239534" />
+    <state x="201" y="158" key="SettingsEditor" timestamp="1588572247447">
+      <screen x="0" y="23" width="1867" height="1057" />
+    </state>
+    <state x="201" y="158" key="SettingsEditor/0.23.1867.1057@0.23.1867.1057" timestamp="1588572247447" />
+    <state x="467" y="276" width="639" height="486" key="find.popup" timestamp="1588576300797">
+      <screen x="0" y="23" width="1867" height="1057" />
+    </state>
+    <state x="467" y="276" width="639" height="486" key="find.popup/0.23.1867.1057@0.23.1867.1057" timestamp="1588576300797" />
+  </component>
+</project>

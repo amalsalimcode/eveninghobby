@@ -152,16 +152,56 @@ javac io/aexp/api/client/core/security/authentication/*.java; javac -cp ".:jar/*
 from ofxtools.scripts.ofxget import request_stmt
 from collections import col
 
+# _request_acctinfo() is the function responsible to get the account number ['MXN9H8ZEJMXQBNP|68001']
+
 args = collections.ChainMap({'server': 'amex', 'verbose': 0, 'dtstart': '20180101', 'dtend': '20180630', 'request': 'stmt'}, {'ofxhome': '424', 'url': 'https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload', 'version': 211, 'org': 'AMEX', 'fid': '3101', 'user': '<amex_user_id>', 'creditcard': ['MXN9H8ZEJMXQBNP|68001'], 'clientuid': 'fba0c15d-5eda-4960-9002-73a11058eb28'}, {'url': 'https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload', 'org': 'AMEX', 'fid': '3101', 'brokerid': None}, {'verbose': 0, 'server': '', 'url': '', 'ofxhome': '', 'version': 203, 'org': '', 'fid': '', 'appid': '', 'appver': '', 'language': '', 'bankid': '', 'brokerid': '', 'unclosedelements': False, 'pretty': False, 'user': '', 'clientuid': '', 'checking': [], 'savings': [], 'moneymrkt': [], 'creditline': [], 'creditcard': [], 'investment': [], 'dtstart': '', 'dtend': '', 'dtasof': '', 'inctran': True, 'incbal': True, 'incpos': True, 'incoo': False, 'all': False, 'years': [], 'acctnum': '', 'recid': '', 'dryrun': False, 'unsafe': False, 'write': False, 'savepass': False})
 
 == Command to request credit card statements ==
 
 from ofxtools.Client import CcStmtRq, OFXClient
 
-client = OFXClient(url='https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload', userid='<amex_username>', clientuid='<amex_client_uid>', org='AMEX', fid='3101', version=211, appid='QWIN', appver='2700', language='ENG', prettyprint='False', close_elements='True', bankid='None', brokerid='None')
+client = OFXClient(url='https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload',
+                   userid='asali005', clientuid="fba0c15d-5eda-4960-9002-73a11058eb28",
+                   org='AMEX', fid='3101', version=211, appid='QWIN', appver='2700',
+                   language='ENG', prettyprint='False', close_elements='True',
+                   bankid='None', brokerid='None')
 
-stmtrq = [CcStmtRq(acctid="<amex_account_number>", dtstart="20180101", dtend="20180601", inctran=True)]
-client.request_statements('amex_password', *stmtrq).read().decode()
+stmtrq = [CcStmtRq(acctid="MXN9H8ZEJMXQBNP|68001", dtstart="20200415", dtend="20200430", inctran=True)]
+response = client.request_statements('4Kzindagi', *stmtrq).read().decode()
 
 vim ~/Library/Preferences/ofxtools/ofxget.cfg
 
+
+
+from ofxtools.Client import OFXClient, StmtRq, CcStmtRq, OFXClient
+import datetime
+import ofxtools
+client_uid = "e6342626-8c5c-11ea-b50b-e30b45fe477e"
+client = OFXClient("https://ofxdc.wellsfargo.com/ofx/process.ofx", userid="asali004",
+                   org="WF", fid="3000", clientuid=client_uid,
+                   bankid="121042882", language="ENG", prettyprint=True)
+dtstart = datetime.datetime(2020, 1, 1, tzinfo=ofxtools.utils.UTC)
+dtend = datetime.datetime(2020, 1, 31, tzinfo=ofxtools.utils.UTC)
+s0 = StmtRq(acctid="1418811491", accttype="CHECKING", dtstart=dtstart, dtend=dtend)
+response = client.request_statements("4Kzindagi", s0).read().decode()
+
+
+
+
+
+[DEFAULT]
+clientuid = fba0c15d-5eda-4960-9002-73a11058eb28
+
+[amex]
+user = asali005
+creditcard = MXN9H8ZEJMXQBNP|68001
+
+[myfi]
+url = https://online.americanexpress.com/myca/ofxdl/desktop/desktopDownload.do?request_type=nl_ofxdownload
+ofxhome = 424
+org = AMEX
+fid = 3101
+
+
+# to retrieve example configuration
+~/Desktop/projects/venv/lib/python3.7/site-packages/ofxtools/config >  vim ofxget_example.cfg
