@@ -3,7 +3,9 @@ import { View, StyleSheet, Text, ActivityIndicator, FlatList } from 'react-nativ
 import { Button, Icon } from 'react-native-elements'
 import PersonalInformation from './components/PersonalInformation'
 import StmtGraph from './components/StmtGraph'
+import AnimationSample from './components/AnimationSample'
 import CardInput from './components/CardInput'
+import BarGraph from './components/BarGraph'
 import axios from 'axios'
 
 export default function App() {
@@ -12,7 +14,7 @@ export default function App() {
    * currentScreen initial value should come from
    * backend, saying whether this person is new or not
    */
-  const [currentScreen, setCurrentScreen] = useState(2);
+  const [currentScreen, setCurrentScreen] = useState(4);
   const [profileInfo, setProfileInfo] = useState({ "name": "", "number": "", "code": "" })
   const [cardInfo, setCardInfo] = useState({})
   const [data, setData] = useState([]);
@@ -41,13 +43,18 @@ export default function App() {
       curProfile={profileInfo} setScreen={setCurrentScreen} />)
   } else if (currentScreen == 1) {
     screen = (<CardInput setCardInput={setCurrentScreen} setCardInfo={setCardInfo} />)
-  } else {
+  } else if (currentScreen == 2) {
+    screen = (<AnimationSample />)
+  } else if (currentScreen == 3) {
     screen = (<StmtGraph />)
-    // if (isLoading) {
-    //   screen = (<ActivityIndicator />)
-    // } else {
-    //   screen = (<View><Text>{data}</Text></View>)
-    // }
+  } else if (currentScreen == 4) {
+    screen = (<BarGraph />)
+  }else {
+    if (isLoading) {
+      screen = (<ActivityIndicator />)
+    } else {
+      screen = (<View><Text>{data}</Text></View>)
+    }
   }
 
   return (

@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Animated, Text, View, StyleSheet, Button } from "react-native";
 
+
 const StmtGraph = props => {
   // fadeAnim will be used as the value for opacity. Initial Value: 0
   const fadeAnim = useRef(new Animated.Value(0)).current;
