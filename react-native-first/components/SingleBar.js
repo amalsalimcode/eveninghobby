@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native'
+import { Animated, Text, View, StyleSheet } from 'react-native'
 
 
 const SingleBar = props => {
 
     return (
-        <View style={{...styles.bar, ...props.style}}/>
+        <Animated.View style={{...styles.bar, ...props.style}}/>
     )
 
 }

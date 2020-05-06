@@ -24,7 +24,7 @@ const StmtGraph = props => {
 
   return (
     <View>
-      <Animated.View style={[styles.fadingContainer, {width: fadeAnim,}]}>
+      <Animated.View style={{ ...styles.fadingContainer, width: fadeAnim}}>
       </Animated.View>
 
       <View>
