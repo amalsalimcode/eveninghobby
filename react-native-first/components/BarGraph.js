@@ -12,26 +12,12 @@ const screenWidth = Dimensions.get("window").width / 2;
 // introduce animation to dashed line
 const BarGraph = props => {
 
-    let idx = 0;
-    let fadeAnim = [useRef(new Animated.Value(0)).current];
     const [height, setHeight] = useState([70, 20, 30, 50, 23, 24, 9]);
-
-    useEffect(() => {
-        // Animated.parallel([
-            Animated.timing(fadeAnim[0], {
-                toValue: 100,
-                duration: 1000
-            }).start()
-        // ]);
-    }, []);
 
     function bar_layout(data) {
         var idx = 0;
-        var bars = [];
-        bars.push(<SingleBar style={{ height: fadeAnim[0] }} />);
-        for (idx = 1; idx < 7; idx++) {
-            bars.push(<SingleBar style={{ height: height[idx] }} />);
-        }
+        var bars = [<SingleBar final_height={100}  />,
+            <SingleBar final_height={50}  />]
         return (
             <>
                 {bars}
