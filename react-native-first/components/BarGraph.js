@@ -15,15 +15,26 @@ const BarGraph = props => {
     const [height, setHeight] = useState([70, 20, 30, 50, 23, 24, 9]);
 
     function bar_layout(data) {
+        console.log("bar layout called")
+        console.log(height)
         var idx = 0;
-        var bars = [<SingleBar final_height={100}  />,
-            <SingleBar final_height={50}  />]
+        var bars = []
+        for (idx = 0; idx < 7; idx++) {
+            bars.push(<SingleBar final_height={height[idx]} />)
+        }
+        console.log("hey amal")
         return (
             <>
                 {bars}
             </>
         )
     }
+
+    useEffect(() => {
+
+        console.log("hi amal");
+
+    });
 
     function x_axis_layout() {
         var days = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -40,6 +51,7 @@ const BarGraph = props => {
     }
 
     function change_bar_height() {
+        console.log("change bar height called")
         var random_num = [];
         var idx = 0;
         for (idx = 0; idx < 7; idx++) {
@@ -62,9 +74,9 @@ const BarGraph = props => {
                     <Text style={{ marginTop: 90, opacity: 0.2, flex: 1 }}> 20</Text>
                 </View>
 
-                <View style={styles.values_container}>
-                    {bar_layout()}
-                </View>
+                    <View style={styles.values_container}>
+                        {bar_layout()}
+                    </View>
 
             </View>
             <View style={styles.x_axis}>
@@ -84,14 +96,13 @@ const styles = StyleSheet.create({
         height: 150
     },
     values_container: {
-        /* each dollar bar should be next to each other*/
+        /* each bar should be next to each other*/
         flexDirection: "row",
         /* the bar should be at the bottom where the container ends */
         alignItems: "flex-end",
         justifyContent: "center",
         /* match the height of the container*/
         height: "100%"
-
     },
     x_axis: {
         backgroundColor: "grey",
@@ -103,14 +114,6 @@ const styles = StyleSheet.create({
     },
     day: {
         marginHorizontal: 12
-    },
-    bar: {
-        marginHorizontal: 20,
-        backgroundColor: "brown",
-        width: 10,
-        height: 90,
-        borderRadius: 8,
-        marginBottom: 1,
     },
     dashStyle: {
         paddingTop: 50,

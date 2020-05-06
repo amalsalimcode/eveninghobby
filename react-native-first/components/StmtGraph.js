@@ -3,6 +3,7 @@ import { Animated, Text, View, StyleSheet, Button } from "react-native";
 
 
 const StmtGraph = props => {
+
   // fadeAnim will be used as the value for opacity. Initial Value: 0
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -24,7 +25,7 @@ const StmtGraph = props => {
 
   return (
     <View>
-      <Animated.View style={{ ...styles.fadingContainer, width: fadeAnim}}>
+      <Animated.View style={{ ...styles.fadingContainer, width: fadeAnim }}>
       </Animated.View>
 
       <View>
