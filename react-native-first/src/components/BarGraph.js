@@ -15,14 +15,11 @@ const BarGraph = props => {
     const [height, setHeight] = useState([70, 20, 30, 50, 23, 24, 9]);
 
     function bar_layout(data) {
-        console.log("bar layout called")
-        console.log(height)
         var idx = 0;
         var bars = []
         for (idx = 0; idx < 7; idx++) {
             bars.push(<SingleBar final_height={height[idx]} />)
         }
-        console.log("hey amal")
         return (
             <>
                 {bars}
@@ -32,7 +29,6 @@ const BarGraph = props => {
 
     useEffect(() => {
 
-        console.log("hi amal");
 
     });
 

@@ -40,6 +40,9 @@ export default function App() {
 
   }, []);
 
+  console.log("store inside app")
+  console.log(store.getState())
+
   let screen;
   if (currentScreen == 0) {
     screen = (<PersonalInformation setProfile={setProfileInfo}
