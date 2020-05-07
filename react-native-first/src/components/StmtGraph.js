@@ -36,7 +36,7 @@ const StmtGraph = props => {
       <View>
         <Button title="Fade In" onPress={fadeIn} />
         <Button title="Fade Out" onPress={fadeOut} />
-        <Text>{props.counters}</Text>
+        <Text>{props.counter}</Text>
       </View>
     </View>
   );
@@ -52,16 +52,14 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state){
-  console.log("inside state")
-  console.log(state)
   return {
-    counters: state.StmtGraphReducer.counters
+    counter: state.StmtGraphReducer.counter
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    increaseCounter: () => {console.log("function called to increase counter"); dispatch({type: 'INC'})}
+    increaseCounter: () => {dispatch({type: 'INC'})}
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(StmtGraph)

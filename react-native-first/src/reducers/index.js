@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux'
-import AnimationSampleReducer from './AnimationSampleReducer'
+import StmtGraphReducer from './StmtGraphReducer'
 
-export default combineReducers({AnimationSampleReducer})
+const rootReducer = combineReducers({StmtGraphReducer});
+export default rootReducer;
