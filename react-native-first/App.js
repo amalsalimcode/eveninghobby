@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, FlatList } from 'react-native';
-import { Button, Icon } from 'react-native-elements'
-import PersonalInformation from './components/PersonalInformation'
-import StmtGraph from './components/StmtGraph'
-import AnimationSample from './components/AnimationSample'
-import CardInput from './components/CardInput'
-import BarGraph from './components/BarGraph'
+import { View, StyleSheet, Text, ActivityIndicator, FlatList, ActionSheetIOS } from 'react-native';
+import PersonalInformation from './src/components/PersonalInformation'
+import StmtGraph from './src/components/StmtGraph'
+import AnimationSample from './src/components/AnimationSample'
+import CardInput from './src/components/CardInput'
+import BarGraph from './src/components/BarGraph'
 import axios from 'axios'
+import { Provider } from 'react-redux'
+import {createStore} from 'redux'
+
+
+const initialState = {
+  counter: 0,
+}
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "INC":
+      return {counter: state.counter + 1}
+    case "BarPressed":
+      console.log("the bar is pressed")
+      console.log(action.data)
+      return state
+  }
+  return state
+}
+
+const store = createStore(reducer)
 
 export default function App() {
 
@@ -14,7 +34,7 @@ export default function App() {
    * currentScreen initial value should come from
    * backend, saying whether this person is new or not
    */
-  const [currentScreen, setCurrentScreen] = useState(4);
+  const [currentScreen, setCurrentScreen] = useState(3);
   const [profileInfo, setProfileInfo] = useState({ "name": "", "number": "", "code": "" })
   const [cardInfo, setCardInfo] = useState({})
   const [data, setData] = useState([]);
@@ -49,7 +69,7 @@ export default function App() {
     screen = (<StmtGraph />)
   } else if (currentScreen == 4) {
     screen = (<BarGraph />)
-  }else {
+  } else {
     if (isLoading) {
       screen = (<ActivityIndicator />)
     } else {
@@ -59,7 +79,9 @@ export default function App() {
 
   return (
     <>
-      {screen}
+      <Provider store={store}>
+        {screen}
+      </Provider>
     </>
   )
 };

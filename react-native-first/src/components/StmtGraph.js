@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Animated, Text, View, StyleSheet, Button } from "react-native";
 
+import {connect} from 'react-redux' 
 
 const StmtGraph = props => {
 
@@ -13,6 +14,8 @@ const StmtGraph = props => {
       toValue: 200,
       duration: 1000
     }).start();
+
+    props.increaseCounter();
   };
 
   const fadeOut = () => {
@@ -31,6 +34,7 @@ const StmtGraph = props => {
       <View>
         <Button title="Fade In" onPress={fadeIn} />
         <Button title="Fade Out" onPress={fadeOut} />
+        <Text>{props.counter}</Text>
       </View>
     </View>
   );
@@ -45,4 +49,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StmtGraph
+function mapStateToProps(state){
+  return {
+    counter: state.counter
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    increaseCounter: () => dispatch({type: 'INC'})
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(StmtGraph)

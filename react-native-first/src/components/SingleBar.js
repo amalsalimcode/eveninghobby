@@ -15,12 +15,18 @@ const SingleBar = props => {
         }).start()
     });
 
-    function logme() {
-        console.log("log me")
+    function bar_pressed() {
+        if (pressOpacity > 0.5) {
+            setPressOpacity(0.5)
+        } else {
+            setPressOpacity(1)
+        }
+        props.barButtonPressed()
+        console.log(props.counter)
     }
 
     return (
-        <TouchableWithoutFeedback onPress={() => { pressOpacity > 0.5 ? setPressOpacity(0.5): setPressOpacity(1) }}>
+        <TouchableWithoutFeedback onPress={() => { bar_pressed() }}>
             <Animated.View style={{ ...styles.bar, height: fadeAnim, opacity: pressOpacity }} />
         </TouchableWithoutFeedback>
     )
@@ -44,4 +50,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SingleBar
+
+import {connect} from 'react-redux' 
+
+function mapStateToProps(state) {
+    return {
+        counter: state.counter
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        barButtonPressed: () => dispatch({ type: 'BarPressed', data: "hello sneak" })
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SingleBar)
