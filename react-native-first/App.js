@@ -1,32 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator, FlatList, ActionSheetIOS } from 'react-native';
 import PersonalInformation from './src/components/PersonalInformation'
-import StmtGraph from './src/components/StmtGraph'
+import StmtGraph from './src//components/StmtGraph'
 import AnimationSample from './src/components/AnimationSample'
 import CardInput from './src/components/CardInput'
 import BarGraph from './src/components/BarGraph'
 import axios from 'axios'
 import { Provider } from 'react-redux'
-import {createStore} from 'redux'
+import store from './src/store/index'
 
 
-const initialState = {
-  counter: 0,
-}
-
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "INC":
-      return {counter: state.counter + 1}
-    case "BarPressed":
-      console.log("the bar is pressed")
-      console.log(action.data)
-      return state
-  }
-  return state
-}
-
-const store = createStore(reducer)
 
 export default function App() {
 
@@ -82,6 +65,7 @@ export default function App() {
       <Provider store={store}>
         {screen}
       </Provider>
+
     </>
   )
 };
