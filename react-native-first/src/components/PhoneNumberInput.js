@@ -6,19 +6,18 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native'
 import { Input } from 'react-native-elements'
 import { AsYouType } from 'libphonenumber-js'
+import {connect} from 'react-redux' 
 
 
 const PhoneNumberInputs = props => {
 
     const [formattedNumber, setFormattedNumber] = useState('')
-    const [absoluteNumber, setAbsoluteNumber] = useState('')
 
     /*
      * If the user clicked next and then previous,
      * show them the data that was filled in
      */
     useEffect(() => {
-        setAbsoluteNumber(props.number)
         setFormattedNumber(new AsYouType('US').input(props.number));
       }, []);
 
@@ -50,12 +49,10 @@ const PhoneNumberInputs = props => {
     function on_blur() {
         let absolute_number = formattedNumber.replace(/[^0-9]/g, '');
         if (absolute_number.length == 10 || absolute_number.length == 11) {
-            setAbsoluteNumber(absolute_number)
             props.setNumber(absolute_number)
         } else {
             props.setNumber("")
         }
-        console.log("number set: " + absolute_number)
     }
 
     return (
@@ -82,4 +79,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PhoneNumberInputs
+
+
+function mapStateToProps(state){
+    return {
+      number: state.PersonalInformationReducer.number
+    }
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      setNumber: (entered_number) => {dispatch({type: 'SET_NUMBER', new_number: entered_number})}
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(PhoneNumberInputs)

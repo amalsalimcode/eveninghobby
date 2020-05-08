@@ -22,7 +22,6 @@ const SingleBar = props => {
             setPressOpacity(1)
         }
         props.barButtonPressed()
-        console.log(props.counter)
     }
 
     return (

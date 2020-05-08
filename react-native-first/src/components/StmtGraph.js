@@ -15,9 +15,7 @@ const StmtGraph = props => {
       duration: 1000
     }).start();
 
-    console.log(props)
     let x = props.increaseCounter();
-    console.log(x)
   };
 
   const fadeOut = () => {

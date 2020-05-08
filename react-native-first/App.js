@@ -17,7 +17,7 @@ export default function App() {
    * currentScreen initial value should come from
    * backend, saying whether this person is new or not
    */
-  const [currentScreen, setCurrentScreen] = useState(3);
+  const [currentScreen, setCurrentScreen] = useState(4);
   const [profileInfo, setProfileInfo] = useState({ "name": "", "number": "", "code": "" })
   const [cardInfo, setCardInfo] = useState({})
   const [data, setData] = useState([]);
@@ -31,19 +31,18 @@ export default function App() {
 
   useEffect(() => {
 
-    axios.get(`http://127.0.0.1:8000/hello_test/`)
-      .then(res => {
-        console.log(res.data)
-        setData(JSON.stringify(res.data))
-        setLoading(false)
-      })
+    // axios.get(`http://127.0.0.1:8000/hello_test/`)
+    //   .then(res => {
+    //     console.log(res.data)
+    //     setData(JSON.stringify(res.data))
+    //     setLoading(false)
+    //   })
 
   }, []);
 
   let screen;
   if (currentScreen == 0) {
-    screen = (<PersonalInformation setProfile={setProfileInfo}
-      curProfile={profileInfo} setScreen={setCurrentScreen} />)
+    screen = (<PersonalInformation setScreen={setCurrentScreen} />)
   } else if (currentScreen == 1) {
     screen = (<CardInput setCardInput={setCurrentScreen} setCardInfo={setCardInfo} />)
   } else if (currentScreen == 2) {

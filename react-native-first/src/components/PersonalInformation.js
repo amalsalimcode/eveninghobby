@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements';
 import PhoneNumberInputs from './PhoneNumberInput'
 import PasscodeInput from './PassCodeInput';
+import { connect } from 'react-redux'
 
 const PersonalInformation = props => {
-  const [name, setName] = useState(props.curProfile["name"])
-  const [number, setNumber] = useState(props.curProfile["number"])
-  const [code, setCode] = useState(props.curProfile["code"])
 
   const next_button_pressed = () => {
-    if (name && number && code) {
-      console.log("both name and numbers and code are filled in")
-      props.setProfile({ "name": name, "number": number, "code": code })
+
+    console.log("Current information name: " + props.name +
+      " number: " + props.number + " code: " + props.code)
+
+    if (props.name && props.number && props.code) {
       props.setScreen(1)
     } else {
       console.log("not all fields are filled in")
@@ -32,13 +32,13 @@ const PersonalInformation = props => {
             placeholder='Amal Salim'
             errorStyle={{ color: 'maroon' }}
             errorMessage=''
-            onChangeText={setName}
-            value={name}
+            onChangeText={props.setName}
+            value={props.name}
           />
         </View>
 
-        <PhoneNumberInputs setNumber={setNumber} number={number} />
-        <PasscodeInput setCode={setCode} code={code} />
+        <PhoneNumberInputs />
+        <PasscodeInput />
 
         <View style={{ padding: 20 }}>
           <Button raised
@@ -71,4 +71,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PersonalInformation
+
+function mapStateToProps(state) {
+  return {
+    name: state.PersonalInformationReducer.name,
+    number: state.PersonalInformationReducer.number,
+    code: state.PersonalInformationReducer.code
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setName: (entered_name) => { dispatch({ type: 'SET_NAME', new_name: entered_name }) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalInformation)

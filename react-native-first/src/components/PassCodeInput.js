@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native'
 import { Input } from 'react-native-elements'
+import { connect } from 'react-redux' 
 
 
 const PasscodeInput = props => {
@@ -19,15 +20,15 @@ const PasscodeInput = props => {
 
     const enterPassHandler = (entered_text) => {
         setPassCode(entered_text.replace(/[^0-9]/g, ''));
-        props.setCode('')
+        props.setCode("")
     }
 
     const reEnterPassHandler = (entered_text) => {
         setErrorMsg("")
         if (entered_text.length >= passCode.length && 
             entered_text != passCode) {
-            props.setCode('')
-                setErrorMsg("The passcodes don't match")
+            props.setCode("")
+            setErrorMsg("The passcodes don't match")
         }
 
         if (entered_text == passCode) {
@@ -77,4 +78,16 @@ const styles = StyleSheet.create({
     }
 });
 
-export default PasscodeInput
+function mapStateToProps(state){
+    return {
+      code: state.PersonalInformationReducer.code,
+    }
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      setCode: (entered_code) => {dispatch({type: 'SET_CODE', new_code: entered_code})}
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(PasscodeInput)

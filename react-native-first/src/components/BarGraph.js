@@ -18,7 +18,7 @@ const BarGraph = props => {
         var idx = 0;
         var bars = []
         for (idx = 0; idx < 7; idx++) {
-            bars.push(<SingleBar final_height={height[idx]} />)
+            bars.push(<SingleBar final_height={height[idx]} key={idx.toString()} />)
         }
         return (
             <>
@@ -29,7 +29,6 @@ const BarGraph = props => {
 
     useEffect(() => {
 
-
     });
 
     function x_axis_layout() {
@@ -37,7 +36,7 @@ const BarGraph = props => {
         var days_layout = []
         var idx = 0;
         for (idx = 0; idx < days.length; idx++) {
-            days_layout.push(<Text style={styles.day}>{days[idx]}</Text>);
+            days_layout.push(<Text style={styles.day} key={idx.toString()}>{days[idx]}</Text>);
         }
         return (
             <>
