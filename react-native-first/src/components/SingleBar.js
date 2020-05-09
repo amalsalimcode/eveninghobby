@@ -1,19 +1,27 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Animated, Text, View, StyleSheet } from 'react-native'
+import { Animated, StyleSheet } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {connect} from 'react-redux' 
 
+
+var uuid = undefined
 
 const SingleBar = props => {
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [pressOpacity, setPressOpacity] = useState(1)
+    uuid = props.uuid
 
+    /*
+     * only update component if the height
+     * of the bar has changed
+     */
     useEffect(() => {
         Animated.timing(fadeAnim, {
-            toValue: props.final_height,
+            toValue: props.bar_data[props.uuid].bar_height,
             duration: 1000
         }).start()
-    });
+    },[props.bar_data[props.uuid].bar_height]);
 
     function bar_pressed() {
         if (pressOpacity > 0.5) {
@@ -21,7 +29,8 @@ const SingleBar = props => {
         } else {
             setPressOpacity(1)
         }
-        props.barButtonPressed()
+        props.barButtonPressed(props.uuid)
+        // props.changeBarHeight(props.uuid)
     }
 
     return (
@@ -38,29 +47,32 @@ const styles = StyleSheet.create({
         backgroundColor: "brown",
         width: 10,
         height: 90,
-        borderRadius: 8,
         marginBottom: 1,
-
-        shadowColor: 'red', // IOS
-        shadowOffset: { height: 0, width: 0 }, // IOS
-        shadowOpacity: 0.5, // IOS
-        shadowRadius: 1, //IOS
         elevation: 2, // Android
+        borderRadius: 8,
+        shadowColor: "red",
+        shadowOffset: {
+            width: 10,
+            height: -10
+        },
+        shadowOpacity: 0.5,
+        // increase this to see the effect
+        shadowRadius: 1
     },
 });
 
 
-import {connect} from 'react-redux' 
 
 function mapStateToProps(state) {
     return {
-        counter: state.counter
+        bar_data: state.TransactionsReducer
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        barButtonPressed: () => dispatch({ type: 'BarPressed', data: "hello sneak" })
+        barButtonPressed: (uuid) => dispatch({ type: 'BAR_BUTTON_PRESSED', uuid: uuid }),
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(SingleBar)

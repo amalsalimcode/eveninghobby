@@ -8,6 +8,7 @@ import BarGraph from './src/components/BarGraph'
 import axios from 'axios'
 import { Provider } from 'react-redux'
 import store from './src/store/index'
+import Transactions from './src/components/Transactions';
 
 
 
@@ -50,7 +51,7 @@ export default function App() {
   } else if (currentScreen == 3) {
     screen = (<StmtGraph />)
   } else if (currentScreen == 4) {
-    screen = (<BarGraph />)
+    screen = (<Transactions />)
   } else {
     if (isLoading) {
       screen = (<ActivityIndicator />)

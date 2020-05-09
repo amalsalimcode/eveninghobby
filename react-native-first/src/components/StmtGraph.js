@@ -7,6 +7,7 @@ const StmtGraph = props => {
 
   // fadeAnim will be used as the value for opacity. Initial Value: 0
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  
 
   const fadeIn = () => {
     // Will change fadeAnim value to 1 in 5 seconds

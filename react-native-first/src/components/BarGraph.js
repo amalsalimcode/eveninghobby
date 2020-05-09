@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Button, Animated } from 'react-native'
 import { Dimensions } from "react-native";
 import Dash from 'react-native-dash';
 import SingleBar from './SingleBar';
+import { connect } from 'react-redux'
 
 const screenWidth = Dimensions.get("window").width / 2;
 
@@ -12,13 +13,14 @@ const screenWidth = Dimensions.get("window").width / 2;
 // introduce animation to dashed line
 const BarGraph = props => {
 
-    const [height, setHeight] = useState([70, 20, 30, 50, 23, 24, 9]);
-
     function bar_layout(data) {
         var idx = 0;
         var bars = []
         for (idx = 0; idx < 7; idx++) {
-            bars.push(<SingleBar final_height={height[idx]} key={idx.toString()} />)
+            var uuid = idx.toString()
+            // passing in key, to get rid of error
+            bars.push(<SingleBar uuid={uuid} key={uuid} />)
+            props.changeBarHeight(idx)
         }
         return (
             <>
@@ -46,13 +48,10 @@ const BarGraph = props => {
     }
 
     function change_bar_height() {
-        console.log("change bar height called")
-        var random_num = [];
         var idx = 0;
         for (idx = 0; idx < 7; idx++) {
-            random_num.push((Math.random() * 100) + 1);
+            props.changeBarHeight(idx)
         }
-        setHeight(random_num);
     }
 
     return (
@@ -75,9 +74,7 @@ const BarGraph = props => {
 
             </View>
             <View style={styles.x_axis}>
-
                 {x_axis_layout()}
-
             </View>
 
             <Button title="Press me" onPress={change_bar_height} />
@@ -122,4 +119,16 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BarGraph
+
+function mapStateToProps(state) {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        changeBarHeight: (uuid) => dispatch({type: "CHANGE_BAR_HEIGHT", uuid: uuid})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BarGraph)
