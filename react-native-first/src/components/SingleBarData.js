@@ -35,7 +35,10 @@ const SingleBarData = props => {
                         shadowColor='black'
                         shadowOpacity={0.4}
                         shadowOffset={{ height: 2, width: 2 }}>
-                        <Text>Date..... Merchant .... Price</Text>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <Text>{props.bar_data[props.uuid].transaction_data[props.trans_idx]["NAME"]}</Text>
+                            <Text>${parseInt(props.bar_data[props.uuid].transaction_data[props.trans_idx]["TRNAMT"]) * -1}  </Text>
+                        </View>
                     </View>
                 </Animated.View>
             </TouchableOpacity>
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        bar_data: state.TransactionsReducer
+        bar_data: state.TransactionsReducer.bar_data
     }
 }
 

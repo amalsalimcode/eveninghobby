@@ -41,7 +41,7 @@
 import React, {useState} from 'react';
 import {Button, View, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import LoginForm from './Login';
+import LoginForm from '../Login';
 
 const ModalDemo = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);

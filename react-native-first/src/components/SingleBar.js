@@ -30,7 +30,6 @@ const SingleBar = props => {
             setPressOpacity(1)
         }
         props.barButtonPressed(props.uuid)
-        // props.changeBarHeight(props.uuid)
     }
 
     return (
@@ -61,11 +60,9 @@ const styles = StyleSheet.create({
     },
 });
 
-
-
 function mapStateToProps(state) {
     return {
-        bar_data: state.TransactionsReducer
+        bar_data: state.TransactionsReducer.bar_data
     }
 }
 

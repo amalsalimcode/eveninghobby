@@ -8,14 +8,11 @@ import xmltodict
 
 def hello_test(request):
 
-    output = [{"TRNTYPE": "DEBIT", "DTPOSTED": "20180504000000.000[-7:MST]", "TRNAMT": "-14.95", "FITID": "320181240289356665",
-               "REFNUM": "320181240289356665", "NAME": "Audible audible.com NJ", "MEMO": "S85LVQ0UKLT AUDIO BOOKS", "year": 2018,
-               "month": 5, "day": 4},
-              {"TRNTYPE": "DEBIT", "DTPOSTED": "20180505000000.000[-7:MST]", "TRNAMT": "-4.24", "FITID": "320181250299745477",
-               "REFNUM": "320181250299745477", "NAME": "UBER *TRIP A63AY HELP.UBER.COM", "MEMO": "87EGTNKE HELP.UBER.COM",
-               "year": 2018, "month": 5, "day": 5}]
+    with open('django_ec2_project/data.json') as f:
+        data = json.load(f)
 
-    x = json.dumps(output)
+    x = json.dumps(data)
+    # print(x)
     return HttpResponse(x)
 
 
@@ -34,7 +31,7 @@ def hello(request):
         userid=user_id, clientuid=client_uid, org='AMEX', fid='3101', version=211, appid='QWIN',
         appver='2700', language='ENG', prettyprint=False, close_elements=True, bankid=None, brokerid=None)
 
-    stmtrq = [CcStmtRq(acctid=amex_acc_id, dtstart="20180101", dtend="20180601", inctran=True)]
+    stmtrq = [CcStmtRq(acctid=amex_acc_id, dtstart="20200101", dtend="20200501", inctran=True)]
     statements = client.request_statements(amex_passwd, *stmtrq).read().decode()
     stmt = xmltodict.parse(statements)
     stmt = stmt['OFX']['CREDITCARDMSGSRSV1']['CCSTMTTRNRS']['CCSTMTRS']['BANKTRANLIST']['STMTTRN']
@@ -46,10 +43,7 @@ def hello(request):
         stmt[idx]["month"] = dt_frmt.month
         stmt[idx]["day"] = dt_frmt.day
 
-    output = [stmt[0], stmt[1]]
-    pprint.pprint(output)
-    return HttpResponse(json.dumps(output))
-
+    return HttpResponse(json.dumps(stmt))
 
 
 def wellsfargo(request):

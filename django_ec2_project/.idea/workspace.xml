@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3576edbd-3d77-44dd-9917-a3179411ddef" name="Default Changelist" comment="" />
+    <list default="true" id="3576edbd-3d77-44dd-9917-a3179411ddef" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/django_ec2_project/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_ec2_project/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/src/components/BarData.js" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/src/components/BarData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/src/components/BarGraph.js" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/src/components/BarGraph.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/src/components/SingleBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/src/components/SingleBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../react-native-first/src/reducers/TransactionsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../react-native-first/src/reducers/TransactionsReducer.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,6 +53,10 @@
       <screen x="0" y="23" width="1867" height="1057" />
     </state>
     <state x="201" y="158" key="SettingsEditor/0.23.1867.1057@0.23.1867.1057" timestamp="1588572247447" />
+    <state x="846" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1589022039376">
+      <screen x="0" y="23" width="1867" height="1057" />
+    </state>
+    <state x="846" y="381" key="com.intellij.ide.util.TipDialog/0.23.1867.1057@0.23.1867.1057" timestamp="1589022039376" />
     <state x="467" y="276" width="639" height="486" key="find.popup" timestamp="1588576300797">
       <screen x="0" y="23" width="1867" height="1057" />
     </state>

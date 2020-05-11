@@ -35,12 +35,15 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.8",
-    "react-navigation-stack": "^2.3.13"
+    "react-navigation-stack": "^2.3.13",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "babel-preset-expo": "~8.1.0",
-    "react-devtools": "^3"
+    "react-devtools": "^3.6.3",
+    "redux-devtools": "^3.5.0"
   },
   "private": true
 }

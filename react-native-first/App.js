@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator, FlatList, ActionSheetIOS } from 'react-native';
 import PersonalInformation from './src/components/PersonalInformation'
-import StmtGraph from './src//components/StmtGraph'
-import AnimationSample from './src/components/AnimationSample'
+import StmtGraph from './src/components/referenceComponents/StmtGraph'
+import AnimationSample from './src/components/referenceComponents/AnimationSample'
 import CardInput from './src/components/CardInput'
 import BarGraph from './src/components/BarGraph'
-import axios from 'axios'
 import { Provider } from 'react-redux'
 import store from './src/store/index'
 import Transactions from './src/components/Transactions';
@@ -18,7 +17,7 @@ export default function App() {
    * currentScreen initial value should come from
    * backend, saying whether this person is new or not
    */
-  const [currentScreen, setCurrentScreen] = useState(4);
+  const [currentScreen, setCurrentScreen] = useState(0);
   const [profileInfo, setProfileInfo] = useState({ "name": "", "number": "", "code": "" })
   const [cardInfo, setCardInfo] = useState({})
   const [data, setData] = useState([]);
@@ -31,14 +30,6 @@ export default function App() {
   }
 
   useEffect(() => {
-
-    // axios.get(`http://127.0.0.1:8000/hello_test/`)
-    //   .then(res => {
-    //     console.log(res.data)
-    //     setData(JSON.stringify(res.data))
-    //     setLoading(false)
-    //   })
-
   }, []);
 
   let screen;

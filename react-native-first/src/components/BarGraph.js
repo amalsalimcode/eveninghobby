@@ -13,14 +13,13 @@ const screenWidth = Dimensions.get("window").width / 2;
 // introduce animation to dashed line
 const BarGraph = props => {
 
-    function bar_layout(data) {
+    function bar_layout() {
         var idx = 0;
         var bars = []
-        for (idx = 0; idx < 7; idx++) {
+        for (idx = 0; idx < props.bar_data.length; idx++) {
             var uuid = idx.toString()
             // passing in key, to get rid of error
             bars.push(<SingleBar uuid={uuid} key={uuid} />)
-            props.changeBarHeight(idx)
         }
         return (
             <>
@@ -28,10 +27,6 @@ const BarGraph = props => {
             </>
         )
     }
-
-    useEffect(() => {
-
-    });
 
     function x_axis_layout() {
         var days = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -48,6 +43,7 @@ const BarGraph = props => {
     }
 
     function change_bar_height() {
+        console.log("change bar height called")
         var idx = 0;
         for (idx = 0; idx < 7; idx++) {
             props.changeBarHeight(idx)
@@ -68,9 +64,9 @@ const BarGraph = props => {
                     <Text style={{ marginTop: 90, opacity: 0.2, flex: 1 }}> 20</Text>
                 </View>
 
-                    <View style={styles.values_container}>
-                        {bar_layout()}
-                    </View>
+                <View style={styles.values_container}>
+                    {bar_layout()}
+                </View>
 
             </View>
             <View style={styles.x_axis}>
@@ -122,12 +118,13 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
+        bar_data: state.TransactionsReducer.bar_data
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeBarHeight: (uuid) => dispatch({type: "CHANGE_BAR_HEIGHT", uuid: uuid})
+        changeBarHeight: (uuid) => dispatch({ type: "CHANGE_BAR_HEIGHT", uuid: uuid })
     }
 }
 

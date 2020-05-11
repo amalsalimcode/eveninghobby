@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import Animation from 'lottie-react-native';
 
-import anim from '../../assets/anim.json'
+import anim from '../../../assets/anim.json'
 
 const AnimationSample = props => {
     let anim_local;
