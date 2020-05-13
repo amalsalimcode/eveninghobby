@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, StyleSheet, View, TextInput} from 'react-native';
 
 const LoginForm = () => {
-  const [value, setValue] = useState(0);
   return (
     <View style={styles.container}>
       <Text style={styles.formLabel}> Login Form </Text>
@@ -38,12 +37,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 50,
     backgroundColor: '#DCDCDC',
-  },
-  formText: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#fff',
-    fontSize: 20,
   },
   text: {
     color: '#fff',

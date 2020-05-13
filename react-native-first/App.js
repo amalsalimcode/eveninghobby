@@ -1,27 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator, FlatList, ActionSheetIOS } from 'react-native';
-import PersonalInformation from './src/components/PersonalInformation'
-import StmtGraph from './src/components/referenceComponents/StmtGraph'
-import AnimationSample from './src/components/referenceComponents/AnimationSample'
-import CardInput from './src/components/CardInput'
-import BarGraph from './src/components/BarGraph'
-import { Provider } from 'react-redux'
 import store from './src/store/index'
-import Transactions from './src/components/Transactions';
+import { Provider } from 'react-redux'
+import { View, Text } from 'react-native'
+import React, { useState } from 'react'
+import CardInput from './src/components/newProfile/CardInput'
+import Transactions from './src/components/transactions/Transactions'
+import StmtGraph from './src/components/referenceComponents/StmtGraph'
+import PersonalInformation from './src/components/newProfile/PersonalInformation'
+import AnimationSample from './src/components/referenceComponents/AnimationSample'
+import Swipe from './src/components/referenceComponents/Swipe'
 
 
+function get_current_screen(screen_val, setCurrentScreen) {
+  switch (screen_val) {
+    case 0:
+      return (<PersonalInformation setScreen={setCurrentScreen} />)
+    case 1:
+      return (<CardInput setCardInput={setCurrentScreen} />)
+    case 2:
+      return (<AnimationSample />)
+    case 3:
+      return (<StmtGraph />)
+    case 4:
+      return (<Transactions />)
+    case 5:
+      return (<Swipe />)
+    default:
+      return (<View><Text>Hello world!</Text></View>)
+  }
+}
 
 export default function App() {
-
-  /*
-   * currentScreen initial value should come from
-   * backend, saying whether this person is new or not
-   */
-  const [currentScreen, setCurrentScreen] = useState(0);
-  const [profileInfo, setProfileInfo] = useState({ "name": "", "number": "", "code": "" })
-  const [cardInfo, setCardInfo] = useState({})
-  const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
 
   // now anywhere in your code, you can say sleep(5000)
   // and it will sleep for 5 seconds
@@ -29,39 +37,17 @@ export default function App() {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
   }
 
-  useEffect(() => {
-  }, []);
-
-  let screen;
-  if (currentScreen == 0) {
-    screen = (<PersonalInformation setScreen={setCurrentScreen} />)
-  } else if (currentScreen == 1) {
-    screen = (<CardInput setCardInput={setCurrentScreen} setCardInfo={setCardInfo} />)
-  } else if (currentScreen == 2) {
-    screen = (<AnimationSample />)
-  } else if (currentScreen == 3) {
-    screen = (<StmtGraph />)
-  } else if (currentScreen == 4) {
-    screen = (<Transactions />)
-  } else {
-    if (isLoading) {
-      screen = (<ActivityIndicator />)
-    } else {
-      screen = (<View><Text>{data}</Text></View>)
-    }
-  }
+  /*
+   * currentScreen initial value should come from
+   * backend, saying whether this person is new or not
+   */
+  const [currentScreen, setCurrentScreen] = useState(4);
 
   return (
     <>
       <Provider store={store}>
-        {screen}
+        {get_current_screen(currentScreen, setCurrentScreen)}
       </Provider>
     </>
   )
 };
-
-const styles = StyleSheet.create({
-  test: {
-    backgroundColor: "rgba(60, 80, 101, 0.5)",
-  }
-});

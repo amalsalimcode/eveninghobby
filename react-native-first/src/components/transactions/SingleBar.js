@@ -3,20 +3,20 @@ import { Animated, StyleSheet } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {connect} from 'react-redux' 
 
-
-var uuid = undefined
-
 const SingleBar = props => {
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [pressOpacity, setPressOpacity] = useState(1)
-    uuid = props.uuid
 
     /*
      * only update component if the height
      * of the bar has changed
      */
     useEffect(() => {
+        // when re-rendering we want to clear
+        // the button press
+        setPressOpacity(1)
+
         Animated.timing(fadeAnim, {
             toValue: props.bar_data[props.uuid].bar_height,
             duration: 1000

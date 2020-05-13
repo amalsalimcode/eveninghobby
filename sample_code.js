@@ -43,3 +43,30 @@ const styles = StyleSheet.create({
 });
 
 export default TestClass
+
+/*
+ * Set Timer that runs every second
+ */
+
+const [seconds, setSeconds] = useState(0);
+const [isPause, setPause] = useState(false);
+const [timer, setTimer] = useState(null)
+
+useEffect(() => {
+    if (isPause) {
+        clearInterval(timer);
+    } else {
+        const id = setInterval(() => {
+            setSeconds(Math.random())
+        }, 1000);
+        setTimer(id);
+    }
+    return () => clearInterval(timer);
+}, [isPause]);
+
+/*
+ * Somewhere in the code you can print seconds,
+ * and when a condition matches to stop the timer,
+ * call setPause(true)
+ */
+

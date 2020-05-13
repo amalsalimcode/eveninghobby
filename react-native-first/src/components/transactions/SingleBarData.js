@@ -2,9 +2,9 @@
  * All transaction Data is loaded here
  */
 
-import React, { useRef, useState } from 'react';
-import { Animated, View, StyleSheet, Text } from 'react-native'
 import { connect } from 'react-redux'
+import React, { useRef } from 'react';
+import { Animated, View, StyleSheet, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -13,20 +13,23 @@ const SingleBarData = props => {
     var total_height = 25
     const cur_height = useRef(new Animated.Value(total_height)).current;
 
-    const change_height = (card_idx) => {
-        console.log("clicked on change height!")
+    const change_height = () => {
 
         if (total_height == 200) {
             total_height = 25
         } else {
             total_height = 200
         }
+
         Animated.timing(cur_height, {
             toValue: total_height,
             duration: 1000
         }).start()
     }
 
+    name = props.bar_data[props.uuid].transaction_data[props.trans_idx]["NAME"]
+    amount_str = props.bar_data[props.uuid].transaction_data[props.trans_idx]["TRNAMT"]
+    amount = Number(parseFloat(amount_str)).toFixed(2) * -1
     return (
         <>
             <TouchableOpacity onPress={() => (change_height())} style={styles.square}>
@@ -36,8 +39,8 @@ const SingleBarData = props => {
                         shadowOpacity={0.4}
                         shadowOffset={{ height: 2, width: 2 }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <Text>{props.bar_data[props.uuid].transaction_data[props.trans_idx]["NAME"]}</Text>
-                            <Text>${parseInt(props.bar_data[props.uuid].transaction_data[props.trans_idx]["TRNAMT"]) * -1}  </Text>
+                            <Text>{name}</Text>
+                            <Text>${amount}  </Text>
                         </View>
                     </View>
                 </Animated.View>

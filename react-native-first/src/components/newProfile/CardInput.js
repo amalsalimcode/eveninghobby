@@ -10,7 +10,8 @@ const CardInput = props => {
 
     function on_change(data) {
         if (data["valid"]) {
-            props.setCardInfo(data)
+            // data input is now complete
+            console.log(data)
             setIsValid(true)
         }
     }
