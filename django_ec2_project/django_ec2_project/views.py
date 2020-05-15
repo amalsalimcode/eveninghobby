@@ -16,6 +16,14 @@ def hello_test(request):
     return HttpResponse(x)
 
 
+def wells_test(request):
+
+    with open('django_ec2_project/wells.json') as f:
+        stmt = json.load(f)
+
+    return HttpResponse(json.dumps(stmt))
+
+
 def hello(request):
 
     from ofxtools.Client import CcStmtRq, OFXClient
@@ -58,4 +66,16 @@ def wellsfargo(request):
     dtend = datetime.datetime(2020, 1, 31, tzinfo=ofxtools.utils.UTC)
     s0 = StmtRq(acctid="1418811491", accttype="CHECKING", dtstart=dtstart, dtend=dtend)
     response = client.request_statements("4Kzindagi", s0)
-    return HttpResponse(response.read())
+    resp_dict = xmltodict.parse(response)
+
+    stmt = resp_dict['OFX']['BANKMSGSRSV1']['STMTTRNRS']['STMTRS']['BANKTRANLIST']['STMTTRN']
+
+    for idx in range(0, len(stmt)):
+        dt_posted = stmt[idx]["DTPOSTED"]
+        dt_frmt = datetime.strptime(dt_posted[0:8:1], "%Y%m%d")
+        stmt[idx]["year"] = dt_frmt.year
+        stmt[idx]["month"] = dt_frmt.month
+        stmt[idx]["day"] = dt_frmt.day
+
+    return HttpResponse(json.dumps(stmt))
+
