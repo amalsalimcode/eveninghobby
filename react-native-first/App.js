@@ -7,7 +7,7 @@ import Transactions from './src/components/transactions/Transactions'
 import StmtGraph from './src/components/referenceComponents/StmtGraph'
 import PersonalInformation from './src/components/newProfile/PersonalInformation'
 import AnimationSample from './src/components/referenceComponents/AnimationSample'
-import Swipe from './src/components/referenceComponents/Swipe'
+import Overlay from './src/components/referenceComponents/Overlay'
 
 
 function get_current_screen(screen_val, setCurrentScreen) {
@@ -23,7 +23,7 @@ function get_current_screen(screen_val, setCurrentScreen) {
     case 4:
       return (<Transactions />)
     case 5:
-      return (<Swipe />)
+      return (<Overlay/>)
     default:
       return (<View><Text>Hello world!</Text></View>)
   }
