@@ -3,7 +3,7 @@ import { Animated, StyleSheet } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {connect} from 'react-redux' 
 
-const SingleBar = props => {
+const SingleBarGraph = props => {
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [pressOpacity, setPressOpacity] = useState(1)
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         marginBottom: 1,
         elevation: 2, // Android
         borderRadius: 8,
-        shadowColor: "red",
+        shadowColor: "brown",
         shadowOffset: {
             width: 10,
             height: -10
@@ -72,4 +72,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleBar)
+export default connect(mapStateToProps, mapDispatchToProps)(SingleBarGraph)

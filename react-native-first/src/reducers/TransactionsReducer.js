@@ -1,9 +1,9 @@
-d = new Date();
+var d = new Date();
 var day = d.getDay()
 // if current day is Saturday (6), don't subtract
 var days_to_subtract = day == 6 ? 0 : day + 1
-diff = d.getDate() - days_to_subtract;
-dt = new Date(d.setDate(diff));
+var diff = d.getDate() - days_to_subtract;
+var dt = new Date(d.setDate(diff));
 
 let initial_data = {
     bar_data: [],
@@ -13,10 +13,10 @@ let initial_data = {
         month: dt.getMonth(),
         day: dt.getDay(),
         date: dt.getDate(),
-        highest_spend: 0
+        highest_spend: 0,
+        total_spend: 0
     }
 }
-
 
 let idx = 0;
 for (idx = 0; idx < 7; idx++) {
@@ -28,7 +28,7 @@ for (idx = 0; idx < 7; idx++) {
     })
 }
 
-function set_trans_data_bar_height(state, response_data) {
+function set_trans_data(state, response_data, institution) {
     /*
      * The backend data (all transactions) is inputted as arg here.
      * Manipulate the data and save it into the state
@@ -45,13 +45,19 @@ function set_trans_data_bar_height(state, response_data) {
             parseInt(response_data[idx]["day"])
         )
 
-        var diff_days = Math.ceil(Math.abs(dt - resp_dt) / (1000 * 60 * 60 * 24))
+        var diff_days = Math.ceil((resp_dt - dt) / (1000 * 60 * 60 * 24))
         amount = response_data[idx]["TRNAMT"]
         if (diff_days >= 0 && diff_days <= 6 && amount < 0) {
+            response_data[idx]["institution"] = institution
             state.bar_data[diff_days].transaction_data.push(response_data[idx])
             state.bar_data[diff_days].bar_height += Math.abs(amount)
+            state.meta_data.total_spend += Math.abs(amount)
         }
     }
+}
+
+
+function set_trans_bar_height(state) {
 
     var highest = 0
     for (idx = 0; idx < state.bar_data.length; idx++) {
@@ -74,10 +80,16 @@ function set_trans_data_bar_height(state, response_data) {
         if (height == 0) {
             continue
         }
-        height = (height * (180) / (highest)) + 20
+
+        /* smallest possible height for a transaction
+         * is 20. Otherwise, its not visible.
+         * maximum allowed height is 100. Otherwise,
+         * it goes off screen.
+         * The formula below puts everything between
+         * 20 and 100 */
+        height = (height * (80) / (highest)) + 20
         state.bar_data[idx].bar_height = height
     }
-
 }
 
 function clear_trans_data(state) {
@@ -87,6 +99,8 @@ function clear_trans_data(state) {
         state.bar_data[idx].bar_height = 0
         state.bar_data[idx].bar_enabled = false
     }
+    state.meta_data.total_spend = 0
+    state.meta_data.highest_spend = 0
 }
 
 const TransactionsReducer = (state = initial_data, action) => {
@@ -101,21 +115,18 @@ const TransactionsReducer = (state = initial_data, action) => {
             return state_cpy
 
         case "SET_TRANSACTION_DATA":
-            set_trans_data_bar_height(state_cpy, action.transactions)
-
-            for (idx = 0; idx < 7; idx++) {
-                bar_height = parseFloat(state_cpy.bar_data[idx].bar_height)
-                height = Number(bar_height).toFixed(2);
-                // tempfix: we need proper normalization
-                state_cpy.bar_data[idx].bar_height = height / 2
-            }
-            // setting this to true will load the transactions layout
+            set_trans_data(state_cpy, action.transactions, action.institution)
+            set_trans_bar_height(state_cpy)
+            // ack that data from backend is received
+            // now the components can load
             state_cpy.meta_data.data_loaded = true
             return state_cpy
 
-        case "CHANGE_CUR_WEEK":
+        case "CLEAR_TRANSACTION_DATA":
             clear_trans_data(state_cpy)
+            return state_cpy
 
+        case "CHANGE_CUR_WEEK":
             var m = state_cpy.meta_data
             var dt = new Date(m.year, m.month, m.date);
             dt.setDate(dt.getDate() + 7 * action.direction);
