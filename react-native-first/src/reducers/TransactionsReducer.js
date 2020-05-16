@@ -13,8 +13,11 @@ let initial_data = {
         month: dt.getMonth(),
         day: dt.getDay(),
         date: dt.getDate(),
-        highest_spend: 0,
-        total_spend: 0
+        highest_spend: { "WELLS": 0, "AMEX": 0 },
+        total_spend: {
+            "AMEX": [0, 0, 0, 0, 0, 0, 0],
+            "WELLS": [0, 0, 0, 0, 0, 0, 0]
+        }
     }
 }
 
@@ -23,7 +26,10 @@ for (idx = 0; idx < 7; idx++) {
     initial_data.bar_data.push({
         bar_enabled: false,
         transaction_data: [],
-        bar_height: 0,
+        bar_height: {
+            "WELLS": 0,
+            "AMEX": 0
+        },
         idx: idx
     })
 }
@@ -50,57 +56,40 @@ function set_trans_data(state, response_data, institution) {
         if (diff_days >= 0 && diff_days <= 6 && amount < 0) {
             response_data[idx]["institution"] = institution
             state.bar_data[diff_days].transaction_data.push(response_data[idx])
-            state.bar_data[diff_days].bar_height += Math.abs(amount)
-            state.meta_data.total_spend += Math.abs(amount)
+
+            state.bar_data[diff_days].bar_height[institution] += Math.abs(amount)
+            state.meta_data.total_spend[institution][diff_days] += Math.abs(amount)
         }
     }
 }
 
 
-function set_trans_bar_height(state) {
+function calc_highest_spend(state, institution) {
 
     var highest = 0
     for (idx = 0; idx < state.bar_data.length; idx++) {
-        amount = state.bar_data[idx].bar_height;
+        amount = state.bar_data[idx].bar_height[institution];
         if (amount > highest) {
             highest = amount
         }
     }
 
-    state.meta_data.highest_spend = parseInt(highest)
+    state.meta_data.highest_spend[institution] = parseInt(highest)
 
-    /* no transactions happened during entire week */
-    if (highest == 0) {
-        return
-    }
-
-    for (idx = 0; idx < state.bar_data.length; idx++) {
-        height = state.bar_data[idx].bar_height
-        /* no transaction happened during the day */
-        if (height == 0) {
-            continue
-        }
-
-        /* smallest possible height for a transaction
-         * is 20. Otherwise, its not visible.
-         * maximum allowed height is 100. Otherwise,
-         * it goes off screen.
-         * The formula below puts everything between
-         * 20 and 100 */
-        height = (height * (80) / (highest)) + 20
-        state.bar_data[idx].bar_height = height
-    }
 }
 
 function clear_trans_data(state) {
     let idx = 0
     for (idx = 0; idx < state.bar_data.length; idx++) {
         state.bar_data[idx].transaction_data.length = 0
-        state.bar_data[idx].bar_height = 0
+        state.bar_data[idx].bar_height = { "AMEX": 0, "WELLS": 0 }
         state.bar_data[idx].bar_enabled = false
     }
-    state.meta_data.total_spend = 0
-    state.meta_data.highest_spend = 0
+    state.meta_data.total_spend = {
+        "AMEX": [0, 0, 0, 0, 0, 0, 0],
+        "WELLS": [0, 0, 0, 0, 0, 0, 0]
+    }
+    state.meta_data.highest_spend = { "AMEX": 0, "WELLS": 0 }
 }
 
 const TransactionsReducer = (state = initial_data, action) => {
@@ -110,13 +99,9 @@ const TransactionsReducer = (state = initial_data, action) => {
             state_cpy.bar_data[action.uuid].bar_enabled ^= true
             return state_cpy
 
-        case "CHANGE_BAR_HEIGHT":
-            state_cpy.bar_data[action.uuid].bar_height = ((Math.random() * 100) + 1).toString()
-            return state_cpy
-
         case "SET_TRANSACTION_DATA":
             set_trans_data(state_cpy, action.transactions, action.institution)
-            set_trans_bar_height(state_cpy)
+            calc_highest_spend(state_cpy, action.institution)
             // ack that data from backend is received
             // now the components can load
             state_cpy.meta_data.data_loaded = true

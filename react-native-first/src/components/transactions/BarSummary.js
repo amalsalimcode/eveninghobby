@@ -4,10 +4,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Button, Overlay } from 'react-native-elements';
-
-import { LinearGradient } from 'expo-linear-gradient';
-
+import Settings from './Settings'
 
 const months = ["January", "February", "March", "April", "May",
     "June", "July", "August", "September", "October",
@@ -17,16 +14,34 @@ const months = ["January", "February", "March", "April", "May",
 const BarSummary = props => {
 
     var cur_month = months[props.meta.month]
-    const [overlayVisible, setOverlayVisible] = useState(false);
 
-    const toggleOverlay = () => {
-        setOverlayVisible(!overlayVisible);
-    };
+    var idx = 0
+    var enabled_bars = []
+    for (idx = 0; idx < 7; idx++) {
+        if (props.bar_data[idx].bar_enabled) {
+            enabled_bars.push(idx)
+        }
+    }
+    if (enabled_bars.length < 1) {
+        enabled_bars = [0, 1, 2, 3, 4, 5, 6]
+    }
+
+    var total_spend = 0;
+    for (idx = 0; idx < 7; idx++) {
+        if (props.isAmexVisible && enabled_bars.includes(idx)) {
+            total_spend += props.meta.total_spend["AMEX"][idx]
+        }
+        if (props.isWellsVisible && enabled_bars.includes(idx)) {
+            total_spend += props.meta.total_spend["WELLS"][idx]
+        }
+    }
+
+    total_spend = Number(parseFloat(total_spend)).toFixed(2)
 
 
     return (
         <>
-            <TouchableOpacity onPress={toggleOverlay} style={styles.square}>
+            <TouchableOpacity onPress={props.showSettings} style={styles.square}>
                 <Animated.View style={{ height: 30, paddingTop: 6 }}>
                     <View style={{ marginLeft: 10 }} shadowOffset={{ height: 10 }}
                         shadowColor='black'
@@ -46,22 +61,13 @@ const BarSummary = props => {
                                 <Text>Expense This Week: </Text>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <Text>    ${parseInt(props.meta.total_spend)} </Text>
+                                <Text>    ${total_spend} </Text>
                             </View>
                         </View>
                     </View>
                 </Animated.View>
-                <Overlay isVisible={overlayVisible} onBackdropPress={toggleOverlay} overlayStyle={{ ...styles.square, height: "80%" }}>
 
-                    <Button
-                        ViewComponent={LinearGradient} // Don't forget this!
-                        linearGradientProps={{
-                            colors: ['red', 'orange'],
-                            start: { x: 0, y: 0.5 },
-                            end: { x: 1, y: 0.5 },
-                        }}
-                    />
-                </Overlay>
+                <Settings />
             </TouchableOpacity>
         </>
     )
@@ -87,14 +93,17 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        meta: state.TransactionsReducer.meta_data
+        meta: state.TransactionsReducer.meta_data,
+        bar_data: state.TransactionsReducer.bar_data,
+        isWellsVisible: state.SettingsReducer.showWells,
+        isAmexVisible: state.SettingsReducer.showAmex
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeBarHeight: (uuid) => dispatch({ type: "CHANGE_BAR_HEIGHT", uuid: uuid }),
-        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
+        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction }),
+        showSettings: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" })
     }
 }
 

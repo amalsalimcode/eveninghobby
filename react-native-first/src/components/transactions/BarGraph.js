@@ -25,13 +25,6 @@ const BarGraph = props => {
         )
     }
 
-    function change_bar_height() {
-        var idx = 0;
-        for (idx = 0; idx < 7; idx++) {
-            props.changeBarHeight(idx)
-        }
-    }
-
     function x_axis_layout() {
         var days = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];
         var days_layout = []
@@ -77,9 +70,6 @@ const BarGraph = props => {
             <View style={styles.x_axis}>
                 {x_axis_layout()}
             </View>
-
-
-            {/* <Button title="Press me" onPress={change_bar_height} /> */}
         </>
     )
 
@@ -121,7 +111,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeBarHeight: (uuid) => dispatch({ type: "CHANGE_BAR_HEIGHT", uuid: uuid }),
         changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
     }
 }

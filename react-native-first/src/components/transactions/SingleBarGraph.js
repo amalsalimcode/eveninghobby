@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import {connect} from 'react-redux' 
+import { connect } from 'react-redux'
 
 const SingleBarGraph = props => {
 
@@ -15,13 +15,42 @@ const SingleBarGraph = props => {
     useEffect(() => {
         // when re-rendering we want to clear
         // the button press
-        setPressOpacity(1)
+
+        if (props.bar_data[props.uuid].bar_enabled) {
+            setPressOpacity(0.5)
+        } else {
+            setPressOpacity(1)
+        }
+
+        var height = 0;
+        var highest = 0
+        if (props.isAmexVisible) {
+            height += props.bar_data[props.uuid].bar_height["AMEX"]
+            highest += props.highestSpend["AMEX"]
+        }
+        if (props.isWellsVisible) {
+            height += props.bar_data[props.uuid].bar_height["WELLS"]
+            highest += props.highestSpend["WELLS"]
+        }
+
+        /* smallest possible height for a transaction
+         * is 20. Otherwise, its not visible.
+         * maximum allowed height is 100. Otherwise,
+         * it goes off screen.
+         * The formula below puts everything between
+         * 20 and 100 */
+
+        if (highest != 0 && height != 0) {
+            height = (height * (80) / (highest)) + 20
+        }
 
         Animated.timing(fadeAnim, {
-            toValue: props.bar_data[props.uuid].bar_height,
+            toValue: height,
             duration: 1000
         }).start()
-    },[props.bar_data[props.uuid].bar_height]);
+    }, [props.bar_data[props.uuid].bar_height,
+    props.isAmexVisible,
+    props.isWellsVisible]);
 
     function bar_pressed() {
         if (pressOpacity > 0.5) {
@@ -62,7 +91,11 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        bar_data: state.TransactionsReducer.bar_data
+        bar_data: state.TransactionsReducer.bar_data,
+        isVisible: state.SettingsReducer.enable,
+        isAmexVisible: state.SettingsReducer.showAmex,
+        isWellsVisible: state.SettingsReducer.showWells,
+        highestSpend: state.TransactionsReducer.meta_data.highest_spend
     }
 }
 
