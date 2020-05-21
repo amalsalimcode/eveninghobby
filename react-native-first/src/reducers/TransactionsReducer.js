@@ -42,6 +42,7 @@ function set_trans_data(state, response_data, institution) {
     let idx = 0
     var m = state.meta_data
     var dt = new Date(m.year, m.month, m.date);
+    var amount = 0
 
     for (idx = 0; idx < response_data.length; idx++) {
 
@@ -67,6 +68,7 @@ function set_trans_data(state, response_data, institution) {
 function calc_highest_spend(state, institution) {
 
     var highest = 0
+    var amount = 0
     for (idx = 0; idx < state.bar_data.length; idx++) {
         amount = state.bar_data[idx].bar_height[institution];
         if (amount > highest) {

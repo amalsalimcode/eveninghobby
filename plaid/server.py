@@ -114,6 +114,7 @@ def get_transactions():
   start_date = '{:%Y-%m-%d}'.format(datetime.datetime.now() + datetime.timedelta(-30))
   end_date = '{:%Y-%m-%d}'.format(datetime.datetime.now())
   try:
+    print("im going to retrieve transactions " + access_token)
     transactions_response = client.Transactions.get(access_token, start_date, end_date)
   except plaid.errors.PlaidError as e:
     return jsonify(format_error(e))

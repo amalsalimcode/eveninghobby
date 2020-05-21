@@ -1,2 +1,6 @@
 Django==3.0.5
 ofxtools==0.8.20
+xmltodict~=0.12.0
+pytz~=2019.3
+python-dateutil~=2.8.1
+plaid-python~=3.9.0
