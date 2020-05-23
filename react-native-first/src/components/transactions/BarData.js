@@ -5,55 +5,51 @@ import SingleBarData from './SingleBarData';
 
 const BarData = props => {
 
-    function any_bar_enabled() {
+    function isAnyBarEnabled() {
         let idx = 0
-        for (idx = 0; idx < props.bar_data.length; idx++) {
-            if (props.bar_data[idx].bar_enabled) {
+        for (idx = 0; idx < props.barData.length; idx++) {
+            if (props.enabledBars[idx]) {
                 return true
             }
         }
         return false
     }
 
-    function data_layout() {
-        var bar_idx = 0;
-        var trans_idx = 0;
-        var bar_layout = []
-        var enabled = any_bar_enabled()
+    function dataLayout() {
 
-        for (bar_idx = 0; bar_idx < props.bar_data.length; bar_idx++) {
+        var barIdx = 0;
+        var transIdx = 0;
+        var barLayout = []
+
+        for (barIdx = 0; barIdx < props.barData.length; barIdx++) {
             // if all bars is unclicked, then show all data 
             // otherwise, show data for only those bars that are clicked
-            if (enabled && !props.bar_data[bar_idx].bar_enabled) {
+            if (isAnyBarEnabled() && !props.enabledBars[barIdx]) {
                 continue
             }
 
-            var uuid = bar_idx.toString()
+            for (transIdx = 0; transIdx < props.barData[barIdx].transaction_data.length; transIdx++) {
 
-            for (trans_idx = 0; trans_idx < props.bar_data[bar_idx].transaction_data.length; trans_idx++) {
-
-                var institution = props.bar_data[bar_idx].transaction_data[trans_idx]["institution"]
-
-                if ((institution == "WELLS" && !props.isWellsVisible) ||
-                    (institution == "AMEX" && !props.isAmexVisible)) {
+                var institution = props.barData[barIdx].transaction_data[transIdx]["institution"]
+                if (!props.isVisible[institution]) {
                     continue
                 }
 
-                // make a unique key. In this case: 'bar_idx' concat 'trans_idx'
-                uniq_key = bar_idx.toString().concat(trans_idx.toString())
-                bar_layout.push(<SingleBarData key={uniq_key} uuid={uuid} trans_idx={trans_idx} />)
+                // make a unique key. In this case: 'barIdx' concat 'transIdx'
+                var uniqKey= barIdx.toString().concat(transIdx.toString())
+                barLayout.push(<SingleBarData key={uniqKey} uuid={barIdx.toString()} transIdx={transIdx} />)
             }
         }
         return (
             <View style={{ marginTop: 10 }}>
-                {bar_layout}
+                {barLayout}
             </View>
         )
     }
 
     return (
         <ScrollView>
-            {data_layout()}
+            {dataLayout()}
         </ScrollView>
     )
 
@@ -67,9 +63,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        bar_data: state.TransactionsReducer.bar_data,
-        isWellsVisible: state.SettingsReducer.showWells,
-        isAmexVisible: state.SettingsReducer.showAmex
+        barData: state.TransactionsReducer.bar_data,
+        isVisible: state.SettingsReducer.institutionVisibility,
+        enabledBars: state.BarGraphReducer.barsPressed
     }
 }
 

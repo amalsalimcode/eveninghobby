@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     isVisible: state.SettingsReducer.enable,
-    isAmexVisible: state.SettingsReducer.showAmex,
-    isWellsVisible: state.SettingsReducer.showWells
+    isAmexVisible: state.SettingsReducer.institutionVisibility["AMEX"],
+    isWellsVisible: state.SettingsReducer.institutionVisibility["Wells Fargo"]
   }
 }
 

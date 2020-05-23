@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native'
 import BarSummary from './BarSummary'
+import constants from '../constants';
 
 const Transactions = props => {
 
@@ -18,19 +19,20 @@ const Transactions = props => {
 
         props.clear_transaction_data()
 
-        axios.get(`http://127.0.0.1:8000/hello_test/`)
+        // get curr date
+        var dt= new Date(props.fullDate)
+        var month = dt.getMonth() + 1
+        var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
+
+        var request_url = "http://127.0.0.1:8000/transaction/?email=amal.salim@gmail.com&start_date=" + date_str + "&days=" + constants.diffDays
+
+        axios.get(request_url)
             .then(res => {
                 let transactions = JSON.parse(JSON.stringify(res.data))
-                props.set_transaction_data(transactions, "AMEX")
+                props.set_transaction_data(transactions)
             })
-        axios.get(`http://127.0.0.1:8000/wells_test/`)
-            .then(res => {
-                let transactions = JSON.parse(JSON.stringify(res.data))
-                props.set_transaction_data(transactions, "WELLS")
-            })
-        // refresh the data when user swipes to get
-        // data for another time period
-    }, [props.date]);
+        
+    }, [props.fullDate]);
 
     return (
         // show loading sign until from backend is received
@@ -47,16 +49,15 @@ const Transactions = props => {
 function mapStateToProps(state) {
     return {
         data_loaded: state.TransactionsReducer.meta_data.data_loaded,
-        date: state.TransactionsReducer.meta_data.date
+        fullDate: state.TransactionsReducer.meta_data.fullDate
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        set_transaction_data: (transactions, institution) => dispatch({
+        set_transaction_data: (transactions) => dispatch({
             type: 'SET_TRANSACTION_DATA',
             transactions: transactions,
-            institution: institution
         }),
         clear_transaction_data: () => dispatch({type: 'CLEAR_TRANSACTION_DATA'})
     }

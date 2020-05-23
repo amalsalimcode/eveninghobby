@@ -6,4 +6,5 @@ admin.autodiscover()
 
 urlpatterns = [
     path('', views.RetrieveTransaction.as_view()),
+    path('totalSpent', views.TotalSpent.as_view()),
 ]

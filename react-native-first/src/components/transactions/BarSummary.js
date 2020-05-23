@@ -1,43 +1,63 @@
 'use strict'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Settings from './Settings'
-
-const months = ["January", "February", "March", "April", "May",
-    "June", "July", "August", "September", "October",
-    "November", "December"]
+import constants from '../constants';
 
 
 const BarSummary = props => {
 
-    var cur_month = months[props.meta.month]
+    const fullDate = props.fullDate
+    const visibleInstitutions = props.visibleInstitutions
 
-    var idx = 0
-    var enabled_bars = []
-    for (idx = 0; idx < 7; idx++) {
-        if (props.bar_data[idx].bar_enabled) {
-            enabled_bars.push(idx)
+    const prevValues = usePrevious({ fullDate, visibleInstitutions })
+
+    useEffect(() => {
+
+        // get curr date
+        var dt = new Date(props.fullDate)
+        var month = dt.getMonth() + 1
+        var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
+
+        // accumulate all enabled banks into enabledInst
+        var enabledInst = []
+        var enabled = true
+        for (var inst in props.visibleInstitutions) {
+            if (props.visibleInstitutions[inst] == enabled) {
+                enabledInst.push(inst)
+            }
         }
-    }
-    if (enabled_bars.length < 1) {
-        enabled_bars = [0, 1, 2, 3, 4, 5, 6]
+
+        fetch('http://127.0.0.1:8000/transaction/totalSpent', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "email": "amal.salim@gmail.com",
+                "start_date": date_str,
+                "days": constants.diffDays,
+                "institution": enabledInst,
+            })
+        }).then((response) => response.json())
+            .then((json) => props.setTotalExpenses(json));
+
+    }, [props.fullDate, props.visibleInstitutions]);
+
+    function usePrevious(value) {
+        const ref = useRef();
+        useEffect(() => {
+            ref.current = value;
+        });
+        return ref.current;
     }
 
-    var total_spend = 0;
-    for (idx = 0; idx < 7; idx++) {
-        if (props.isAmexVisible && enabled_bars.includes(idx)) {
-            total_spend += props.meta.total_spend["AMEX"][idx]
-        }
-        if (props.isWellsVisible && enabled_bars.includes(idx)) {
-            total_spend += props.meta.total_spend["WELLS"][idx]
-        }
-    }
-
-    total_spend = Number(parseFloat(total_spend)).toFixed(2)
-
+    var dt = new Date(props.fullDate)
+    var dt_str = dt.getMonth() + 1 + "-" + dt.getDate() + "-" + dt.getFullYear()
 
     return (
         <>
@@ -53,7 +73,7 @@ const BarSummary = props => {
                                 <Text>Week Start: </Text>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <Text>    {props.meta.date} {cur_month} {props.meta.year}</Text>
+                                <Text>    {dt_str}</Text>
                             </View>
                         </View>
                         <View style={{ flexDirection: "row" }}>
@@ -61,7 +81,7 @@ const BarSummary = props => {
                                 <Text>Expense This Week: </Text>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <Text>    ${total_spend} </Text>
+                                <Text>    ${props.totalSpent} </Text>
                             </View>
                         </View>
                     </View>
@@ -93,17 +113,17 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        meta: state.TransactionsReducer.meta_data,
-        bar_data: state.TransactionsReducer.bar_data,
-        isWellsVisible: state.SettingsReducer.showWells,
-        isAmexVisible: state.SettingsReducer.showAmex
+        visibleInstitutions: state.SettingsReducer.institutionVisibility,
+        fullDate: state.TransactionsReducer.meta_data.fullDate,
+        totalSpent: state.BarSummaryReducer.totalSpent,
+        barsPressed: state.BarGraphReducer.barsPressed
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction }),
-        showSettings: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" })
+        showSettings: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" }),
+        setTotalExpenses: (data) => dispatch({ type: "SET_TOTAL_EXPENSES", data: data }),
     }
 }
 

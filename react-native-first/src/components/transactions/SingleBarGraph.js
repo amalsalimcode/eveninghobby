@@ -13,32 +13,12 @@ const SingleBarGraph = props => {
      * of the bar has changed
      */
     useEffect(() => {
-        // when re-rendering we want to clear
-        // the button press
-
-        if (props.bar_data[props.uuid].bar_enabled) {
-            setPressOpacity(0.5)
-        } else {
-            setPressOpacity(1)
-        }
-
-        var height = 0;
-        var highest = 0
-        if (props.isAmexVisible) {
-            height += props.bar_data[props.uuid].bar_height["AMEX"]
-            highest += props.highestSpend["AMEX"]
-        }
-        if (props.isWellsVisible) {
-            height += props.bar_data[props.uuid].bar_height["WELLS"]
-            highest += props.highestSpend["WELLS"]
-        }
-
         /* smallest possible height for a transaction
          * is 20. Otherwise, its not visible.
          * maximum allowed height is 100. Otherwise,
-         * it goes off screen.
-         * The formula below puts everything between
-         * 20 and 100 */
+         * it goes off screen. */
+        var height = props.expensePerDay[props.uuid]
+        var highest = props.highestSpent
 
         if (highest != 0 && height != 0) {
             height = (height * (80) / (highest)) + 20
@@ -48,16 +28,10 @@ const SingleBarGraph = props => {
             toValue: height,
             duration: 1000
         }).start()
-    }, [props.bar_data[props.uuid].bar_height,
-    props.isAmexVisible,
-    props.isWellsVisible]);
+    }, [props.expensePerDay[props.uuid]]);
 
     function bar_pressed() {
-        if (pressOpacity > 0.5) {
-            setPressOpacity(0.5)
-        } else {
-            setPressOpacity(1)
-        }
+        pressOpacity > 0.5 ? setPressOpacity(0.5) : setPressOpacity(1)
         props.barButtonPressed(props.uuid)
     }
 
@@ -91,17 +65,16 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        bar_data: state.TransactionsReducer.bar_data,
-        isVisible: state.SettingsReducer.enable,
-        isAmexVisible: state.SettingsReducer.showAmex,
-        isWellsVisible: state.SettingsReducer.showWells,
-        highestSpend: state.TransactionsReducer.meta_data.highest_spend
+        expensePerDay: state.BarSummaryReducer.expensePerDay,
+        highestSpent: state.BarSummaryReducer.highestSpent,
+        enabledBars: state.BarGraphReducer.barsPressed,
+        curDate: state.TransactionsReducer.meta_data.fullDate
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        barButtonPressed: (uuid) => dispatch({ type: 'BAR_BUTTON_PRESSED', uuid: uuid }),
+        barButtonPressed: (uuid) => dispatch({ type: 'BAR_BUTTON_PRESSED', uuid: uuid })
     }
 }
 

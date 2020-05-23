@@ -8,7 +8,9 @@ import DashedLine from './DashedLine'
 
 const BarGraph = props => {
 
-    useEffect(() => { }, [props.meta.highest_spend]);
+    useEffect(() => {
+        props.clearBarsPressed();
+    }, [props.curDate]);
 
     function bar_layout() {
         var idx = 0;
@@ -105,12 +107,15 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         bar_data: state.TransactionsReducer.bar_data,
-        meta: state.TransactionsReducer.meta_data
+        meta: state.TransactionsReducer.meta_data,
+        curDate: state.TransactionsReducer.meta_data.fullDate
+
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        clearBarsPressed: () => dispatch({type: "CLEAR_BARS_PRESSED"}),
         changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
     }
 }

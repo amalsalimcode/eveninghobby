@@ -1,3 +1,4 @@
 .idea
 django_ec2_project/__pycache__
 django_ec2_project/.idea
+transaction/__pycache__
