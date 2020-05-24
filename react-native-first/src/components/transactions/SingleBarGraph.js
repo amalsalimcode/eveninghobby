@@ -67,14 +67,14 @@ function mapStateToProps(state) {
     return {
         expensePerDay: state.BarSummaryReducer.expensePerDay,
         highestSpent: state.BarSummaryReducer.highestSpent,
-        enabledBars: state.BarGraphReducer.barsPressed,
+        enabledBars: state.BarGraphReducer.enabledBars,
         curDate: state.TransactionsReducer.meta_data.fullDate
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        barButtonPressed: (uuid) => dispatch({ type: 'BAR_BUTTON_PRESSED', uuid: uuid })
+        barButtonPressed: (uuid) => dispatch({ type: 'ENABLE_BAR', uuid: uuid })
     }
 }
 

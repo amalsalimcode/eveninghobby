@@ -1,6 +1,6 @@
 'use strict'
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,12 +10,17 @@ import constants from '../constants';
 
 const BarSummary = props => {
 
-    const fullDate = props.fullDate
-    const visibleInstitutions = props.visibleInstitutions
-
-    const prevValues = usePrevious({ fullDate, visibleInstitutions })
+   const enabledBars = props.enabledBars
+    const prevValues = usePrevious({ enabledBars })
 
     useEffect(() => {
+
+        if (prevValues) {
+            if (JSON.stringify(prevValues.enabledBars) != (JSON.stringify(props.enabledBars))) {
+                props.setTotalSpent(props.enabledBars)
+                return
+            }
+        }
 
         // get curr date
         var dt = new Date(props.fullDate)
@@ -44,9 +49,9 @@ const BarSummary = props => {
                 "institution": enabledInst,
             })
         }).then((response) => response.json())
-            .then((json) => props.setTotalExpenses(json));
+            .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
 
-    }, [props.fullDate, props.visibleInstitutions]);
+    }, [props.fullDate, props.visibleInstitutions, props.enabledBars]);
 
     function usePrevious(value) {
         const ref = useRef();
@@ -116,14 +121,21 @@ function mapStateToProps(state) {
         visibleInstitutions: state.SettingsReducer.institutionVisibility,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
         totalSpent: state.BarSummaryReducer.totalSpent,
-        barsPressed: state.BarGraphReducer.barsPressed
+        enabledBars: state.BarGraphReducer.enabledBars
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         showSettings: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" }),
-        setTotalExpenses: (data) => dispatch({ type: "SET_TOTAL_EXPENSES", data: data }),
+        setTotalSpent: (enabledBars) => dispatch({
+            type: "SET_TOTAL_SPENT",
+            enabledBars: enabledBars
+        }),
+        setAllTotalExpenses: (data, enabledBars) => dispatch({
+            type: "SET_ALL_TOTAL_EXPENSES", data: data,
+            enabledBars: enabledBars
+        })
     }
 }
 

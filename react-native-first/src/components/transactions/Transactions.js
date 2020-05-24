@@ -12,12 +12,22 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator } from 'react-native'
 import BarSummary from './BarSummary'
 import constants from '../constants';
+import {usePrevious} from './utils'
 
 const Transactions = props => {
 
+
+    const fullDate = props.fullDate
+    const prevValues = usePrevious({ fullDate })
+
     useEffect(() => {
 
-        props.clear_transaction_data()
+        if (prevValues) {
+            /* when props.set_transaction_data() is called, component re-renders, so disable it*/
+            if (JSON.stringify(prevValues.fullDate) == (JSON.stringify(props.fullDate))) {
+                return
+            }
+        }
 
         // get curr date
         var dt= new Date(props.fullDate)
@@ -59,7 +69,6 @@ function mapDispatchToProps(dispatch) {
             type: 'SET_TRANSACTION_DATA',
             transactions: transactions,
         }),
-        clear_transaction_data: () => dispatch({type: 'CLEAR_TRANSACTION_DATA'})
     }
 }
 

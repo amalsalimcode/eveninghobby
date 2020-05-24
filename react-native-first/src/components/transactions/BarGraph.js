@@ -9,7 +9,7 @@ import DashedLine from './DashedLine'
 const BarGraph = props => {
 
     useEffect(() => {
-        props.clearBarsPressed();
+        props.clearEnabledBars();
     }, [props.curDate]);
 
     function bar_layout() {
@@ -115,7 +115,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        clearBarsPressed: () => dispatch({type: "CLEAR_BARS_PRESSED"}),
+        clearEnabledBars: () => dispatch({type: "CLEAR_ENABLED_BARS"}),
         changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
     }
 }

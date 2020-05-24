@@ -52,7 +52,6 @@ class TotalSpent(View):
                 tr_rounded = 0
             each_day_expense.append(tr_rounded)
 
-        print(each_day_expense)
         return HttpResponse(json.dumps(each_day_expense))
 
     def request_disabled_days_to_kwargs(self, start_date: datetime):
