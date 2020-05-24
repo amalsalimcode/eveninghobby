@@ -8,6 +8,7 @@ import StmtGraph from './src/components/referenceComponents/StmtGraph'
 import PersonalInformation from './src/components/newProfile/PersonalInformation'
 import AnimationSample from './src/components/referenceComponents/AnimationSample'
 import Settings from './src/components/transactions/Settings'
+import { WebView } from 'react-native-webview';
 
 
 function get_current_screen(screen_val, setCurrentScreen) {
@@ -25,7 +26,7 @@ function get_current_screen(screen_val, setCurrentScreen) {
     case 5:
       return (<Settings />)
     default:
-      return (<View><Text>Hello world!</Text></View>)
+      return (<WebView source={{ uri: 'http://127.0.0.1:5000/' }} />)
   }
 }
 
@@ -41,7 +42,7 @@ export default function App() {
    * currentScreen initial value should come from
    * backend, saying whether this person is new or not
    */
-  const [currentScreen, setCurrentScreen] = useState(4);
+  const [currentScreen, setCurrentScreen] = useState(8);
 
   return (
     <>
