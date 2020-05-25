@@ -23,7 +23,7 @@ client = plaid.Client(client_id="5eaf6d01c2fef80013fabb95", secret="48a2ab145fc2
 access_token = None
 
 
-def index(request):
+def new_item_token(request):
     person_name = request.GET.get("personName")
     context = {
         "plaid_public_key": "8363dece5a87445f66fe9efbb7a682",

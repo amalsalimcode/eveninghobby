@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'corsheaders',
-    'transaction'
+    'transaction',
+    'plaid'
 ]
 
 MIDDLEWARE = [

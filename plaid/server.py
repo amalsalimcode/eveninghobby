@@ -56,6 +56,7 @@ def index():
     plaid_country_codes=PLAID_COUNTRY_CODES,
     plaid_oauth_redirect_uri=PLAID_OAUTH_REDIRECT_URI,
     plaid_oauth_nonce=PLAID_OAUTH_NONCE,
+    group_name="amal"
   )
 
 # This is an endpoint defined for the OAuth flow to redirect to.
@@ -85,6 +86,7 @@ payment_id = None
 @app.route('/get_access_token', methods=['POST'])
 def get_access_token():
   global access_token
+  print("this is what i got", request.form)
   public_token = request.form['public_token']
   try:
     exchange_response = client.Item.public_token.exchange(public_token)
@@ -94,6 +96,11 @@ def get_access_token():
   pretty_print_response(exchange_response)
   access_token = exchange_response['access_token']
   return jsonify(exchange_response)
+
+@app.route('/hook', methods=['POST'])
+def plaid_hook():
+  print("this is what i got", request.form)
+  return "hello"
 
 # Retrieve ACH or ETF account numbers for an Item
 # https://plaid.com/docs/#auth

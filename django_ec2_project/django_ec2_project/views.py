@@ -2,7 +2,6 @@ import json
 
 from django.http import HttpResponse
 
-
 def hello_test(request):
 
     with open('django_ec2_project/data.json') as f:

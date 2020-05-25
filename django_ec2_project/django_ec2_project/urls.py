@@ -23,4 +23,5 @@ urlpatterns = [
     path('hello_test/', views.hello_test),
     path('wells_test/', views.wells_test),
     path('transaction/', include('transaction.urls')),
+    path('plaid/', include('plaid.urls')),
 ]

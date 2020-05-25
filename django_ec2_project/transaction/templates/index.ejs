@@ -114,9 +114,9 @@
 
       var handler = Plaid.create({
         ...linkHandlerCommonOptions,
-        webhook: 'http://127.0.0.1:5000/hook',
+//         webhook: 'http://127.0.0.1:5000/hook',
         onSuccess: function(public_token) {
-          $.post('/get_access_token', {
+          $.post('/transaction/get_access_token', {
             public_token: public_token,
             'group-name': '{{group_name}}'
           }, function(data) {
@@ -195,7 +195,6 @@
   })(jQuery);
 
 function qs(key) {
-    console.log("hi amal", key)
     key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
     var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
     return match && decodeURIComponent(match[1].replace(/\+/g, " "));

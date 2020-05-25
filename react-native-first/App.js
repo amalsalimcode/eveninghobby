@@ -26,7 +26,7 @@ function get_current_screen(screen_val, setCurrentScreen) {
     case 5:
       return (<Settings />)
     default:
-      return (<WebView source={{ uri: 'http://127.0.0.1:5000/' }} />)
+      return (<WebView source={{ uri: 'http://localhost:5000/' }} />)
   }
 }
 
