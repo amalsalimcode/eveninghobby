@@ -118,7 +118,7 @@
         onSuccess: function(public_token) {
           $.post('/account/getAccessToken', {
             public_token: public_token,
-            'person-name': '{{person_name}}'
+            'person-email': '{{person_email}}'
           }, function(data) {
             $('#container').fadeOut('fast', function() {
               $('#item_id').text(data.item_id);
@@ -136,7 +136,7 @@
     if (accessToken != null && accessToken != '') {
         $.post('/set_access_token', {
           access_token: accessToken,
-          'person_name': {{person_name}}
+          'person_email': {{person_email}}
         }, function(data) {
           $('#item_id').text(data.item_id);
           $('#access_token').text(accessToken);

@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+
+from account.views import new_item_token, get_access_token
 
 admin.autodiscover()
 
 urlpatterns = [
-    path('create', views.new_item_token),
-    path('getAccessToken', views.get_access_token),
+    path('create', new_item_token),
+    path('getAccessToken', get_access_token),
 ]

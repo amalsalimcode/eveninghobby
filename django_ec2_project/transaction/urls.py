@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path
-from . import views
+
+from transaction.views import RetrieveTransaction, TotalSpent
 
 admin.autodiscover()
 
 urlpatterns = [
-    path('', views.RetrieveTransaction.as_view()),
-    path('totalSpent', views.TotalSpent.as_view()),
+    path('', RetrieveTransaction.as_view()),
+    path('totalSpent', TotalSpent.as_view()),
 ]
