@@ -114,11 +114,11 @@
 
       var handler = Plaid.create({
         ...linkHandlerCommonOptions,
-//         webhook: 'http://127.0.0.1:5000/hook',
+//      webhook: 'http://127.0.0.1:5000/hook',
         onSuccess: function(public_token) {
-          $.post('/plaid/getAccessToken', {
+          $.post('/account/getAccessToken', {
             public_token: public_token,
-            'group-name': '{{group_name}}'
+            'person-name': '{{person_name}}'
           }, function(data) {
             $('#container').fadeOut('fast', function() {
               $('#item_id').text(data.item_id);
@@ -135,7 +135,8 @@
     var accessToken = qs('access_token');
     if (accessToken != null && accessToken != '') {
         $.post('/set_access_token', {
-          access_token: accessToken
+          access_token: accessToken,
+          'person_name': {{person_name}}
         }, function(data) {
           $('#item_id').text(data.item_id);
           $('#access_token').text(accessToken);

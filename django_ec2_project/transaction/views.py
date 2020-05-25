@@ -1,10 +1,8 @@
 import json
 
-import plaid
 import pytz
 from django.db.models import F
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.views import View
 from dateutil import parser
 from django.db.models import Sum
@@ -12,40 +10,7 @@ from django.db.models import Sum
 from transaction.models import BankCred, Transaction, Person
 
 import datetime
-
 from transaction.utils import create_update_amex_cred, update_plaid_transactions
-
-client = plaid.Client(client_id="5eaf6d01c2fef80013fabb95", secret="48a2ab145fc210e1a58b175fc083ff",
-                      public_key="8363dece5a87445f66fe9efbb7a682", environment="sandbox", api_version='2019-05-29')
-
-# We store the access_token in memory - in production, store it in a secure
-# persistent data store.
-access_token = None
-
-
-def index(request):
-    person_name = request.GET.get("personName")
-    context = {
-        "plaid_public_key": "8363dece5a87445f66fe9efbb7a682",
-        "plaid_environment": "sandbox",
-        "plaid_products": "transactions",
-        "plaid_country_codes": "US",
-        "person_name": person_name
-    }
-    return render(request, 'index.ejs', context)
-
-
-def get_access_token(request):
-    public_token = request.POST.get("public_token")
-    try:
-        exchange_response = client.Item.public_token.exchange(public_token)
-    except plaid.errors.PlaidError as e:
-        return HttpResponse(e)
-
-    import pprint
-    pprint.pprint(exchange_response)
-    access_token = exchange_response['access_token']
-    return HttpResponse(exchange_response)
 
 
 class TotalSpent(View):

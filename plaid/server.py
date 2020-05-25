@@ -86,7 +86,7 @@ payment_id = None
 @app.route('/get_access_token', methods=['POST'])
 def get_access_token():
   global access_token
-  print("this is what i got", request.form)
+  print("this is what i got from access token", request.form)
   public_token = request.form['public_token']
   try:
     exchange_response = client.Item.public_token.exchange(public_token)
@@ -99,7 +99,7 @@ def get_access_token():
 
 @app.route('/hook', methods=['POST'])
 def plaid_hook():
-  print("this is what i got", request.form)
+  print("this is what i got from hook", request.form)
   return "hello"
 
 # Retrieve ACH or ETF account numbers for an Item

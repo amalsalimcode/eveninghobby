@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
     'transaction',
-    'plaid'
+    'account'
 ]
 
 MIDDLEWARE = [
