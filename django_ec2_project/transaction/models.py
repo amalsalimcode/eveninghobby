@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import DateTimeField
 
+from django_ec2_project.settings import DEFAULT_ENV_PLAID
+
 
 class PersonGroup(models.Model):
     name = models.CharField(max_length=30, unique=True)
@@ -26,6 +28,7 @@ class BankCred(models.Model):
     plaidCode = models.TextField()
     username = models.TextField()
     userpass = models.TextField()
+    environment = models.CharField(default=DEFAULT_ENV_PLAID, max_length=30)
 
     def __str__(self):
         return '{} {}'.format(self.bank, self.plaidCode)

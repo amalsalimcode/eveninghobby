@@ -6,6 +6,9 @@ export const COLORS = {
     },
     "AMEX": {
         primary: "blue"
+    },
+    "Chase": {
+        primary: "olive"
     }
 }
 

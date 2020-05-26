@@ -21,7 +21,10 @@ const BarData = props => {
             for (transIdx = 0; transIdx < props.barData[barIdx].transaction_data.length; transIdx++) {
 
                 var institution = props.barData[barIdx].transaction_data[transIdx]["institution"]
-                if (!props.isVisible[institution]) {
+
+                // if the inst is not listed, then by default show it
+                var isVisible = institution in props.isVisible ? !props.isVisible[institution] : false
+                if (isVisible) {
                     continue
                 }
 

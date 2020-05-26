@@ -3,6 +3,7 @@ let initialData = {
     institutionVisibility: {
         "AMEX": true,
         "Wells Fargo": true,
+        "Chase": true
     },
     enable: false,
 }

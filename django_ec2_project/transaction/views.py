@@ -8,6 +8,7 @@ from dateutil import parser
 from django.db.models import Sum
 
 from account.utils import create_update_amex_cred
+from django_ec2_project.settings import DEFAULT_ENV_PLAID
 from transaction.models import BankCred, Transaction, Person
 
 import datetime
@@ -27,13 +28,14 @@ class TotalSpent(View):
         data = json.loads(request.body)
 
         self.person = Person.objects.get(email=data.get("email"))
-        self.request = request
 
         st_dt = parser.parse(data.get("start_date"))
         diff_days = int(data.get("days"))
         end_dt = st_dt + datetime.timedelta(days=diff_days)
 
-        self.kwargs = {'date__gte': st_dt, 'date__lt': end_dt, 'amount__gt': 0}
+        self.kwargs = {'date__gte': st_dt, 'date__lt': end_dt, 'amount__gt': 0,
+                       'account__credentials__person__personGroup': self.person.personGroup}
+        self.request_args_to_kwargs("account__credentials__environment", "environment", DEFAULT_ENV_PLAID)
         self.request_args_to_kwargs("account__credentials__bank__in", "institution")
         self.request_args_to_kwargs("account__accountId", "accountId")
         self.request_disabled_days_to_kwargs(st_dt)
@@ -64,20 +66,28 @@ class TotalSpent(View):
             exclude_dates.append(start_date + datetime.timedelta(days=day))
         self.kwargs['date__ne'] = exclude_dates
 
-    def request_args_to_kwargs(self, query_param, key):
+    def request_args_to_kwargs(self, query_param, key, default_val=None):
         try:
             self.kwargs[query_param] = json.loads(self.request.body)[key]
         except (TypeError, AttributeError, KeyError):
-            pass
+            if default_val:
+                self.kwargs[query_param] = default_val
 
 
 class RetrieveTransaction(View):
     person = None
+    environment = None
+    request = None
 
-    def get(self, request):
-        self.person = Person.objects.get(email=request.GET.get("email"))
-        st_dt = parser.parse(request.GET.get("start_date"))
-        diff_days = int(request.GET.get("days"))
+    def post(self, request):
+        self.request = request
+        data = json.loads(request.body)
+
+        self.person = Person.objects.get(email=data.get("email"))
+        self.environment = data.get("environment", DEFAULT_ENV_PLAID)
+
+        st_dt = parser.parse(data.get("start_date"))
+        diff_days = int(data.get("days"))
         end_dt = st_dt + datetime.timedelta(days=diff_days)
 
         days_since_last_update = (datetime.datetime.now().replace(tzinfo=pytz.UTC) -
@@ -88,10 +98,11 @@ class RetrieveTransaction(View):
         # if the amount is negative, make it positive, gte=0 is placeholder
         tr = Transaction.objects.annotate(accountId=F('account__accountId'),
                                           institution=F('account__credentials__bank'),
-                                          charge=F('amount')
-                                          )
+                                          charge=F('amount'))
 
         transactions = tr.filter(account__credentials__person=self.person, date__gte=st_dt,
+                                 account__credentials__environment=self.environment,
+                                 account__credentials__person__personGroup=self.person.personGroup,
                                  date__lt=end_dt, amount__gt=0).values('charge', 'name', 'date', 'accountId',
                                                                        'institution')
         trans = []
@@ -112,4 +123,4 @@ class RetrieveTransaction(View):
             if cred.bank == "AMEX" and cred.username and cred.userpass:
                 create_update_amex_cred(last_updated_transaction)
             elif cred.plaidCode:
-                update_plaid_transactions(cred, last_updated_transaction)
+                update_plaid_transactions(cred, self.environment, last_updated_transaction)

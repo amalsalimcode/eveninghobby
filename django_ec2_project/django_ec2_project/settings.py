@@ -29,17 +29,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-PLAID_CLIENT_ID = "5eaf6d01c2fef80013fabb95"
-PLAID_SECRET = "f579e30dd1460dfa6d554ff996e871"
 PLAID_PUBLIC_KEY = "8363dece5a87445f66fe9efbb7a682"
 PLAID_PRODUCTS = "transactions"
 PLAID_COUNTRY_CODES = "US"
-PLAID_ENV = "development"
+DEFAULT_ENV_PLAID = "sandbox"
 
-client = plaid.Client(client_id = PLAID_CLIENT_ID, secret=PLAID_SECRET,
-                      public_key=PLAID_PUBLIC_KEY, environment=PLAID_ENV, api_version='2019-05-29')
+client_dev = plaid.Client(client_id="5eaf6d01c2fef80013fabb95", secret="f579e30dd1460dfa6d554ff996e871",
+                          public_key=PLAID_PUBLIC_KEY, environment="development",
+                          api_version='2019-05-29')
 
-# Application definition
+client_sandbox = plaid.Client(client_id="5eaf6d01c2fef80013fabb95", secret="48a2ab145fc210e1a58b175fc083ff",
+                              public_key=PLAID_PUBLIC_KEY, environment="sandbox",
+                              api_version='2019-05-29')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

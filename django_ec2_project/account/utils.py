@@ -2,7 +2,7 @@ import json
 import xmltodict
 
 from transaction.models import BankCred, Transaction, Account, PersonGroup, Person
-from django_ec2_project.settings import client
+from django_ec2_project.settings import client_dev, client_sandbox, DEFAULT_ENV_PLAID
 
 from ofxtools.Client import OFXClient
 from ofxtools.Client import CcStmtRq
@@ -10,16 +10,20 @@ from ofxtools.Client import CcStmtRq
 import datetime
 
 
-def create_new_cred(access_token="access-development-44688e6d-bacd-4654-b340-89d9ed54bd8f",
-                    group_name="amal", person_first_name="amal",
-                    person_last_name="salim", person_email="amal.salim@gmail.com"):
-    person_group, _ = PersonGroup.objects.get_or_create(name=group_name)
-    person, _ = Person.objects.get_or_create(firstName=person_first_name, lastName=person_last_name,
-                                             email=person_email, personGroup=person_group)
+def create_new_cred_plaid(access_token: str, person: Person, environment: str):
+    access_token = access_token or "access-development-44688e6d-bacd-4654-b340-89d9ed54bd8f"
+    client = get_client_plaid(environment)
+
+    if not person:
+        # should happen only when resetting db
+        person_group, _ = PersonGroup.objects.get_or_create(name="amal")
+        person, _ = Person.objects.get_or_create(firstName="amal", lastName="salim",
+                                                 email="amal.salim@gmail.com", personGroup=person_group)
+
     item_response = client.Item.get(access_token)
     bank_name = client.Institutions.get_by_id(item_response['item']['institution_id'])['institution']['name']
-    cred, _ = BankCred.objects.get_or_create(person=person, plaidCode=access_token, bank=bank_name)
-
+    cred, _ = BankCred.objects.get_or_create(person=person, plaidCode=access_token,
+                                             bank=bank_name, environment=environment)
     return cred
 
 
@@ -59,3 +63,8 @@ def create_update_amex_cred(start_dt):
         Transaction.objects.get_or_create(account=account, transactionId=stmt['FITID'], name=stmt['NAME'],
                                           amount=stmt['TRNAMT'], date=dt_frmt, extra_data=json.dumps(dict(stmt)))
 
+
+def get_client_plaid(env: str = DEFAULT_ENV_PLAID):
+    env_mapping = {"development": client_dev,
+                   "sandbox": client_sandbox}
+    return env_mapping[env]

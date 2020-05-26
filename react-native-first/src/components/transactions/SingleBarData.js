@@ -45,7 +45,7 @@ const SingleBarData = props => {
         <>
             <TouchableOpacity onPress={() => (changeHeight())} style={{
                 ...styles.square,
-                borderLeftColor: COLORS[institution].primary
+                borderLeftColor: institution in COLORS ? COLORS[institution].primary : "black"
             }}>
 
                 <Animated.View style={{ height: curHeight, paddingTop: 3 }}>

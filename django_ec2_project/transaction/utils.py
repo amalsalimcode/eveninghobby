@@ -1,8 +1,9 @@
 import json
 import xmltodict
 
-from transaction.models import BankCred, Transaction, Account, PersonGroup, Person
-from django_ec2_project.settings import client
+from account.utils import get_client_plaid
+from django_ec2_project.settings import DEFAULT_ENV_PLAID
+from transaction.models import BankCred, Transaction, Account
 
 from ofxtools.Client import StmtRq, OFXClient
 import ofxtools
@@ -10,7 +11,8 @@ import ofxtools
 import datetime
 
 
-def update_plaid_transactions(cred: BankCred, st_dt: datetime = None):
+def update_plaid_transactions(cred: BankCred, env: str = DEFAULT_ENV_PLAID, st_dt: datetime = None):
+    client = get_client_plaid(env)
     plaid_accounts = client.Auth.get(cred.plaidCode)['accounts']
     accounts = {}
     for acc in plaid_accounts:
@@ -20,7 +22,7 @@ def update_plaid_transactions(cred: BankCred, st_dt: datetime = None):
                                           credentials=cred, accountName=acc["name"],
                                           accountType=acc["subtype"])
 
-    if new_account_found(cred) or st_dt is None:
+    if new_account_found(cred, client) or st_dt is None:
         st_dt = datetime.datetime.now() + datetime.timedelta(-30 * 12 * 2)
     start_date = '{:%Y-%m-%d}'.format(st_dt)
     end_date = '{:%Y-%m-%d}'.format(datetime.datetime.now())
@@ -39,7 +41,7 @@ def update_plaid_transactions(cred: BankCred, st_dt: datetime = None):
     cred.person.personGroup.save()
 
 
-def new_account_found(cred: BankCred):
+def new_account_found(cred: BankCred, client):
     accounts = client.Auth.get(cred.plaidCode)['accounts']
     all_acct_id = [acct_id["account_id"] for acct_id in accounts]
     db_accounts = Account.objects.filter(accountId__in=all_acct_id, credentials=cred).count()

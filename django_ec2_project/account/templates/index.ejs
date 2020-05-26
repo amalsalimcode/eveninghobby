@@ -118,7 +118,8 @@
         onSuccess: function(public_token) {
           $.post('/account/getAccessToken', {
             public_token: public_token,
-            'person-email': '{{person_email}}'
+            'person-email': '{{person_email}}',
+            'environment': '{{ plaid_environment }}'
           }, function(data) {
             $('#container').fadeOut('fast', function() {
               $('#item_id').text(data.item_id);
@@ -131,21 +132,6 @@
       });
       $('#link-btn').attr('disabled', false);
       $('.loading-indicator').hide();
-
-    var accessToken = qs('access_token');
-    if (accessToken != null && accessToken != '') {
-        $.post('/set_access_token', {
-          access_token: accessToken,
-          'person_email': {{person_email}}
-        }, function(data) {
-          $('#item_id').text(data.item_id);
-          $('#access_token').text(accessToken);
-          $('#container').fadeOut('fast', function() {
-            $('#intro').hide();
-            $('#app, #steps').fadeIn('slow');
-          });
-        });
-    }
 
     $('#link-btn').on('click', function(e) {
       handler.open();
@@ -194,12 +180,6 @@
 
 
   })(jQuery);
-
-function qs(key) {
-    key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, "\\$&"); // escape RegEx meta chars
-    var match = location.search.match(new RegExp("[?&]"+key+"=([^&]+)(&|$)"));
-    return match && decodeURIComponent(match[1].replace(/\+/g, " "));
-}
 
   </script>
 </body>

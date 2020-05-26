@@ -36,20 +36,25 @@ const BarSummary = props => {
             }
         }
 
+        var request_body = {
+                "email": "amal.salim@gmail.com",
+                "start_date": date_str,
+                "days": constants.diffDays,
+        }
+        if (enabledInst) {
+            request_body["institution"] = enabledInst
+
+        }
+
         fetch('http://127.0.0.1:8000/transaction/totalSpent', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                "email": "amal.salim@gmail.com",
-                "start_date": date_str,
-                "days": constants.diffDays,
-                "institution": enabledInst,
-            })
+            body: JSON.stringify(request_body)
         }).then((response) => response.json())
-            .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
+          .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
 
     }, [props.fullDate, props.visibleInstitutions, props.enabledBars]);
 

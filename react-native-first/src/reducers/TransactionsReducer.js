@@ -28,7 +28,6 @@ function set_trans_data(state, response_data) {
     for (let idx = 0; idx < response_data.length; idx++) {
         var diff_days = response_data[idx]["diff"]
         state.bar_data[diff_days].transaction_data.push(response_data[idx])
-
     }
 }
 
