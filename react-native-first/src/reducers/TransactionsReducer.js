@@ -43,6 +43,7 @@ const TransactionsReducer = (state = initial_data, action) => {
     switch (action.type) {
 
         case "SET_TRANSACTION_DATA":
+            console.log("i just got called to set tr data", action.transactions)
             clear_trans_data(state_cpy)
             set_trans_data(state_cpy, action.transactions)
             // ack that data from backend is received

@@ -16,6 +16,7 @@ class Person(models.Model):
     firstName = models.CharField(max_length=30)
     lastName = models.CharField(max_length=30)
     email = models.CharField(max_length=30, unique=True)
+    token = models.TextField()
     personGroup = models.ForeignKey(PersonGroup, default=None, on_delete=models.SET_DEFAULT)
 
     def __str__(self):

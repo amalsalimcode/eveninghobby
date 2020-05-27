@@ -1,10 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native'
 import { Button, Overlay } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux'
 
 const Settings = props => {
+
+  // useEffect(() => {
+
+
+  //   // get curr date
+  //   var dt = new Date(props.fullDate)
+  //   var month = dt.getMonth() + 1
+  //   var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
+
+  //   console.log("about to call fetch")
+  //   fetch('http://127.0.0.1:8000/account/', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       "token": "GU2wb2YOboJF6V9B",
+  //     })
+  //   }).then((response) => response.json())
+  //     .then((json) => props.setAccountInfo(json));
+  // }, [])
 
   return (
     <Overlay isVisible={props.isVisible} onBackdropPress={props.toggleVisibility} overlayStyle={styles.overlay}>
@@ -84,6 +106,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    setAccountInfo: (data) => dispatch({ type: "SET_ACCOUNT_INFO", data: data }),
     toggleVisibility: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" }),
     toggleAmex: () => dispatch({ type: "TOGGLE_AMEX_VISIBILITY" }),
     toggleWells: () => dispatch({ type: "TOGGLE_WELLS_VISIBILITY" })
