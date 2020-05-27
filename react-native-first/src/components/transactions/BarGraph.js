@@ -62,7 +62,7 @@ const BarGraph = props => {
                 <DashedLine />
                 <GestureRecognizer
                     onSwipe={(direction, state) => on_swipe(direction, state)}
-                    config={{ velocityThreshold: 0.3, directionalOffsetThreshold: 80 }}>
+                    config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
                     <View style={styles.values_container}>
                         {bar_layout()}
                     </View>

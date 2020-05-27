@@ -1,6 +1,6 @@
 
 let initialData = {
-    "accountInfo": [],
+    accountInfo: [],
 
     institutionVisibility: {
         "AMEX": true,
@@ -25,12 +25,7 @@ const SettingsReducer = (state = initialData, action) => {
                 !state_cpy.institutionVisibility["Wells Fargo"]
             return state_cpy
         case "SET_ACCOUNT_INFO":
-            console.log("hi amal here is account", data)
-            var data = action.data
-            for (let idx = 0; idx < data.length; idx++) {
-                state_cpy['accountInfo'].push(data)
-            }
-            console.log(state_cpy)
+            state_cpy.accountInfo = [...action.data]
             return state_cpy
     }
     return state

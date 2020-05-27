@@ -20,7 +20,6 @@ class AccountInfo(View):
     def post(self, request):
         # need to retrieve person, banks and accounts
         body = json.loads(request.body)
-        print("hi amal, this is the body", body)
         environment = body.get("environment", DEFAULT_ENV_PLAID)
         try:
             person = Person.objects.get(token=body["token"])
@@ -35,7 +34,7 @@ class AccountInfo(View):
             values('accountId', 'accountName', 'accountType', 'institution',
                    'firstName').order_by('firstName', 'credentials__bank')
 
-        return HttpResponse(json.dumps({'hello world': "hello back"}))
+        return HttpResponse(json.dumps(list(acc_val)))
 
 
 # http://127.0.0.1:8000/account/create?personEmail=amal.salim@gmail.com&environment=sandbox
@@ -71,7 +70,7 @@ def get_access_token(request):
         return HttpResponse("No person with this email exists", status=400)
 
     cred = create_new_cred_plaid(access_token, person, DEFAULT_ENV_PLAID)
-    update_plaid_transactions(cred, environment)
+    update_plaid_transactions(cred)
 
     return HttpResponse(exchange_response)
 

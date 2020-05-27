@@ -11,8 +11,8 @@ import ofxtools
 import datetime
 
 
-def update_plaid_transactions(cred: BankCred, env: str = DEFAULT_ENV_PLAID, st_dt: datetime = None):
-    client = get_client_plaid(env)
+def update_plaid_transactions(cred: BankCred, st_dt: datetime = None):
+    client = get_client_plaid(cred.environment)
     plaid_accounts = client.Auth.get(cred.plaidCode)['accounts']
     accounts = {}
     for acc in plaid_accounts:

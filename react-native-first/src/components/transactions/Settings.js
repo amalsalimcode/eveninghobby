@@ -1,33 +1,31 @@
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { Button, Overlay } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux'
 
 const Settings = props => {
 
-  // useEffect(() => {
+  useEffect(() => {
 
 
-  //   // get curr date
-  //   var dt = new Date(props.fullDate)
-  //   var month = dt.getMonth() + 1
-  //   var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
+    // get curr date
+    fetch('http://127.0.0.1:8000/account/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "token": "GU2wb2YOboJF6V9B",
+      })
+    }).then((response) => response.json())
+      .then((json) => props.setAccountInfo(json));
+  }, [])
 
-  //   console.log("about to call fetch")
-  //   fetch('http://127.0.0.1:8000/account/', {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       "token": "GU2wb2YOboJF6V9B",
-  //     })
-  //   }).then((response) => response.json())
-  //     .then((json) => props.setAccountInfo(json));
-  // }, [])
 
+  console.log("hi amal, here is account info", props.accountInfo)
+  
   return (
     <Overlay isVisible={props.isVisible} onBackdropPress={props.toggleVisibility} overlayStyle={styles.overlay}>
 
@@ -92,13 +90,14 @@ const styles = StyleSheet.create({
     borderWidth: 0.7,
     borderRadius: 10,
     shadowColor: "black",
-    height: 200
+    height: 600
   },
 });
 
 function mapStateToProps(state) {
   return {
     isVisible: state.SettingsReducer.enable,
+    accountInfo: state.SettingsReducer.accountInfo,
     isAmexVisible: state.SettingsReducer.institutionVisibility["AMEX"],
     isWellsVisible: state.SettingsReducer.institutionVisibility["Wells Fargo"]
   }
