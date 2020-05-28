@@ -49,6 +49,8 @@ const Transactions = props => {
 
     }, [props.fullDate]);
 
+    return (<BarData />)
+
     return (
         // show loading sign until from backend is received
         !props.data_loaded ?

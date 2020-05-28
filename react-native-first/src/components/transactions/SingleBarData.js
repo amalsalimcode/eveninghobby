@@ -20,6 +20,12 @@ const SingleBarData = props => {
 
     const changeHeight = () => {
 
+        // check to see if the user was swiping for
+        // accounts view, instead of expand bar data
+        if (props.swipeIntercept) {
+            return
+        }
+
         Animated.timing(curHeight, {
             toValue: height,
             duration: 1000
@@ -88,7 +94,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        barData: state.TransactionsReducer.bar_data
+        barData: state.TransactionsReducer.bar_data,
+        swipeIntercept: state.SwipeReducer.barDataSwiped
     }
 }
 
