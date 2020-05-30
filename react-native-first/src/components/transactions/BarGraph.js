@@ -1,12 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import SingleBarGraph from './SingleBarGraph'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Text } from 'react-native'
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import { View, StyleSheet, Text, PanResponder, Animated } from 'react-native'
 import DashedLine from './DashedLine'
 
 
 const BarGraph = props => {
+
+    const panResponder = useRef(PanResponder.create({
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderRelease: (evt, gestureState) => {
+            if (gestureState.dx > 1) {
+                props.changeCurWeek(-1)
+            } else if (gestureState.dx < 1) {
+                props.changeCurWeek(1)
+            }
+        }
+    })).current;
 
     useEffect(() => {
         props.clearEnabledBars();
@@ -41,32 +51,15 @@ const BarGraph = props => {
         )
     }
 
-    function on_swipe(gestureName) {
-        const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
-        switch (gestureName) {
-            case SWIPE_UP:
-            case SWIPE_DOWN:
-                return
-            case SWIPE_LEFT:
-                props.changeCurWeek(1)
-                return
-            case SWIPE_RIGHT:
-                props.changeCurWeek(-1)
-                return
-        }
-    }
-
     return (
         <>
             <View style={styles.plot_container}>
                 <DashedLine />
-                <GestureRecognizer
-                    onSwipe={(direction, state) => on_swipe(direction, state)}
-                    config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
+                <Animated.View {...panResponder.panHandlers}>
                     <View style={styles.values_container}>
                         {bar_layout()}
                     </View>
-                </GestureRecognizer>
+                </Animated.View>
             </View>
 
             <View style={styles.x_axis}>
@@ -115,7 +108,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        clearEnabledBars: () => dispatch({type: "CLEAR_ENABLED_BARS"}),
+        clearEnabledBars: () => dispatch({ type: "CLEAR_ENABLED_BARS" }),
         changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
     }
 }

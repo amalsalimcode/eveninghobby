@@ -47,6 +47,9 @@ const TransactionsReducer = (state = initial_data, action) => {
             set_trans_data(state_cpy, action.transactions)
             // ack that data from backend is received
             // now the components can load
+            return state_cpy
+
+        case "SET_DATA_LOADED": 
             state_cpy.meta_data.data_loaded = true
             return state_cpy
 

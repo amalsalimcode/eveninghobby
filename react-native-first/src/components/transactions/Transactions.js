@@ -12,6 +12,7 @@ import { ActivityIndicator } from 'react-native'
 import BarSummary from './BarSummary'
 import constants from '../constants';
 import { usePrevious } from './utils'
+import BarDetails from './BarDetails';
 
 const Transactions = props => {
 
@@ -49,8 +50,6 @@ const Transactions = props => {
 
     }, [props.fullDate]);
 
-    return (<BarData />)
-
     return (
         // show loading sign until from backend is received
         !props.data_loaded ?
@@ -58,7 +57,7 @@ const Transactions = props => {
             <>
                 <BarGraph />
                 <BarSummary />
-                <BarData />
+                <BarDetails />
             </>
     )
 }

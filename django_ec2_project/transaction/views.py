@@ -58,6 +58,14 @@ class TotalSpent(TransactionView):
 
         tr = Transaction.objects.filter(**self.kwargs)
 
+        # expense_per_day_per_account = [dict() for x in range(self.diff_days)]
+        # for each_expense in tr:
+        #     acc_id = each_expense.account.accountId
+        #     diff_day = (each_expense.date - self.st_dt).days
+        #     curr_total = expense_per_day_per_account[diff_day].get(acc_id, 0)
+        #     new_total = float("{:.2f}".format(curr_total + each_expense.amount))
+        #     expense_per_day_per_account[diff_day][acc_id] = new_total
+
         each_day_expense = []
         for days in range(0, self.diff_days):
             tr_each = tr.filter(date=self.st_dt + datetime.timedelta(days=days))
@@ -123,3 +131,30 @@ class RetrieveTransaction(TransactionView):
                 create_update_amex_cred(last_updated_transaction)
             elif cred.plaidCode:
                 update_plaid_transactions(cred, last_updated_transaction)
+
+
+class RetrieveAccount(TransactionView):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        self.request = request
+        self.parse_request_data()
+
+        self.setup_kwargs()
+        acc = Transaction.objects.annotate(institution=F('account__credentials__bank'),
+                                           accountId=F('account__accountId'),
+                                           accountName=F('account__accountName'),
+                                           accountType=F('account__accountName'),
+                                           firstName=F('account__credentials__person__firstName'))
+
+        accounts = acc.filter(**self.kwargs).distinct().values('accountId', 'accountName',
+                                                    'accountType', 'institution', 'firstName') \
+            .order_by('-firstName', '-account__credentials__bank')
+        #
+        # x = list(accounts)
+        # import pprint
+        # pprint.pprint(x)
+
+        return HttpResponse(json.dumps(list(accounts)))
