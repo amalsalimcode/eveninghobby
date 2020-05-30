@@ -7,6 +7,7 @@ let initialData = {
         "Wells Fargo": true,
         "Chase": true
     },
+    dataLoaded: false,
     enable: false,
 }
 
@@ -26,6 +27,7 @@ const SettingsReducer = (state = initialData, action) => {
             return state_cpy
         case "SET_ACCOUNT_INFO":
             state_cpy.accountInfo = [...action.data]
+            state_cpy.dataLoaded = true
             return state_cpy
     }
     return state

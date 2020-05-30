@@ -7,8 +7,6 @@ import { connect } from 'react-redux'
 const Settings = props => {
 
   useEffect(() => {
-
-
     // get curr date
     fetch('http://127.0.0.1:8000/account/', {
       method: 'POST',
@@ -17,15 +15,13 @@ const Settings = props => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "token": "GU2wb2YOboJF6V9B",
+        "token": "asdfasdfasdfasdf",
       })
     }).then((response) => response.json())
       .then((json) => props.setAccountInfo(json));
   }, [])
 
 
-  console.log("hi amal, here is account info", props.accountInfo)
-  
   return (
     <Overlay isVisible={props.isVisible} onBackdropPress={props.toggleVisibility} overlayStyle={styles.overlay}>
 

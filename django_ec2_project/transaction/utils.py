@@ -2,7 +2,6 @@ import json
 import xmltodict
 
 from account.utils import get_client_plaid
-from django_ec2_project.settings import DEFAULT_ENV_PLAID
 from transaction.models import BankCred, Transaction, Account
 
 from ofxtools.Client import StmtRq, OFXClient

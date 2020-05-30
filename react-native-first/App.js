@@ -42,7 +42,7 @@ export default function App() {
    * currentScreen initial value should come from
    * backend, saying whether this person is new or not
    */
-  const [currentScreen, setCurrentScreen] = useState(5);
+  const [currentScreen, setCurrentScreen] = useState(4);
 
   return (
     <>
