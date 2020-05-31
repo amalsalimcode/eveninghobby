@@ -1,38 +1,61 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import SingleDataTemplate from "./SingleDataTemplate";
+import { connect } from 'react-redux'
 
 
 const SingleAccount = props => {
     useEffect(() => {
-    }, []);
+    });
 
-    var accId = props.data["accountId"]
-    var accName = props.data["accountName"]
-    var acctype = props.data["accountType"]
-    var inst = props.data["institution"]
-    return (
+    var accountId = props.data["accountId"]
+    var expense = props.expensePerAccount[accountId]
+
+    var expense_rounded = expense ? Number((expense).toFixed(1)) : expense
+    const [fontSize, setFontSize] = useState(15);
+
+    let x = []
+    if (!expense) {
+        x.push(<></>)
+    } else {
+        x.push(
             <SingleDataTemplate expandHeight={110}>
-                <Text>
-                    {accName}
-                </Text>
+
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text>{props.data["accountName"]}</Text>
+                    <Text style={{ fontSize: fontSize }}>${expense_rounded}  </Text>
+                </View>
                 <Text></Text>
                 <Text>
-                    Account: {accId}
+                    Account: {accountId}
                 </Text>
                 <Text>
-                    Account Type: {acctype}
+                    Account Type: {props.data["accountType"]}
                 </Text>
                 <Text>
-                    Bank: {inst}
+                    Bank: {props.data["institution"]}
                 </Text>
             </SingleDataTemplate>
-    );
+        );
+    }
+
+    return x
 }
 
-const styles = StyleSheet.create({
-    container: {
-    },
-});
+function mapStateToProps(state) {
+    return {
+        bar_data: state.TransactionsReducer.bar_data,
+        meta: state.TransactionsReducer.meta_data,
+        curDate: state.TransactionsReducer.meta_data.fullDate,
+        expensePerAccount: state.BarSummaryReducer.expensePerAccount
+    }
+}
 
-export default SingleAccount 
+function mapDispatchToProps(dispatch) {
+    return {
+        clearEnabledBars: () => dispatch({ type: "CLEAR_ENABLED_BARS" }),
+        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleAccount)

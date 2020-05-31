@@ -6,18 +6,19 @@ import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Settings from './Settings'
 import constants from '../constants';
+import { usePrevious } from './utils';
 
 
 const BarSummary = props => {
 
-   const enabledBars = props.enabledBars
+    const enabledBars = props.enabledBars
     const prevValues = usePrevious({ enabledBars })
 
     useEffect(() => {
 
         if (prevValues) {
             if (JSON.stringify(prevValues.enabledBars) != (JSON.stringify(props.enabledBars))) {
-                props.setTotalSpent(props.enabledBars)
+                props.setAllTotalExpensesCache(props.serverData, props.enabledBars)
                 return
             }
         }
@@ -37,9 +38,9 @@ const BarSummary = props => {
         }
 
         var request_body = {
-                "email": "amal.salim@gmail.com",
-                "start_date": date_str,
-                "days": constants.diffDays,
+            "email": "amal.salim@gmail.com",
+            "start_date": date_str,
+            "days": constants.diffDays,
         }
         if (enabledInst) {
             request_body["institution"] = enabledInst
@@ -54,17 +55,9 @@ const BarSummary = props => {
             },
             body: JSON.stringify(request_body)
         }).then((response) => response.json())
-          .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
+            .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
 
-    }, [props.fullDate, props.visibleInstitutions, props.enabledBars]);
-
-    function usePrevious(value) {
-        const ref = useRef();
-        useEffect(() => {
-            ref.current = value;
-        });
-        return ref.current;
-    }
+    }, [props.fullDate, props.enabledBars]);
 
     var dt = new Date(props.fullDate)
     var dt_str = dt.getMonth() + 1 + "-" + dt.getDate() + "-" + dt.getFullYear()
@@ -126,7 +119,8 @@ function mapStateToProps(state) {
         visibleInstitutions: state.SettingsReducer.institutionVisibility,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
         totalSpent: state.BarSummaryReducer.totalSpent,
-        enabledBars: state.BarGraphReducer.enabledBars
+        enabledBars: state.BarGraphReducer.enabledBars,
+        serverData: state.BarSummaryReducer.serverData
     }
 }
 
@@ -139,6 +133,10 @@ function mapDispatchToProps(dispatch) {
         }),
         setAllTotalExpenses: (data, enabledBars) => dispatch({
             type: "SET_ALL_TOTAL_EXPENSES", data: data,
+            enabledBars: enabledBars
+        }),
+        setAllTotalExpensesCache: (data, enabledBars) => dispatch({
+            type: "SET_ALL_TOTAL_EXPENSES_CACHE", data: data,
             enabledBars: enabledBars
         })
     }

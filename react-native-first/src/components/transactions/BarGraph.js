@@ -23,6 +23,7 @@ const BarGraph = props => {
     }, [props.curDate]);
 
     function bar_layout() {
+
         var idx = 0;
         var bars = []
         for (idx = 0; idx < props.bar_data.length; idx++) {

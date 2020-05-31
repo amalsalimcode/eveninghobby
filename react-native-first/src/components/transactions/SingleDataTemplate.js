@@ -3,10 +3,9 @@
  */
 
 import { connect } from 'react-redux'
-import React, { useRef, useState, useEffect } from 'react';
-import { Animated, View, StyleSheet, Text } from 'react-native'
+import React, { useRef, useState } from 'react';
+import { Animated, View, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { COLORS } from './CommonStyles'
 
 
 const SingleDataTemplate = props => {
@@ -24,7 +23,7 @@ const SingleDataTemplate = props => {
             return
         }
 
-        // props.onClick ? props.onClick() : {}
+        props.onClick ? props.onClick() : {}
 
         height == expandHeight ? setHeight(25) : setHeight(expandHeight)
         Animated.timing(curHeight, {

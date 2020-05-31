@@ -32,7 +32,7 @@ const SingleBarData = props => {
     const purchaseDate = transaction["date"]
 
     return (
-        <SingleDataTemplate onClick={changeHeight} expandHeight={80}>
+        <SingleDataTemplate onClick={changeHeight} expandHeight={100}>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <Text>{name}</Text>
                 <Text style={{ fontSize: fontSize }}>${amount}  </Text>

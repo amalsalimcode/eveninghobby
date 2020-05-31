@@ -7,11 +7,13 @@ import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import constants from '../constants';
 import SingleAccount from './SingleAccount';
+import SingleDataTemplate from './SingleDataTemplate';
 
 
 const Accounts = props => {
 
     useEffect(() => {
+
         // get curr date
         var dt = new Date(props.fullDate)
         var month = dt.getMonth() + 1
@@ -51,7 +53,6 @@ const Accounts = props => {
         let x = []
         let name = ""
         let prevName = ""
-        let accounts = []
 
         if (!props.dataLoaded) {
             return (
@@ -82,6 +83,12 @@ const Accounts = props => {
 
                 prevName = name
             }
+
+            // x.push(
+            // <SingleDataTemplate>
+
+            // </SingleDataTemplate>
+            // )
         }
         return x
     }

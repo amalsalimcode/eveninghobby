@@ -13,6 +13,7 @@ let initial_data = {
     meta_data: {
         data_loaded: true,
         fullDate: dt,
+        prevFullDate: undefined
     }
 }
 
@@ -54,6 +55,7 @@ const TransactionsReducer = (state = initial_data, action) => {
             return state_cpy
 
         case "CHANGE_CUR_WEEK":
+            state_cpy.meta_data.prevFullDate = state_cpy.meta_data.fullDate
             var dt = new Date(state_cpy.meta_data.fullDate);
             dt.setDate(dt.getDate() + constants.diffDays * action.direction);
             state_cpy.meta_data.fullDate = dt

@@ -6,7 +6,6 @@ import Transactions from './src/components/transactions/Transactions'
 import StmtGraph from './src/components/referenceComponents/StmtGraph'
 import PersonalInformation from './src/components/newProfile/PersonalInformation'
 import AnimationSample from './src/components/referenceComponents/AnimationSample'
-import Settings from './src/components/transactions/Settings'
 import SlideView from './src/components/referenceComponents/SlideView'
 import { WebView } from 'react-native-webview';
 

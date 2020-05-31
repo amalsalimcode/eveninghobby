@@ -58,26 +58,15 @@ class TotalSpent(TransactionView):
 
         tr = Transaction.objects.filter(**self.kwargs)
 
-        # expense_per_day_per_account = [dict() for x in range(self.diff_days)]
-        # for each_expense in tr:
-        #     acc_id = each_expense.account.accountId
-        #     diff_day = (each_expense.date - self.st_dt).days
-        #     curr_total = expense_per_day_per_account[diff_day].get(acc_id, 0)
-        #     new_total = float("{:.2f}".format(curr_total + each_expense.amount))
-        #     expense_per_day_per_account[diff_day][acc_id] = new_total
+        expense_per_day_per_account = [dict() for x in range(self.diff_days)]
+        for each_expense in tr:
+            acc_id = each_expense.account.accountId
+            diff_day = (each_expense.date - self.st_dt.date()).days
+            curr_total = expense_per_day_per_account[diff_day].get(acc_id, 0)
+            new_total = float("{:.2f}".format(curr_total + each_expense.amount))
+            expense_per_day_per_account[diff_day][acc_id] = new_total
 
-        each_day_expense = []
-        for days in range(0, self.diff_days):
-            tr_each = tr.filter(date=self.st_dt + datetime.timedelta(days=days))
-            try:
-                tr_rounded = float("{:.2f}".format(
-                    tr_each.aggregate(Sum('amount'))["amount__sum"] or 0
-                ))
-            except TypeError:
-                tr_rounded = 0
-            each_day_expense.append(tr_rounded)
-
-        return HttpResponse(json.dumps(each_day_expense))
+        return HttpResponse(json.dumps(expense_per_day_per_account))
 
     def request_disabled_days_to_kwargs(self, start_date: datetime):
         try:

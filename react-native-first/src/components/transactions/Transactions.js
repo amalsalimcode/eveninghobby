@@ -4,7 +4,6 @@
 
 'use strict'
 
-import BarData from './BarData';
 import BarGraph from './BarGraph'
 import { connect } from 'react-redux'
 import React, { useEffect } from 'react';
@@ -17,8 +16,7 @@ import BarDetails from './BarDetails';
 const Transactions = props => {
 
 
-    const fullDate = props.fullDate
-    const prevValues = usePrevious({ fullDate })
+    const prevValues = usePrevious( props.fullDate )
 
     useEffect(() => {
 
