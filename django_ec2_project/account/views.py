@@ -38,19 +38,22 @@ class AccountInfo(View):
 
 
 # http://127.0.0.1:8000/account/create?personEmail=amal.salim@gmail.com&environment=sandbox
-def new_item_token(request):
-    person_email = request.GET.get("personEmail")
-    environment = request.GET.get("environment", DEFAULT_ENV_PLAID)
-    print ("here is the person email", person_email)
-    print("here is the environment", )
-    context = {
-        "plaid_public_key": "8363dece5a87445f66fe9efbb7a682",
-        "plaid_environment": environment,
-        "plaid_products": PLAID_PRODUCTS,
-        "plaid_country_codes": PLAID_COUNTRY_CODES,
-        "person_email": person_email
-    }
-    return render(request, 'index.ejs', context)
+class CreateAccount(View):
+
+    def get(self, request):
+        return HttpResponse("Not allowed", status=400)
+
+    def post(self, request):
+        person_email = request.POST.get("personEmail")
+        environment = request.POST.get("environment", DEFAULT_ENV_PLAID)
+        context = {
+            "plaid_public_key": "8363dece5a87445f66fe9efbb7a682",
+            "plaid_environment": environment,
+            "plaid_products": PLAID_PRODUCTS,
+            "plaid_country_codes": PLAID_COUNTRY_CODES,
+            "person_email": person_email
+        }
+        return render(request, 'index.ejs', context)
 
 
 def get_access_token(request):

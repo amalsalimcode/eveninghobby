@@ -6,6 +6,7 @@ import SettingsReducer from './SettingsReducer'
 import BarSummaryReducer from './BarSummaryReducer'
 import BarGraphReducer from './BarGraphReducer'
 import SwipeReducer from './SwipeReducer'
+import ScreenReducer from './ScreenReducer'
 
 const rootReducer = combineReducers({
     StmtGraphReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     SettingsReducer,
     BarSummaryReducer,
     BarGraphReducer,
-    SwipeReducer
+    SwipeReducer,
+    ScreenReducer
 });
 
 export default rootReducer;

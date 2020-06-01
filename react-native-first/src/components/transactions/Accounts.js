@@ -48,6 +48,10 @@ const Accounts = props => {
         }
     }
 
+    const newAccount = () => {
+        props.setScreen(8)
+    }
+
     const getAccounts = () => {
 
         let x = []
@@ -61,34 +65,33 @@ const Accounts = props => {
                 </View>)
         } else {
 
-            if (props.data.length == 0) {
-                return (<></>)
-            }
+            if (props.data.length) {
 
-            for (let idx = 0; idx < props.data.length; idx++) {
+                for (let idx = 0; idx < props.data.length; idx++) {
 
-                name = props.data[idx].firstName.charAt(0).toUpperCase() + props.data[idx].firstName.slice(1)
+                    name = props.data[idx].firstName.charAt(0).toUpperCase() + props.data[idx].firstName.slice(1)
 
-                // new person
-                if (name != prevName) {
-                    x.push(
-                        < View style={styles.container} key={idx.toString()} >
-                            <Image style={styles.tinyLogo} source={require('../../../assets/avatar-pink.png')} />
-                            <Text style={{ color: "black" }}> {name} </Text>
-                        </View >
-                    )
+                    // new person
+                    if (name != prevName) {
+                        x.push(
+                            < View style={styles.container} key={idx.toString()} >
+                                <Image style={styles.tinyLogo} source={require('../../../assets/avatar-pink.png')} />
+                                <Text style={{ color: "black" }}> {name} </Text>
+                            </View >
+                        )
+                    }
+
+                    x.push(<SingleAccount data={props.data[idx]} />)
+
+                    prevName = name
                 }
-
-                x.push(<SingleAccount data={props.data[idx]} />)
-
-                prevName = name
             }
 
-            // x.push(
-            // <SingleDataTemplate>
-
-            // </SingleDataTemplate>
-            // )
+            x.push(
+                <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} disableExpand={true}>
+                    <Text >Click here to add new Account</Text>
+                </SingleDataTemplate>
+            )
         }
         return x
     }
@@ -132,6 +135,12 @@ var styles = StyleSheet.create({
         shadowRadius: 40,
         marginBottom: 10,
         height: 50
+    },
+    newAccountContainer: {
+        borderRightWidth: 4,
+        borderRightColor: "black",
+        alignItems: "center"
+
     }
 });
 
@@ -150,6 +159,7 @@ function mapDispatchToProps(dispatch) {
             type: 'SET_BAR_DATA_SWIPE',
             source: "accounts"
         }),
+        setScreen: (data) => dispatch({type: "SET_SCREEN", data: data})
     }
 }
 

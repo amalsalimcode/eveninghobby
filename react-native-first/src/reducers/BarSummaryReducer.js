@@ -63,7 +63,6 @@ const BarSummaryReducer = (state = initial_data, action) => {
 
             state_cpy.highestSpent = Math.max(...state_cpy.expensePerDay)
             state_cpy.totalSpent = arrSum(expensePerDay).toFixed(2)
-            console.log("here is the total spent", state_cpy.totalSpent)
             state_cpy.expensePerAccount = expensePerAccount
             return state_cpy
 

@@ -14,7 +14,7 @@ def create_new_cred_plaid(access_token: str = None, person: Person = None,
                           environment: str = DEFAULT_ENV_PLAID):
 
     if environment == DEFAULT_ENV_PLAID:
-        access_token = "access-sandbox-27bdc8e8-1ecb-464e-af03-cbea5e80c77c"
+        access_token = access_token or "access-sandbox-27bdc8e8-1ecb-464e-af03-cbea5e80c77c"
     else:
         access_token = access_token or "access-development-44688e6d-bacd-4654-b340-89d9ed54bd8f"
 

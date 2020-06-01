@@ -25,6 +25,10 @@ const SingleDataTemplate = props => {
 
         props.onClick ? props.onClick() : {}
 
+        if (props.disableExpand) {
+            return
+        }
+
         height == expandHeight ? setHeight(25) : setHeight(expandHeight)
         Animated.timing(curHeight, {
             toValue: height,
@@ -36,12 +40,12 @@ const SingleDataTemplate = props => {
     return (
         <>
             <TouchableOpacity onPress={() => (changeHeight())} style={{
-                ...styles.square,
+                ...styles.square, ...props.containerStyle,
                 borderLeftColor: props.borderLeftColor ? props.borderLeftColor : "black"
             }}>
 
                 <Animated.View style={{ height: curHeight, paddingTop: 3 }}>
-                    <View style={{ marginLeft: 10 }} shadowOffset={{ height: 10 }}
+                    <View style={styles.viewStyle} shadowOffset={{ height: 10 }}
                         shadowColor='black'
                         shadowOpacity={0.4}
                         shadowOffset={{ height: 2, width: 2 }}>
@@ -70,6 +74,9 @@ const styles = StyleSheet.create({
         shadowRadius: 40,
         marginBottom: 8,
     },
+    viewStyle: {
+        marginHorizontal: 10
+    }
 });
 
 function mapStateToProps(state) {

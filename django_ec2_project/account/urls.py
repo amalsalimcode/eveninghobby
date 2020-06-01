@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.urls import path
 
-from account.views import new_item_token, get_access_token, AccountInfo
+from account.views import get_access_token, AccountInfo, CreateAccount
 
 admin.autodiscover()
 
 urlpatterns = [
     path('', AccountInfo.as_view()),
-    path('create', new_item_token),
+    path('create', CreateAccount.as_view()),
     path('getAccessToken', get_access_token),
 ]

@@ -28,23 +28,10 @@ const BarSummary = props => {
         var month = dt.getMonth() + 1
         var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
 
-        // accumulate all enabled banks into enabledInst
-        var enabledInst = []
-        var enabled = true
-        for (var inst in props.visibleInstitutions) {
-            if (props.visibleInstitutions[inst] == enabled) {
-                enabledInst.push(inst)
-            }
-        }
-
         var request_body = {
             "email": "amal.salim@gmail.com",
             "start_date": date_str,
             "days": constants.diffDays,
-        }
-        if (enabledInst) {
-            request_body["institution"] = enabledInst
-
         }
 
         fetch('http://127.0.0.1:8000/transaction/totalSpent', {

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { View, ScrollView } from 'react-native'
 import SingleBarData from './SingleBarData';
 import { isBarEnabled } from './utils'
-import GestureRecognizer from 'react-native-swipe-gestures';
 
 const BarData = props => {
 
