@@ -4,7 +4,7 @@ import React, { useRef, Component, useState } from 'react';
 import ReactNative, { Dimensions } from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import { StyleSheet, Text, View, Animated } from 'react-native'
-import BarData from '../transactions/BarData';
+import BarData from '../transactions/details/BarData';
 import Transactions from '../transactions/Transactions';
 import { connect } from 'react-redux';
 

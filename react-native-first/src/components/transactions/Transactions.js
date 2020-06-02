@@ -4,14 +4,14 @@
 
 'use strict'
 
-import BarGraph from './BarGraph'
+import BarGraph from './graph/BarGraph'
 import { connect } from 'react-redux'
 import React, { useEffect } from 'react';
 import { ActivityIndicator, Text } from 'react-native'
-import BarSummary from './BarSummary'
+import BarSummary from './summary/BarSummary'
 import constants from '../common/constants';
 import { usePrevious } from './utils'
-import BarDetails from './BarDetails';
+import BarDetails from './details/BarDetails';
 
 const Transactions = props => {
 

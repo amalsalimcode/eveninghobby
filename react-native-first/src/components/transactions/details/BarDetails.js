@@ -3,9 +3,7 @@ import { Animated, View, StyleSheet, Text, Dimensions } from "react-native";
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import { connect } from 'react-redux';
 
-import anim from '../../../assets/anim.json'
 import BarData from "./BarData";
-import AnimateNumber from "react-native-animate-number";
 import Accounts from "./Accounts";
 
 const windowPosition = Dimensions.get('window').width;

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, ScrollView } from 'react-native'
 import SingleBarData from './SingleBarData';
-import { isBarEnabled } from './utils'
+import { isBarEnabled } from '../utils'
 
 const BarData = props => {
 

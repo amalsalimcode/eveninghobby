@@ -5,10 +5,10 @@ import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
-import constants from '../common/constants';
+import constants from '../../common/constants';
 import SingleAccount from './SingleAccount';
 import SingleDataTemplate from './SingleDataTemplate';
-import {uuidv4} from '../common/constants'
+import {uuidv4} from '../../common/constants'
 
 const Accounts = props => {
 
@@ -75,7 +75,7 @@ const Accounts = props => {
                     if (name != prevName) {
                         x.push(
                             < View style={styles.container} key={uuidv4()} >
-                                <Image style={styles.tinyLogo} source={require('../../../assets/avatar-pink.png')} />
+                                <Image style={styles.tinyLogo} source={require('../../../../assets/avatar-pink.png')} />
                                 <Text style={{ color: "black" }}> {name} </Text>
                             </View >
                         )
