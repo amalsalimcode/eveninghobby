@@ -1,4 +1,4 @@
-import constants from "../components/constants"
+import constants from '../components/common/constants'
 
 let initial_data = {
     enabledBars: Array(constants.diffDays).fill(0),

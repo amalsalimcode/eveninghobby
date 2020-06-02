@@ -1,4 +1,4 @@
-import constants from "../components/constants"
+import constants from '../components/common/constants'
 import { isBarEnabled } from "../components/transactions/utils"
 
 let initial_data = {

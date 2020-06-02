@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
+import { View } from 'react-native';
+import { commonStyles } from '../common/styles'
 
 
 const EmailInput = props => {
@@ -27,17 +29,19 @@ const EmailInput = props => {
     }
 
     return (
-        <Input
-            label="Email"
-            placeholder={props.email}
-            errorStyle={{ color: 'red' }}
-            errorMessage={setErrorMsg}
-            value={tmpEmail}
-            onChangeText={(entered_text) => {setTmpEmail(entered_text)}}
-            errorStyle={{ color: 'maroon' }}
-            errorMessage={errorMsg}
-            onBlur={validateEmailHandler}
-        />
+        <View style={commonStyles.input}>
+            <Input
+                label="Email"
+                placeholder={props.email}
+                errorStyle={{ color: 'red' }}
+                errorMessage={setErrorMsg}
+                value={tmpEmail}
+                onChangeText={(entered_text) => { setTmpEmail(entered_text) }}
+                errorStyle={{ color: 'maroon' }}
+                errorMessage={errorMsg}
+                onBlur={validateEmailHandler}
+            />
+        </View>
     )
 
 }
@@ -50,7 +54,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setEmail: (email) => { dispatch({ type: 'SET_EMAIL', new_email: email}) }
+        setEmail: (email) => { dispatch({ type: 'SET_EMAIL', new_email: email }) }
     }
 }
 

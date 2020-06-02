@@ -3,14 +3,12 @@ import { Button, Input, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import React, { useEffect, useState } from "react";
 import EmailInput from './EmailInput';
+import { commonStyles } from '../common/styles'
 
 
 const SignIn = props => {
 
   const next_button_pressed = () => {
-
-    console.log("Current information name: " + props.email +
-      " code: " + props.code)
 
     if (props.email && props.code) {
       props.setScreen(4)
@@ -26,19 +24,12 @@ const SignIn = props => {
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.personal_info}>
 
-        <View style={styles.input}>
-          <EmailInput defaultEmail={props.defaultEmail}/>
-        </View>
+        <EmailInput defaultEmail={props.defaultEmail} />
 
-        <View style={styles.input}>
-          <Input label="4 digit passcode"
-            placeholder=''
-            errorStyle={{ color: 'red' }}
-            errorMessage=''
-            onChangeText={(entered_text) => { props.setCode(entered_text.replace(/[^0-9]/g, '')) }}
-            secureTextEntry={true}
-            maxLength={4}
-            keyboardType="number-pad"
+        <View style={commonStyles.input}>
+          <Input label="4 digit passcode" placeholder='' errorStyle={{ color: 'red' }}
+            errorMessage='' onChangeText={(entered_text) => { props.setCode(entered_text.replace(/[^0-9]/g, '')) }}
+            secureTextEntry={true} maxLength={4} keyboardType="number-pad"
           />
         </View>
 
@@ -67,10 +58,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1
   },
-  input: {
-    width: "80%",
-    height: 100
-  }
 });
 
 

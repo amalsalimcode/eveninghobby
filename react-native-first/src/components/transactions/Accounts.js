@@ -5,10 +5,10 @@ import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
-import constants from '../constants';
+import constants from '../common/constants';
 import SingleAccount from './SingleAccount';
 import SingleDataTemplate from './SingleDataTemplate';
-
+import {uuidv4} from '../common/constants'
 
 const Accounts = props => {
 
@@ -74,21 +74,24 @@ const Accounts = props => {
                     // new person
                     if (name != prevName) {
                         x.push(
-                            < View style={styles.container} key={idx.toString()} >
+                            < View style={styles.container} key={uuidv4()} >
                                 <Image style={styles.tinyLogo} source={require('../../../assets/avatar-pink.png')} />
                                 <Text style={{ color: "black" }}> {name} </Text>
                             </View >
                         )
                     }
 
-                    x.push(<SingleAccount data={props.data[idx]} />)
+                    x.push(
+                        <SingleAccount key={uuidv4()} data={props.data[idx]} />
+                    )
 
                     prevName = name
                 }
             }
 
+            // Ability to add a new Bank Account
             x.push(
-                <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} disableExpand={true}>
+                <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} disableExpand={true} key={uuidv4()}>
                     <Text >Click here to add new Account</Text>
                 </SingleDataTemplate>
             )
@@ -159,7 +162,7 @@ function mapDispatchToProps(dispatch) {
             type: 'SET_BAR_DATA_SWIPE',
             source: "accounts"
         }),
-        setScreen: (data) => dispatch({type: "SET_SCREEN", data: data})
+        setScreen: (data) => dispatch({ type: "SET_SCREEN", data: data })
     }
 }
 

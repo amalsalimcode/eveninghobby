@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react'
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { connect } from 'react-redux'
 import { AsyncStorage } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 
 const AuthScreen = props => {
 
     const [curScreen, setCurScreen] = useState(1)
 
-
     async function login() {
         // await AsyncStorage.setItem("email","amal.salim@gmail.com")
-        var email = await AsyncStorage.getItem("emails")
+        var email = await AsyncStorage.getItem("email")
         if (email) {
             props.setEmail(email)
             setCurScreen(0)

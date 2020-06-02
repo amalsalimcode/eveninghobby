@@ -14,11 +14,10 @@ const SingleAccount = props => {
     var expense_rounded = expense ? Number((expense).toFixed(1)) : expense
     const [fontSize, setFontSize] = useState(15);
 
-    let x = []
     if (!expense) {
-        x.push(<></>)
+        return (<></>)
     } else {
-        x.push(
+        return (
             <SingleDataTemplate expandHeight={110}>
 
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -38,8 +37,6 @@ const SingleAccount = props => {
             </SingleDataTemplate>
         );
     }
-
-    return x
 }
 
 function mapStateToProps(state) {

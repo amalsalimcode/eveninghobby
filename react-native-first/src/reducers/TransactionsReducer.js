@@ -1,4 +1,4 @@
-import constants from "../components/constants";
+import constants from '../components/common/constants'
 
 var d = new Date();
 var day = d.getDay()

@@ -4,8 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Settings from './Settings'
-import constants from '../constants';
+import constants from '../common/constants';
 import { usePrevious } from './utils';
 
 
@@ -77,7 +76,7 @@ const BarSummary = props => {
                     </View>
                 </Animated.View>
 
-                <Settings />
+                {/* <Settings /> */}
             </TouchableOpacity>
         </>
     )

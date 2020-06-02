@@ -5,7 +5,7 @@ import Transactions from './transactions/Transactions';
 import SlideView from './referenceComponents/SlideView';
 import { connect } from 'react-redux'
 import { View, Button } from 'react-native';
-import AuthScreen from './newProfile/AuthScreen'
+import AuthScreen from './login/AuthScreen'
 
 const Screen = props => {
 
