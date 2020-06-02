@@ -43,7 +43,7 @@ const BarDetails = props => {
     }
 
     return (
-        <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1 }}>
+        <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
             <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
                 <View style={{ width: windowPosition }}>
                     <Accounts />

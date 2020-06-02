@@ -7,7 +7,7 @@
 import BarGraph from './BarGraph'
 import { connect } from 'react-redux'
 import React, { useEffect } from 'react';
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, Text } from 'react-native'
 import BarSummary from './BarSummary'
 import constants from '../constants';
 import { usePrevious } from './utils'

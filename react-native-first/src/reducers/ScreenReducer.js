@@ -1,5 +1,5 @@
 let initial_data = {
-    curScreen: 4
+    curScreen: 3
 }
 
 const ScreenReducer = (state=initial_data, action) => {

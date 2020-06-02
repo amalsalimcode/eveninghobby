@@ -1,11 +1,12 @@
-import React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements';
 import PhoneNumberInputs from './PhoneNumberInput'
 import PasscodeInput from './PassCodeInput';
 import { connect } from 'react-redux'
+import React, { useEffect } from "react";
 
-const PersonalInformation = props => {
+
+const SignUp = props => {
 
   const next_button_pressed = () => {
 
@@ -37,12 +38,19 @@ const PersonalInformation = props => {
           />
         </View>
 
+        <View style={styles.input}>
+          <Input label="Email" placeholder='amal.salim@gmail.com'  
+            errorStyle={{ color: 'maroon' }} errorMessage=''
+            onChangeText={props.setName} value={props.name}
+          />
+        </View>
+
         <PhoneNumberInputs />
         <PasscodeInput />
 
         <View style={{ padding: 20 }}>
           <Button raised
-            icon={<Icon name="navigate-next" />}
+            // icon={<Ionicons name="md-checkmark-circle" size={32} color="green" />}
             buttonStyle={{
               backgroundColor: "rgba(120, 160, 201, 0.5)",
               borderRadius: 10, height: 40, width: 40, borderRadius: 80
@@ -86,4 +94,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalInformation)
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

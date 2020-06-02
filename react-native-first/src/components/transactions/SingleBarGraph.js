@@ -17,7 +17,9 @@ const SingleBarGraph = props => {
          * is 20. Otherwise, its not visible.
          * maximum allowed height is 100. Otherwise,
          * it goes off screen. */
-        var height = props.expensePerDay[props.uuid]
+        height = props.expensePerDay[props.uuid] ? props.expensePerDay[props.uuid] : 0
+
+        // var height = props.expensePerDay[props.uuid]
         var highest = props.highestSpent
 
         if (highest != 0 && height != 0) {

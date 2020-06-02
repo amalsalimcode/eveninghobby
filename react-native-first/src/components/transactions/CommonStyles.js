@@ -13,7 +13,8 @@ export const COLORS = {
 }
 
 export const CommonStyles = StyleSheet.create({
-    test: {
-        color: "red"
-    }
+    input: {
+        width: "80%",
+        height: 100
+      }
 });

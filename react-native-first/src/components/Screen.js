@@ -1,13 +1,11 @@
 import React from 'react'
 import { WebView } from 'react-native-webview';
-import PersonalInformation from './newProfile/PersonalInformation';
-import CardInput from './newProfile/CardInput';
 import AnimationSample from './referenceComponents/AnimationSample';
-import StmtGraph from './referenceComponents/StmtGraph';
 import Transactions from './transactions/Transactions';
 import SlideView from './referenceComponents/SlideView';
 import { connect } from 'react-redux'
-import { View, Text, Button } from 'react-native';
+import { View, Button } from 'react-native';
+import AuthScreen from './newProfile/AuthScreen'
 
 const Screen = props => {
 
@@ -16,18 +14,12 @@ const Screen = props => {
     switch (screen_val) {
       case 0:
         return
-      // the component needs to be refactored so that setCurrentScreen
-      // is a reducer action in the component
-      // return (<PersonalInformation setScreen={setCurrentScreen} />)
       case 1:
         return
-      // the component needs to be refactored so that setCurrentScreen
-      // is a reducer action in the component
-      // return (<CardInput setCardInput={setCurrentScreen} />)
       case 2:
         return (<AnimationSample />)
       case 3:
-        return (<StmtGraph />)
+        return(<AuthScreen/>)
       case 4:
         return (<Transactions />)
       case 5:
