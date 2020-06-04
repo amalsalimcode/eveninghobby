@@ -2,8 +2,11 @@ import { View, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, 
 import { Button, Input, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import React, { useEffect, useState } from "react";
+import { Image } from "react-native"
 import EmailInput from './EmailInput';
 import { commonStyles } from '../common/styles'
+import PassCodeInput from './PassCodeInput';
+
 
 
 const SignIn = props => {
@@ -25,18 +28,7 @@ const SignIn = props => {
         style={styles.personal_info}>
 
         <EmailInput defaultEmail={props.defaultEmail} />
-        <View style={commonStyles.inputView} >
-          <TextInput
-            style={commonStyles.inputText}
-            placeholder="4 digit passcode"
-            placeholderTextColor="#003f5c"
-            onChangeText={(entered_text) => { props.setCode(entered_text.replace(/[^0-9]/g, '')) }}
-            maxLength={4}
-            secureTextEntry={true}
-            keyboardType="number-pad"
-          />
-        </View>
-
+        <PassCodeInput />
 
         <View style={{ padding: 20 }}>
           <Button raised
@@ -58,7 +50,7 @@ const SignIn = props => {
 const styles = StyleSheet.create({
   personal_info: {
     backgroundColor: "#342b38",
-    backgroundColor: "#3f3f44",
+    backgroundColor: "#dddddd",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",

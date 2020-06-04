@@ -1,7 +1,7 @@
 import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements';
 import PhoneNumberInputs from './PhoneNumberInput'
-import PasscodeInput from './PassCodeInput';
+import PassCodeSignup from './PassCodeSignup';
 import { connect } from 'react-redux'
 import React, { useEffect } from "react";
 import { TextInput } from 'react-native';
@@ -44,7 +44,7 @@ const SignUp = props => {
         <EmailInput />
 
         <PhoneNumberInputs />
-        <PasscodeInput />
+        <PassCodeSignup />
 
         <View style={{ padding: 20 }}>
           <Button raised
