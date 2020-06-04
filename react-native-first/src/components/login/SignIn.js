@@ -1,4 +1,4 @@
-import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { View, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements';
 import { connect } from 'react-redux'
 import React, { useEffect, useState } from "react";
@@ -25,13 +25,18 @@ const SignIn = props => {
         style={styles.personal_info}>
 
         <EmailInput defaultEmail={props.defaultEmail} />
-
-        <View style={commonStyles.input}>
-          <Input label="4 digit passcode" placeholder='' errorStyle={{ color: 'red' }}
-            errorMessage='' onChangeText={(entered_text) => { props.setCode(entered_text.replace(/[^0-9]/g, '')) }}
-            secureTextEntry={true} maxLength={4} keyboardType="number-pad"
+        <View style={commonStyles.inputView} >
+          <TextInput
+            style={commonStyles.inputText}
+            placeholder="4 digit passcode"
+            placeholderTextColor="#003f5c"
+            onChangeText={(entered_text) => { props.setCode(entered_text.replace(/[^0-9]/g, '')) }}
+            maxLength={4}
+            secureTextEntry={true}
+            keyboardType="number-pad"
           />
         </View>
+
 
         <View style={{ padding: 20 }}>
           <Button raised
@@ -52,7 +57,8 @@ const SignIn = props => {
 
 const styles = StyleSheet.create({
   personal_info: {
-    backgroundColor: "rgba(60, 80, 101, 0.5)",
+    backgroundColor: "#342b38",
+    backgroundColor: "#3f3f44",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",

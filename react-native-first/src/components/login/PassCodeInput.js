@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, StyleSheet, TextInput } from 'react-native'
 import { Input } from 'react-native-elements'
-import { connect } from 'react-redux' 
+import { commonStyles } from '../common/styles'
+import { connect } from 'react-redux'
 
 
 const PasscodeInput = props => {
 
     const [passCode, setPassCode] = useState('')
-    const [errorMsg, setErrorMsg] = useState('')
+    const [reEnterPassCode, setReEnterPassCode] = useState('')
+    const [reEnterLabel, setReEnterLabel] = useState('Re-enter passcode')
+    const [errWidth, setErrWidth] = useState(0)
 
     /*
      * If the user clicked next and then previous,
@@ -15,8 +18,7 @@ const PasscodeInput = props => {
      */
     useEffect(() => {
         props.setCode("")
-      }, []);
-
+    }, []);
 
     const enterPassHandler = (entered_text) => {
         setPassCode(entered_text.replace(/[^0-9]/g, ''));
@@ -24,46 +26,48 @@ const PasscodeInput = props => {
     }
 
     const reEnterPassHandler = (entered_text) => {
-        setErrorMsg("")
-        if (entered_text.length >= passCode.length && 
+        setReEnterPassCode(entered_text)
+        if (entered_text.length >= passCode.length &&
             entered_text != passCode) {
+            setErrWidth(2)
             props.setCode("")
-            setErrorMsg("The passcodes don't match")
+            setReEnterPassCode("")
+            setReEnterLabel("Try Again: passcodes didn't match")
         }
 
         if (entered_text == passCode) {
             props.setCode(entered_text)
+            setErrWidth(0)
         }
     }
 
     return (
         <>
-            <View style={styles.input}>
-                <Input
-                    label="4 digit passcode"
-                    placeholder='4082'
-                    errorStyle={{ color: 'red' }}
-                    errorMessage=''
+        
+            <View style={commonStyles.inputView} >
+                <TextInput
+                    style={commonStyles.inputText}
+                    placeholder="4 digit passcode"
+                    placeholderTextColor="#003f5c"
                     onChangeText={enterPassHandler}
-                    secureTextEntry={true}
                     value={passCode}
                     maxLength={4}
-                    keyboardType="number-pad"
-                />
-            </View>
-            <View style={styles.input}>
-                <Input
-                    label="Re-enter passcode"
-                    placeholder='4082'
-                    errorStyle={{ color: 'red' }}
-                    errorMessage={setErrorMsg}
-                    onChangeText={reEnterPassHandler}
                     secureTextEntry={true}
-                    errorStyle={{ color: 'maroon' }}
-                    errorMessage={errorMsg}
                     keyboardType="number-pad"
                 />
             </View>
+            <View style={{...commonStyles.inputView, borderColor: "red", borderWidth: errWidth}} >
+                <TextInput
+                    style={commonStyles.inputText}
+                    placeholder={reEnterLabel}
+                    placeholderTextColor="#003f5c"
+                    onChangeText={reEnterPassHandler}
+                    value={reEnterPassCode}
+                    secureTextEntry={true}
+                    keyboardType="number-pad"
+                />
+            </View>
+
         </>
     )
 
@@ -78,16 +82,16 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
-      code: state.PersonalInformationReducer.code,
+        code: state.PersonalInformationReducer.code,
     }
-  }
-  
-  function mapDispatchToProps(dispatch) {
+}
+
+function mapDispatchToProps(dispatch) {
     return {
-      setCode: (entered_code) => {dispatch({type: 'SET_CODE', new_code: entered_code})}
+        setCode: (entered_code) => { dispatch({ type: 'SET_CODE', new_code: entered_code }) }
     }
-  }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(PasscodeInput)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PasscodeInput)

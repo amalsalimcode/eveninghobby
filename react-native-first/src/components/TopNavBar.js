@@ -12,7 +12,6 @@ import AddAccount from './transactions/details/AddAccount'
 import FadeInView from './common/FadeInView';
 
 
-
 function HomeScreen({ navigation }) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TextInput } from 'react-native'
 import { Input } from 'react-native-elements'
 import { AsYouType } from 'libphonenumber-js'
-import {connect} from 'react-redux' 
+import { connect } from 'react-redux'
+import { commonStyles } from '../common/styles';
 
 
 const PhoneNumberInputs = props => {
@@ -15,9 +16,9 @@ const PhoneNumberInputs = props => {
      */
     useEffect(() => {
         setFormattedNumber(new AsYouType('US').input(props.number));
-      }, []);
+    }, []);
 
-    function on_change(data) {
+    function onChange(data) {
         /* 
          * bug inside parsePhoneNumberFromString 
          * Happens when number is (324) and you hit backspace
@@ -42,7 +43,7 @@ const PhoneNumberInputs = props => {
 
     }
 
-    function on_blur() {
+    function onBlur() {
         let absolute_number = formattedNumber.replace(/[^0-9]/g, '');
         if (absolute_number.length == 10 || absolute_number.length == 11) {
             props.setNumber(absolute_number)
@@ -52,16 +53,16 @@ const PhoneNumberInputs = props => {
     }
 
     return (
-        <View style={styles.input}>
-            <Input
-                placeholder='(918)-859-2034'
-                errorStyle={{ color: 'red' }}
-                errorMessage=''
-                label='Phone number'
-                color="white"
-                onChangeText={on_change}
+        <View style={commonStyles.inputView} >
+            <TextInput
+                style={commonStyles.inputText}
+                placeholder="Phone Number"
+                placeholderTextColor="#003f5c"
+                onChangeText={onChange}
                 value={formattedNumber}
-                onBlur={on_blur}
+                autoCorrect={false}
+                autoCapitalize='none'
+                onBlur={onBlur}
                 keyboardType="phone-pad"
             />
         </View>
@@ -77,16 +78,16 @@ const styles = StyleSheet.create({
 
 
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
-      number: state.PersonalInformationReducer.number
+        number: state.PersonalInformationReducer.number
     }
-  }
-  
-  function mapDispatchToProps(dispatch) {
+}
+
+function mapDispatchToProps(dispatch) {
     return {
-      setNumber: (entered_number) => {dispatch({type: 'SET_NUMBER', new_number: entered_number})}
+        setNumber: (entered_number) => { dispatch({ type: 'SET_NUMBER', new_number: entered_number }) }
     }
-  }
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(PhoneNumberInputs)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneNumberInputs)

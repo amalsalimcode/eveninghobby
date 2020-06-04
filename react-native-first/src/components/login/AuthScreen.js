@@ -11,7 +11,7 @@ const AuthScreen = props => {
 
     async function login() {
         // await AsyncStorage.setItem("email", "amal.salim@gmail.com")
-        var email = await AsyncStorage.getItem("emails")
+        var email = await AsyncStorage.getItem("email")
         if (email) {
             props.setEmail(email)
             setCurScreen(0)

@@ -4,6 +4,9 @@ import PhoneNumberInputs from './PhoneNumberInput'
 import PasscodeInput from './PassCodeInput';
 import { connect } from 'react-redux'
 import React, { useEffect } from "react";
+import { TextInput } from 'react-native';
+import { commonStyles } from '../common/styles';
+import EmailInput from './EmailInput';
 
 
 const SignUp = props => {
@@ -13,8 +16,8 @@ const SignUp = props => {
     console.log("Current information name: " + props.name +
       " number: " + props.number + " code: " + props.code)
 
-    if (props.name && props.number && props.code) {
-      props.setScreen(1)
+    if (props.name && props.number && props.code && props.email) {
+      props.setScreen(0)
     } else {
       console.log("not all fields are filled in")
     }
@@ -27,23 +30,18 @@ const SignUp = props => {
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.personal_info}>
 
-        <View style={styles.input}>
-          <Input
-            label="Name"
-            placeholder='Amal Salim'
-            errorStyle={{ color: 'maroon' }}
-            errorMessage=''
-            onChangeText={props.setName}
+        <View style={commonStyles.inputView} >
+          <TextInput  
+            style={commonStyles.inputText}
+            placeholder="Name"
+            placeholderTextColor="#003f5c"
+            autoCapitalize='words'
+            onChangeText={props.setName} 
             value={props.name}
-          />
+            />
         </View>
 
-        <View style={styles.input}>
-          <Input label="Email" placeholder='amal.salim@gmail.com'  
-            errorStyle={{ color: 'maroon' }} errorMessage=''
-            onChangeText={props.setName} value={props.name}
-          />
-        </View>
+        <EmailInput />
 
         <PhoneNumberInputs />
         <PasscodeInput />
@@ -67,7 +65,7 @@ const SignUp = props => {
 
 const styles = StyleSheet.create({
   personal_info: {
-    backgroundColor: "rgba(60, 80, 101, 0.5)",
+    backgroundColor: "rgba(91, 194, 231, 0.3)",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -76,7 +74,9 @@ const styles = StyleSheet.create({
   input: {
     width: "80%",
     height: 100
-  }
+  },
+
+
 });
 
 
@@ -84,13 +84,15 @@ function mapStateToProps(state) {
   return {
     name: state.PersonalInformationReducer.name,
     number: state.PersonalInformationReducer.number,
-    code: state.PersonalInformationReducer.code
+    code: state.PersonalInformationReducer.code,
+    email: state.PersonalInformationReducer.email
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    setName: (entered_name) => { dispatch({ type: 'SET_NAME', new_name: entered_name }) }
+    setName: (entered_name) => { dispatch({ type: 'SET_NAME', new_name: entered_name }) },
+    setScreen: (data) => dispatch({ type: "SET_SCREEN", data: data })
   }
 }
 

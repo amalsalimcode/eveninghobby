@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
-import { View } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { commonStyles } from '../common/styles'
 
 
 const EmailInput = props => {
 
-    const [errorMsg, setErrorMsg] = useState('')
+    const [errorWidth, setErrorWidth] = useState('')
     const [tmpEmail, setTmpEmail] = useState(props.email)
 
     /*
@@ -17,28 +17,27 @@ const EmailInput = props => {
     useEffect(() => {
     }, []);
 
-
     const validateEmailHandler = () => {
-        setErrorMsg("")
+        console.log("validating email")
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(tmpEmail)) {
             props.setEmail(tmpEmail)
+            setErrorWidth(0)
         } else {
-            setErrorMsg("Bad Email")
             props.setEmail("")
+            setErrorWidth(2)
         }
     }
 
     return (
-        <View style={commonStyles.input}>
-            <Input
-                label="Email"
-                placeholder={props.email}
-                errorStyle={{ color: 'red' }}
-                errorMessage={setErrorMsg}
-                value={tmpEmail}
+        <View style={{...commonStyles.inputView, borderColor: "red", borderWidth: errorWidth}} >
+            <TextInput
+                style={commonStyles.inputText}
+                placeholder="Email"
+                placeholderTextColor="#003f5c"
                 onChangeText={(entered_text) => { setTmpEmail(entered_text) }}
-                errorStyle={{ color: 'maroon' }}
-                errorMessage={errorMsg}
+                value={props.name}
+                autoCorrect={false}
+                autoCapitalize='none'
                 onBlur={validateEmailHandler}
             />
         </View>
