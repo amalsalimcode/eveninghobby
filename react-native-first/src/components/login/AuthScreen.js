@@ -10,8 +10,8 @@ const AuthScreen = props => {
     const [curScreen, setCurScreen] = useState(1)
 
     async function login() {
-        // await AsyncStorage.setItem("email","amal.salim@gmail.com")
-        var email = await AsyncStorage.getItem("email")
+        // await AsyncStorage.setItem("email", "amal.salim@gmail.com")
+        var email = await AsyncStorage.getItem("emails")
         if (email) {
             props.setEmail(email)
             setCurScreen(0)
@@ -46,7 +46,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setScreen: (data) => dispatch({ type: "SET_SCREEN", data: data }),
         setEmail: (email) => { dispatch({ type: 'SET_EMAIL', new_email: email}) },
     }
 }

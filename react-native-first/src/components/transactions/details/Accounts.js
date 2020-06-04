@@ -8,7 +8,7 @@ import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import constants from '../../common/constants';
 import SingleAccount from './SingleAccount';
 import SingleDataTemplate from './SingleDataTemplate';
-import {uuidv4} from '../../common/constants'
+import { uuidv4 } from '../../common/constants'
 
 const Accounts = props => {
 
@@ -49,7 +49,10 @@ const Accounts = props => {
     }
 
     const newAccount = () => {
-        props.setScreen(8)
+
+        console.log(props)
+        props.navigation.navigate("AddAccount")
+        // props.setScreen(8)
     }
 
     const getAccounts = () => {
@@ -62,6 +65,9 @@ const Accounts = props => {
             return (
                 <View style={{ flex: 1, justifyContent: "center" }}>
                     <ActivityIndicator />
+                    <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} disableExpand={true} key={uuidv4()}>
+                        <Text >Click here to add new Account</Text>
+                    </SingleDataTemplate>
                 </View>)
         } else {
 

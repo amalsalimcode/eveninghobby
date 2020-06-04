@@ -11,7 +11,7 @@ const SignIn = props => {
   const next_button_pressed = () => {
 
     if (props.email && props.code) {
-      props.setScreen(4)
+      props.setScreen(0)
     } else {
       console.log("not all fields are filled in")
     }

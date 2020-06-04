@@ -55,7 +55,7 @@ const Transactions = props => {
             <>
                 <BarGraph />
                 <BarSummary />
-                <BarDetails />
+                <BarDetails {...props}/>
             </>
     )
 }
