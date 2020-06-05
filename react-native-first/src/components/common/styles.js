@@ -12,6 +12,10 @@ export const COLORS = {
     }
 }
 
+export const colorPallette = {
+    background: "#4d4d4d"
+}
+
 export const commonStyles = StyleSheet.create({
     input: {
         width: "80%",
@@ -19,7 +23,7 @@ export const commonStyles = StyleSheet.create({
     },
     inputView: {
         width: "80%",
-        backgroundColor: "white",
+        backgroundColor: "grey",
         borderRadius: 45,
         height: 50,
         marginBottom: 20,
@@ -29,6 +33,13 @@ export const commonStyles = StyleSheet.create({
     inputText: {
         height: 50,
         fontSize: 16,
-        color: "#ff427f"
-    }
+        color: "#ff427f",
+    },
+    authScreen: {
+        flex: 1,
+        backgroundColor: "black",
+        backgroundColor: "grey",
+        justifyContent: "flex-start",
+        alignItems: "center",
+    },
 });

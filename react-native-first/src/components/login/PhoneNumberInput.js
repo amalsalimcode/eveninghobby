@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput } from 'react-native'
+import { View, StyleSheet, TextInput, Image } from 'react-native'
 import { Input } from 'react-native-elements'
 import { AsYouType } from 'libphonenumber-js'
 import { connect } from 'react-redux'
@@ -53,19 +53,28 @@ const PhoneNumberInputs = props => {
     }
 
     return (
-        <View style={commonStyles.inputView} >
-            <TextInput
-                style={commonStyles.inputText}
-                placeholder="Phone Number"
-                placeholderTextColor="#003f5c"
-                onChangeText={onChange}
-                value={formattedNumber}
-                autoCorrect={false}
-                autoCapitalize='none'
-                onBlur={onBlur}
-                keyboardType="phone-pad"
-            />
-        </View>
+
+        <>
+            <View style={{
+                ...commonStyles.inputView, flexDirection: "row",
+                paddingLeft: 15, borderColor: "red"
+            }} >
+
+                <Image style={{ marginRight: 10, marginTop: 10, height: 30, width: 20 }} source={require('../../../assets/mobile.png')} />
+
+                <TextInput
+                    style={{ ...commonStyles.inputText, flex: 1 }}
+                    placeholder="Phone Number"
+                    placeholderTextColor="#003f5c"
+                    onChangeText={onChange}
+                    value={formattedNumber}
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                    onBlur={onBlur}
+                    keyboardType="phone-pad"
+                />
+            </View>
+        </>
     )
 }
 

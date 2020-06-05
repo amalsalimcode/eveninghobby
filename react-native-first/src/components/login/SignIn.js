@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native"
 import EmailInput from './EmailInput';
-import { commonStyles } from '../common/styles'
+import { commonStyles, colorPallette } from '../common/styles'
 import PassCodeInput from './PassCodeInput';
+import LoginButton from './LoginButton';
 
 
 
@@ -25,39 +26,20 @@ const SignIn = props => {
       <KeyboardAvoidingView
         keyboardVerticalOffset={-150}
         behavior={Platform.OS == "ios" ? "padding" : "height"}
-        style={styles.personal_info}>
+        style={{ ...commonStyles.authScreen, paddingTop: 100 }}>
+
+        <View style={{ backgroundColor: colorPallette.background, alignItems: "center", paddingTop: 50 }}>
+          <Image style={{ height: 200, width: 200, backgroundColor: colorPallette.background }} source={require('../../../assets/dolphin.png')} />
+        </View>
 
         <EmailInput defaultEmail={props.defaultEmail} />
         <PassCodeInput />
+        <LoginButton btnMsg="SignIn" pressAction={next_button_pressed} />
 
-        <View style={{ padding: 20 }}>
-          <Button raised
-            // icon={<Ionicons name="md-checkmark-circle" size={32} color="green" />}
-            buttonStyle={{
-              backgroundColor: "rgba(120, 160, 201, 0.5)",
-              borderRadius: 10, height: 40, width: 40, borderRadius: 80
-            }}
-            onPress={next_button_pressed}
-            rounded={false}
-            disabled={false}
-          />
-        </View>
       </KeyboardAvoidingView >
     </TouchableWithoutFeedback>
   )
 }
-
-const styles = StyleSheet.create({
-  personal_info: {
-    backgroundColor: "#342b38",
-    backgroundColor: "#dddddd",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-});
-
 
 function mapStateToProps(state) {
   return {

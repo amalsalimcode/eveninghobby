@@ -4,10 +4,13 @@ import PhoneNumberInputs from './PhoneNumberInput'
 import PassCodeSignup from './PassCodeSignup';
 import { connect } from 'react-redux'
 import React, { useEffect } from "react";
-import { TextInput } from 'react-native';
-import { commonStyles } from '../common/styles';
+import { TextInput, Text, Image } from 'react-native';
+import { commonStyles, colorPallette } from '../common/styles';
 import EmailInput from './EmailInput';
-
+import NameInput from './NameInput';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
+import LoginButton from './LoginButton';
 
 const SignUp = props => {
 
@@ -24,61 +27,27 @@ const SignUp = props => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={-150}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        style={styles.personal_info}>
+    <>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+          style={{ backgroundColor: colorPallette.background, alignItems: "center", flex: 1, justifyContent: "center", paddingBottom: 100 }}>
+          <>
+            <Image style={{ height: 200, width: 200, backgroundColor: colorPallette.background }} source={require('../../../assets/dolphin.png')} />
+            <NameInput />
+            <EmailInput />
+            <PhoneNumberInputs />
+            <PassCodeSignup />
+            <LoginButton btnMsg="SignUp" pressAction={next_button_pressed} />
+          </>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback >
+      <View style={{paddingBottom: 150, backgroundColor: colorPallette.background}}>
 
-        <View style={commonStyles.inputView} >
-          <TextInput  
-            style={commonStyles.inputText}
-            placeholder="Name"
-            placeholderTextColor="#003f5c"
-            autoCapitalize='words'
-            onChangeText={props.setName} 
-            value={props.name}
-            />
-        </View>
-
-        <EmailInput />
-
-        <PhoneNumberInputs />
-        <PassCodeSignup />
-
-        <View style={{ padding: 20 }}>
-          <Button raised
-            // icon={<Ionicons name="md-checkmark-circle" size={32} color="green" />}
-            buttonStyle={{
-              backgroundColor: "rgba(120, 160, 201, 0.5)",
-              borderRadius: 10, height: 40, width: 40, borderRadius: 80
-            }}
-            onPress={next_button_pressed}
-            rounded={false}
-            disabled={false}
-          />
-        </View>
-      </KeyboardAvoidingView >
-    </TouchableWithoutFeedback>
+      </View>
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  personal_info: {
-    backgroundColor: "rgba(91, 194, 231, 0.3)",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  input: {
-    width: "80%",
-    height: 100
-  },
-
-
-});
-
 
 function mapStateToProps(state) {
   return {

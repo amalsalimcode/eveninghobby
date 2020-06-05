@@ -39,19 +39,9 @@ const PassCodeSignup = props => {
 
     return (
         <>
-            <PassCodeInput setPassCode={setPassCode} value={passCode}/>
-            <View style={{...commonStyles.inputView, borderColor: "red", borderWidth: errWidth}} >
-                <TextInput
-                    style={commonStyles.inputText}
-                    placeholder={reEnterLabel}
-                    placeholderTextColor="#003f5c"
-                    onChangeText={reEnterPassHandler}
-                    value={reEnterPassCode}
-                    secureTextEntry={true}
-                    keyboardType="number-pad"
-                />
-            </View>
-
+            <PassCodeInput setPassCode={setPassCode} value={passCode} />
+            <PassCodeInput setPassCode={setPassCode} value={reEnterPassCode}
+                placeholder={reEnterLabel} onChangeText={reEnterPassHandler} borderWidth={errWidth} />
         </>
     )
 

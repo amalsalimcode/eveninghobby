@@ -1,13 +1,12 @@
 import React from 'react'
-import { WebView } from 'react-native-webview';
 import AnimationSample from './referenceComponents/AnimationSample';
 import Transactions from './transactions/Transactions';
 import SlideView from './referenceComponents/SlideView';
 import { connect } from 'react-redux'
-import { View, Button } from 'react-native';
 import AuthScreen from './login/AuthScreen'
 import BottomNavBar from './referenceComponents/BottomNavBar';
 import TopNavBar from './TopNavBar';
+import GradientColor from './referenceComponents/GradientColor';
 
 const Screen = props => {
 
@@ -25,6 +24,8 @@ const Screen = props => {
         return (<Transactions />)
       case 5:
         return (<SlideView />)
+      case 6:
+        return (<GradientColor />)
       default:
         console.log("nothing doing")
         return

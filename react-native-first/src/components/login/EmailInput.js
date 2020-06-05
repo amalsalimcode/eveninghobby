@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Image } from 'react-native';
 import { commonStyles } from '../common/styles'
 
 
@@ -29,9 +29,15 @@ const EmailInput = props => {
     }
 
     return (
-        <View style={{...commonStyles.inputView, borderColor: "red", borderWidth: errorWidth}} >
+        <View style={{
+            ...commonStyles.inputView, flexDirection: "row",
+            paddingLeft: 15, borderColor: "red", borderWidth: errorWidth
+        }} >
+
+            <Image style={{ marginRight: 10, marginTop: 15, height: 20, width: 20 }} source={require('../../../assets/email.png')} />
+
             <TextInput
-                style={commonStyles.inputText}
+                style={{ ...commonStyles.inputText, flex: 1 }}
                 placeholder="Email"
                 placeholderTextColor="#003f5c"
                 onChangeText={(entered_text) => { setTmpEmail(entered_text) }}
@@ -40,6 +46,7 @@ const EmailInput = props => {
                 autoCapitalize='none'
                 onBlur={validateEmailHandler}
             />
+
         </View>
     )
 
