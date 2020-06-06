@@ -33,7 +33,7 @@ export const commonStyles = StyleSheet.create({
     inputText: {
         height: 50,
         fontSize: 16,
-        color: "#ff427f",
+        color: "#003f5c",
     },
     authScreen: {
         flex: 1,

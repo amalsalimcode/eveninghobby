@@ -7,6 +7,7 @@ import EmailInput from './EmailInput';
 import { commonStyles, colorPallette } from '../common/styles'
 import PassCodeInput from './PassCodeInput';
 import LoginButton from './LoginButton';
+import GradientBackground from '../common/GradientBackground';
 
 
 
@@ -22,22 +23,23 @@ const SignIn = props => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={-150}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        style={{ ...commonStyles.authScreen, paddingTop: 100 }}>
+    <>
+      <GradientBackground>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
 
-        <View style={{ backgroundColor: colorPallette.background, alignItems: "center", paddingTop: 50 }}>
-          <Image style={{ height: 200, width: 200, backgroundColor: colorPallette.background }} source={require('../../../assets/dolphin.png')} />
-        </View>
+            <Image style={{ height: 200, width: 200 }} source={require('../../../assets/dolphin.png')} />
+            <EmailInput defaultEmail={props.defaultEmail} />
+            <PassCodeInput />
+            <LoginButton btnMsg="SignIn" pressAction={next_button_pressed} />
 
-        <EmailInput defaultEmail={props.defaultEmail} />
-        <PassCodeInput />
-        <LoginButton btnMsg="SignIn" pressAction={next_button_pressed} />
-
-      </KeyboardAvoidingView >
-    </TouchableWithoutFeedback>
+          </KeyboardAvoidingView >
+        </TouchableWithoutFeedback>
+        <View style={{ paddingBottom: 150 }} />
+      </GradientBackground>
+    </>
   )
 }
 

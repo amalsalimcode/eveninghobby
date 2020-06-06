@@ -4,18 +4,18 @@ import Transactions from './transactions/Transactions';
 import SlideView from './referenceComponents/SlideView';
 import { connect } from 'react-redux'
 import AuthScreen from './login/AuthScreen'
-import BottomNavBar from './referenceComponents/BottomNavBar';
-import TopNavBar from './TopNavBar';
 import GradientColor from './referenceComponents/GradientColor';
+import MainNav from './MainNav';
+import GradientBackground from './common/GradientBackground';
 
 const Screen = props => {
 
   function get_current_screen(screen_val) {
     switch (screen_val) {
       case 0:
-        return (<TopNavBar />)
+        return (<MainNav/>)
       case 1:
-        return (<BottomNavBar />)
+        return(<GradientBackground />)
       case 2:
         return (<AnimationSample />)
       case 3:

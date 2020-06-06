@@ -10,26 +10,29 @@ import Receipts from './receipts/Receipts'
 import SingleDataTemplate from './transactions/details/SingleDataTemplate';
 import AddAccount from './transactions/details/AddAccount'
 import FadeInView from './common/FadeInView';
+import GradientBackground from './common/GradientBackground';
 
 
 function HomeScreen({ navigation }) {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <FadeInView>
-                <SingleDataTemplate onClick={() => navigation.navigate('Transactions')} containerStyle={styles.newAccountContainer} disableExpand={true}>
-                    <Text>Transactions</Text>
-                </SingleDataTemplate>
-                <SingleDataTemplate onClick={() => navigation.navigate('Rewards')} containerStyle={styles.newAccountContainer} disableExpand={true}>
-                    <Text>Rewards</Text>
-                </SingleDataTemplate>
-            </FadeInView>
-        </View >
+        <GradientBackground>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <FadeInView>
+                    <SingleDataTemplate onClick={() => navigation.navigate('Transactions')} containerStyle={styles.newAccountContainer} disableExpand={true}>
+                        <Text>Transactions</Text>
+                    </SingleDataTemplate>
+                    <SingleDataTemplate onClick={() => navigation.navigate('Rewards')} containerStyle={styles.newAccountContainer} disableExpand={true}>
+                        <Text>Rewards</Text>
+                    </SingleDataTemplate>
+                </FadeInView>
+            </View >
+        </GradientBackground>
     );
 }
 
 const Stack = createStackNavigator();
 
-export default function TopNavBar() {
+export default function MainNav() {
     return (
         <NavigationContainer>
             <Stack.Navigator headerMode='none' mode="modal">

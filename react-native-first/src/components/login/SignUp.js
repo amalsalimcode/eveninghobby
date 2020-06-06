@@ -11,6 +11,7 @@ import NameInput from './NameInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import LoginButton from './LoginButton';
+import GradientBackground from '../common/GradientBackground';
 
 const SignUp = props => {
 
@@ -28,23 +29,23 @@ const SignUp = props => {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-          style={{ backgroundColor: colorPallette.background, alignItems: "center", flex: 1, justifyContent: "center", paddingBottom: 100 }}>
-          <>
-            <Image style={{ height: 200, width: 200, backgroundColor: colorPallette.background }} source={require('../../../assets/dolphin.png')} />
+      <GradientBackground>
+
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            style={{ alignItems: "center", flex: 1, justifyContent: "center", paddingBottom: 100 }}>
+            <Image style={{ height: 200, width: 200 }} source={require('../../../assets/dolphin.png')} />
             <NameInput />
             <EmailInput />
             <PhoneNumberInputs />
             <PassCodeSignup />
             <LoginButton btnMsg="SignUp" pressAction={next_button_pressed} />
-          </>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback >
-      <View style={{paddingBottom: 150, backgroundColor: colorPallette.background}}>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback >
 
-      </View>
+        <View style={{ paddingBottom: 150 }} />
+      </GradientBackground>
     </>
   )
 }
