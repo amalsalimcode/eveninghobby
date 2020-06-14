@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { View, TextInput, Image } from 'react-native';
-import { commonStyles } from '../common/styles'
+import { commonStyles, theme } from '../common/styles'
 
 
 const NameInput = props => {
@@ -26,10 +26,10 @@ const NameInput = props => {
                 <TextInput
                     style={{ ...commonStyles.inputText, flex: 1 }}
                     placeholder="Name"
-                    placeholderTextColor="#003f5c"
                     autoCapitalize='words'
                     onChangeText={props.setName}
                     value={props.name}
+                    placeholderTextColor={theme.placeholderText}
                 />
 
             </View>

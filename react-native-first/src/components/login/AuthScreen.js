@@ -25,9 +25,9 @@ const AuthScreen = props => {
     function get_current_screen() {
         switch (curScreen) {
             case 0:
-                return (<SignIn />)
+                return (props.navigation.navigate("SignIn"))
             default:
-                return (<SignUp/>)
+                return (props.navigation.navigate("SignUp"))
         }
     }
 

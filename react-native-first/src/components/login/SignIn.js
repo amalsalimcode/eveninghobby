@@ -4,11 +4,9 @@ import { connect } from 'react-redux'
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native"
 import EmailInput from './EmailInput';
-import { commonStyles, colorPallette } from '../common/styles'
 import PassCodeInput from './PassCodeInput';
 import LoginButton from './LoginButton';
 import GradientBackground from '../common/GradientBackground';
-
 
 
 const SignIn = props => {
@@ -16,7 +14,7 @@ const SignIn = props => {
   const next_button_pressed = () => {
 
     if (props.email && props.code) {
-      props.setScreen(0)
+      props.navigation.navigate("Home")
     } else {
       console.log("not all fields are filled in")
     }

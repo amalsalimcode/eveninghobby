@@ -4,8 +4,12 @@
 
 import { connect } from 'react-redux'
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
+import { Col, Row, Grid } from "react-native-easy-grid";
 import SingleDataTemplate from './SingleDataTemplate';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 
 const SingleBarData = props => {
@@ -31,8 +35,11 @@ const SingleBarData = props => {
     const amount = transaction["charge"]
     const purchaseDate = transaction["date"]
 
+    const person = transaction["person"]
+    const borderColor = props.personData[person].color
+
     return (
-        <SingleDataTemplate onClick={changeHeight} expandHeight={100}>
+        <SingleDataTemplate onClick={changeHeight} expandHeight={150} borderLeftColor={borderColor}>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <Text>{name}</Text>
                 <Text style={{ fontSize: fontSize }}>${amount}  </Text>
@@ -41,14 +48,56 @@ const SingleBarData = props => {
             <Text style={{ fontSize: fontSizeExp }}>Amount: ${amount}  </Text>
             <Text>Institution: {institution}</Text>
             <Text>Date of Purchase: {purchaseDate}</Text>
+            <View style={{ marginTop: 10, height: 45 }}>
+                <Grid>
+                    <Row>
+                        <Col style={styles.container}>
+                            <TouchableHighlight onPress={() => { console.log("hi") }}>
+                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: 100 }}>
+                                    <MaterialIcons name="receipt" size={24} color={borderColor} />
+                                    <Text style={{ fontSize: 8 }}>Add Receipt</Text>
+                                </View>
+                            </TouchableHighlight>
+                        </Col>
+                        <Col style={styles.container}>
+                            <TouchableHighlight onPress={() => { console.log("hi") }}>
+                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: 100 }}>
+                                    <Entypo name="flag" size={24} color={borderColor} />
+                                    <Text style={{ fontSize: 8 }}>Flag Transaction</Text>
+                                </View>
+                            </TouchableHighlight>
+                        </Col>
+                        <Col style={styles.container}>
+                            <TouchableHighlight onPress={() => { console.log("hi") }}>
+                                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: 100 }}>
+                                    <Entypo name="eye-with-line" size={24} color={borderColor} />
+                                    <Text style={{ fontSize: 8 }}>Hide Transaction</Text>
+                                </View>
+                            </TouchableHighlight>
+                        </Col>
+                    </Row>
+                </Grid>
+            </View>
         </SingleDataTemplate>
     )
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 10,
+        marginHorizontal: 2
+    },
+})
+
 function mapStateToProps(state) {
     return {
         barData: state.TransactionsReducer.bar_data,
-        swipeIntercept: state.SwipeReducer.barDataSwiped
+        swipeIntercept: state.SwipeReducer.barDataSwiped,
+        personData: state.PersonReducer,
     }
 }
 

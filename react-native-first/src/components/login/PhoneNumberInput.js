@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput, Image } from 'react-native'
 import { Input } from 'react-native-elements'
 import { AsYouType } from 'libphonenumber-js'
 import { connect } from 'react-redux'
-import { commonStyles } from '../common/styles';
+import { commonStyles, theme } from '../common/styles';
 
 
 const PhoneNumberInputs = props => {
@@ -65,13 +65,13 @@ const PhoneNumberInputs = props => {
                 <TextInput
                     style={{ ...commonStyles.inputText, flex: 1 }}
                     placeholder="Phone Number"
-                    placeholderTextColor="#003f5c"
                     onChangeText={onChange}
                     value={formattedNumber}
                     autoCorrect={false}
                     autoCapitalize='none'
                     onBlur={onBlur}
                     keyboardType="phone-pad"
+                    placeholderTextColor={theme.placeholderText}
                 />
             </View>
         </>

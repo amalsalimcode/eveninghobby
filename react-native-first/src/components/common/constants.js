@@ -1,7 +1,10 @@
+import { Dimensions } from "react-native";
 
 let constants = {
-    diffDays: 7
+    diffDays: 7,
+    windowWidth: Dimensions.get('window').width
 }
+
 
 export function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {

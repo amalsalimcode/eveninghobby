@@ -7,13 +7,10 @@ import { StyleSheet, Text, View, Animated } from 'react-native'
 import BarData from '../transactions/details/BarData';
 import Transactions from '../transactions/Transactions';
 import { connect } from 'react-redux';
+import constants from '../common/constants';
 
 
 var goHidden = true;
-
-// multiply by 2, so that the view is positioned
-// to the right of the screen
-const windowPosition = Dimensions.get('window').width;
 
 const SlideView = props => {
 
@@ -24,7 +21,7 @@ const SlideView = props => {
 
         goHidden = !goHidden
         Animated.timing(bounceValue, {
-            toValue: goHidden ? 0 : windowPosition * -1,
+            toValue: goHidden ? 0 : constants.windowWidth * -1,
             duration: 1000
         }).start(props.toggleBarDataSwipe)
     }
@@ -44,10 +41,10 @@ const SlideView = props => {
     return (
         <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
             <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
-                <View style={{width: windowPosition}}>
+                <View style={{width: constants.windowWidth}}>
                     <Text>This is a sub view</Text>
                 </View>
-                <View style={{width: windowPosition}}>
+                <View style={{width: constants.windowWidth}}>
                     <Transactions />
                 </View>
             </Animated.View>

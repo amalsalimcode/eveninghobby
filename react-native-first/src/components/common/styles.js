@@ -12,9 +12,32 @@ export const COLORS = {
     }
 }
 
-export const colorPallette = {
-    background: "#4d4d4d"
+const colorPallette  = {
+    "zima": {
+        primary: "#003f5c",
+        secondary: "#191919",
+        inputText: "#003f5c",
+        placeholderText: "#003f5c",
+        inputBg: "grey",
+        vibrantPrimary: "#ff427f",
+        vibrantSecondary: "orange",
+        subtlePrimary: "white",
+        subleSecondary: "#e5f7ff"
+    },
+    "grey": {
+        primary: "#424242",
+        secondary: "#191919",
+        inputText: "#17181B",
+        placeholderText: "#17181B",
+        inputBg: "grey",
+        vibrantPrimary: "#ff427f",
+        vibrantSecondary: "orange",
+        subtlePrimary: "#bdbdbd",
+        subleSecondary: "#9e9e9e"
+    }
 }
+export const theme = colorPallette["grey"]
+
 
 export const commonStyles = StyleSheet.create({
     input: {
@@ -23,7 +46,7 @@ export const commonStyles = StyleSheet.create({
     },
     inputView: {
         width: "80%",
-        backgroundColor: "grey",
+        backgroundColor: theme.inputBg,
         borderRadius: 45,
         height: 50,
         marginBottom: 20,
@@ -33,7 +56,6 @@ export const commonStyles = StyleSheet.create({
     inputText: {
         height: 50,
         fontSize: 16,
-        color: "#003f5c",
     },
     authScreen: {
         flex: 1,

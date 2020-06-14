@@ -10,10 +10,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SingleDataTemplate = props => {
 
+    const initialHeight = props.initialHeight ? props.initialHeight : 25
 
-    var expandHeight = props.expandHeight ? props.expandHeight: 110
+    var expandHeight = props.expandHeight ? props.expandHeight : 110
     const [height, setHeight] = useState(expandHeight)
-    const curHeight = useRef(new Animated.Value(25)).current;
+    const curHeight = useRef(new Animated.Value(initialHeight)).current;
 
     const changeHeight = () => {
 
@@ -29,7 +30,7 @@ const SingleDataTemplate = props => {
             return
         }
 
-        height == expandHeight ? setHeight(25) : setHeight(expandHeight)
+        height == expandHeight ? setHeight(initialHeight) : setHeight(expandHeight)
         Animated.timing(curHeight, {
             toValue: height,
             duration: 1000
@@ -45,10 +46,7 @@ const SingleDataTemplate = props => {
             }}>
 
                 <Animated.View style={{ height: curHeight, paddingTop: 3 }}>
-                    <View style={styles.viewStyle} shadowOffset={{ height: 10 }}
-                        shadowColor='black'
-                        shadowOpacity={0.4}
-                        shadowOffset={{ height: 2, width: 2 }}>
+                    <View style={styles.viewStyle}>
 
                         {props.children}
 
@@ -67,12 +65,13 @@ const styles = StyleSheet.create({
         borderLeftWidth: 4,
         backgroundColor: "white",
         borderWidth: 0.3,
-        borderRadius: 10,
-        shadowColor: "black",
+        borderRadius: 1,
         width: "95%",
         shadowOpacity: 0.1,
+        shadowColor: "black",
         shadowRadius: 40,
         marginBottom: 8,
+        shadowOffset: { height: 2, width: 2 }
     },
     viewStyle: {
         marginHorizontal: 10
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         barData: state.TransactionsReducer.bar_data,
-        swipeIntercept: state.SwipeReducer.barDataSwiped
+        swipeIntercept: state.SwipeReducer.barDataSwiped,
     }
 }
 

@@ -7,7 +7,7 @@
 import BarGraph from './graph/BarGraph'
 import { connect } from 'react-redux'
 import React, { useEffect } from 'react';
-import { ActivityIndicator, Text } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import BarSummary from './summary/BarSummary'
 import constants from '../common/constants';
 import { usePrevious } from './utils'
@@ -16,7 +16,7 @@ import BarDetails from './details/BarDetails';
 const Transactions = props => {
 
 
-    const prevValues = usePrevious( props.fullDate )
+    const prevValues = usePrevious(props.fullDate)
 
     useEffect(() => {
 
@@ -55,7 +55,8 @@ const Transactions = props => {
             <>
                 <BarGraph />
                 <BarSummary />
-                <BarDetails {...props}/>
+                <BarDetails {...props} />
+                <View style={{ height: 400 }} />
             </>
     )
 }

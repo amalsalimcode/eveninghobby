@@ -21,7 +21,7 @@ const SignUp = props => {
       " number: " + props.number + " code: " + props.code)
 
     if (props.name && props.number && props.code && props.email) {
-      props.setScreen(0)
+      props.navigation.navigate("Home")
     } else {
       console.log("not all fields are filled in")
     }

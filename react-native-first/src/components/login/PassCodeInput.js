@@ -1,9 +1,8 @@
 import { View, TextInput, StyleSheet, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback, ShadowPropTypesIOS } from 'react-native'
 import React, { useState, useEffect } from "react";
 import { Image } from "react-native"
-import { commonStyles } from '../common/styles'
+import { commonStyles, theme } from '../common/styles'
 import { connect } from 'react-redux'
-
 
 /*
  * two ways of entering here:
@@ -40,7 +39,7 @@ const PassCodeInput = props => {
         placeholder={props.placeholder ? props.placeholder : "4 digit passcode"}
         onChangeText={props.onChangeText ? props.onChangeText : passhandler}
         value={props.value ? props.value : props.code}
-        placeholderTextColor="#003f5c"
+        placeholderTextColor={theme.placeholderText}
         keyboardType="number-pad"
         secureTextEntry={true}
         maxLength={4}

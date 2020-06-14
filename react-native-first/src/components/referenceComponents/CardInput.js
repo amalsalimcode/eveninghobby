@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native'
-import { CreditCardInput } from "react-native-input-credit-card";
+import { CreditCardInput, CardView } from "react-native-input-credit-card";
 import { Icon, Button } from 'react-native-elements';
 
 
@@ -18,32 +18,16 @@ const CardInput = props => {
 
     function go_next() {
         if (isValid) {
-            props.setCardInput(2)
+            // props.setCardInput(2)
+            console.log("go next")
         }
     }
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.card_info}>
-                <CreditCardInput onChange={on_change} requiresName={true} />
-                <View style={styles.nav_button}>
-                    <View style={{ marginRight: "2%" }}>
-                        <Button raised
-                            icon={<Icon name="navigate-before" />}
-                            buttonStyle={styles.nav_icon_style}
-                            onPress={props.setCardInput.bind(this, 0)}
-                            rounded={false}
-                        />
-                    </View>
-                    <View style={{ marginLeft: "2%" }}>
-                        <Button raised
-                            icon={<Icon name="navigate-next" />}
-                            buttonStyle={styles.nav_icon_style}
-                            onPress={go_next}
-                            rounded={false}
-                        />
-                    </View>
-                </View>
+                <CreditCardInput  onChange={on_change} requiresName={true} />
+                {/* <CardView name="amal salim" number="3797 661889 68001"/> */}
             </View>
         </TouchableWithoutFeedback>
     )

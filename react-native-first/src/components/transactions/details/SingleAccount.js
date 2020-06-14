@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import SingleDataTemplate from "./SingleDataTemplate";
 import { connect } from 'react-redux'
+
+
+export const bankMapping = {
+  "Wells Fargo": require("../../../../assets/bank_logos/wells.png"),
+  "Bank of America": require("../../../../assets/bank_logos/boa.png"),
+  "Citi": require("../../../../assets/bank_logos/citi.jpg"),
+  "US Bank": require("../../../../assets/bank_logos/us.png")
+}
 
 
 const SingleAccount = props => {
@@ -18,23 +26,27 @@ const SingleAccount = props => {
         return (<></>)
     } else {
         return (
-            <SingleDataTemplate expandHeight={110}>
+            <SingleDataTemplate initialHeight={45} expandHeight={125}>
 
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text>{props.data["accountName"]}</Text>
+                <View style={{marginTop: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                    <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+                        <Image style={{ height: 35, width: 50, marginRight: 10 }} source={bankMapping[props.data.institution]} />
+                        <Text style={{marginTop: 10}}>{props.data["accountName"]}</Text>
+                    </View>
                     <Text style={{ fontSize: fontSize }}>${expense_rounded}  </Text>
-                </View>
+
+                </View >
                 <Text></Text>
                 <Text>
-                    Account: {accountId}
+                    Account ID: {accountId}
                 </Text>
                 <Text>
-                    Account Type: {props.data["accountType"]}
+                    {/* Account Type: {props.data["accountType"]} */}
                 </Text>
                 <Text>
-                    Bank: {props.data["institution"]}
+                    {/* Bank: {props.data["institution"]} */}
                 </Text>
-            </SingleDataTemplate>
+            </SingleDataTemplate >
         );
     }
 }

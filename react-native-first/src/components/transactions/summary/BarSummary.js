@@ -85,7 +85,7 @@ const BarSummary = props => {
 const styles = StyleSheet.create({
     square: {
         alignSelf: "center",
-        borderColor: "black",
+        borderColor: "grey",
         backgroundColor: "white",
         borderWidth: 0.7,
         borderRadius: 10,

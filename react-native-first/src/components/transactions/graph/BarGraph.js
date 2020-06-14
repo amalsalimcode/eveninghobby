@@ -3,6 +3,7 @@ import SingleBarGraph from './SingleBarGraph'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Text, PanResponder, Animated } from 'react-native'
 import DashedLine from './DashedLine'
+import { theme } from '../../common/styles'
 
 
 const BarGraph = props => {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         height: "100%",
     },
     x_axis: {
-        backgroundColor: "grey",
+        backgroundColor: theme.vibrantSecondary,
         height: 30,
         flexDirection: "row",
         justifyContent: "center",

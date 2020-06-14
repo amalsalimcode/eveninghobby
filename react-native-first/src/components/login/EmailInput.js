@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { View, TextInput, Image } from 'react-native';
-import { commonStyles } from '../common/styles'
+import { commonStyles, theme } from '../common/styles'
+import { ThemeProvider } from 'react-native-paper';
 
 
 const EmailInput = props => {
@@ -39,7 +40,7 @@ const EmailInput = props => {
             <TextInput
                 style={{ ...commonStyles.inputText, flex: 1 }}
                 placeholder="Email"
-                placeholderTextColor="#003f5c"
+                placeholderTextColor={theme.placeholderText}
                 onChangeText={(entered_text) => { setTmpEmail(entered_text) }}
                 value={props.name}
                 autoCorrect={false}

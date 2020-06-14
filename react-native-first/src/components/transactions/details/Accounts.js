@@ -49,10 +49,25 @@ const Accounts = props => {
     }
 
     const newAccount = () => {
-
-        console.log(props)
         props.navigation.navigate("AddAccount")
-        // props.setScreen(8)
+    }
+
+    const setPersonDetails= (count, name, data) => {
+        switch (count) {
+            case 0:
+                data.avatarPath = require('../../../../assets/avatar-pink.png')
+                data.color = "#ff427f"
+                data.name = name
+                props.setPersonData(data)
+                return
+            default:
+                data.avatarPath = require('../../../../assets/avatar-green.png')
+                data.color = "green"
+                data.name = name
+                props.setPersonData(data)
+                return
+
+        }
     }
 
     const getAccounts = () => {
@@ -60,6 +75,7 @@ const Accounts = props => {
         let x = []
         let name = ""
         let prevName = ""
+        let personCount = 0
 
         if (!props.dataLoaded) {
             return (
@@ -75,16 +91,19 @@ const Accounts = props => {
 
                 for (let idx = 0; idx < props.data.length; idx++) {
 
-                    name = props.data[idx].firstName.charAt(0).toUpperCase() + props.data[idx].firstName.slice(1)
+                    name = props.data[idx].firstName
 
                     // new person
                     if (name != prevName) {
+                        var data = {}
+                        setPersonDetails(personCount, name, data)
                         x.push(
-                            < View style={styles.container} key={uuidv4()} >
-                                <Image style={styles.tinyLogo} source={require('../../../../assets/avatar-pink.png')} />
-                                <Text style={{ color: "black" }}> {name} </Text>
+                            < View style={{...styles.container}} key={uuidv4()} >
+                                <Image style={styles.tinyLogo} source={data.avatarPath} />
+                                <Text style={{ color: data.color }}> {name} </Text>
                             </View >
                         )
+                        personCount += 1
                     }
 
                     x.push(
@@ -112,6 +131,7 @@ const Accounts = props => {
                 {getAccounts()}
             </GestureRecognizer>
         </ScrollView>
+
     )
 }
 
@@ -134,9 +154,7 @@ var styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         alignSelf: "center",
-        borderColor: "#ff427f",
-        // backgroundColor: "#ff427f",
-        borderWidth: 2,
+        borderWidth: 1,
         borderRadius: 10,
         shadowColor: "black",
         width: "95%",
@@ -168,7 +186,8 @@ function mapDispatchToProps(dispatch) {
             type: 'SET_BAR_DATA_SWIPE',
             source: "accounts"
         }),
-        setScreen: (data) => dispatch({ type: "SET_SCREEN", data: data })
+        setScreen: (data) => dispatch({ type: "SET_SCREEN", data: data }),
+        setPersonData: (data) => dispatch({ type: "SET_PERSON_INFO", data: data })
     }
 }
 

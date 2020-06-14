@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 
 import BarData from "./BarData";
 import Accounts from "./Accounts";
+import constants from "../../common/constants";
 
-const windowPosition = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 var goHidden = true;
 
@@ -23,7 +24,7 @@ const BarDetails = props => {
 
         goHidden = !goHidden
         Animated.timing(bounceValue, {
-            toValue: goHidden ? 0 : windowPosition * -1,
+            toValue: goHidden ? 0 : constants.windowWidth * -1,
             duration: 1000
         }).start(props.toggleBarDataSwipe)
     }
@@ -41,16 +42,19 @@ const BarDetails = props => {
     }
 
     return (
-        <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
-            <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
-                <View style={{ width: windowPosition }}>
-                    <Accounts {...props}/>
-                </View>
-                <View style={{ width: windowPosition }}>
-                    <BarData />
-                </View>
-            </Animated.View>
-        </GestureRecognizer >
+        <View style={{height: windowHeight-300}}>
+            <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
+                <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
+                    <View style={{ width: constants.windowWidth }}>
+                        <Accounts {...props} />
+                    </View>
+                    <View style={{ width: constants.windowWidth }}>
+                        <BarData />
+                    </View>
+                </Animated.View>
+            </GestureRecognizer >
+        </View>
+
     )
 }
 
@@ -73,7 +77,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        toggleBarDataSwipe: () => dispatch({type: 'TOGGLE_BAR_DATA_SWIPE'}),
+        toggleBarDataSwipe: () => dispatch({ type: 'TOGGLE_BAR_DATA_SWIPE' }),
     }
 }
 
