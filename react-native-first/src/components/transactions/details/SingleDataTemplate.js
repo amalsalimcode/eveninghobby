@@ -16,6 +16,9 @@ const SingleDataTemplate = props => {
     const [height, setHeight] = useState(expandHeight)
     const curHeight = useRef(new Animated.Value(initialHeight)).current;
 
+    // upon click, adjust borderWidth
+    const [borderStrength, setBorderStength] = useState(0.3)
+
     const changeHeight = () => {
 
         // check to see if the user was swiping for
@@ -24,24 +27,31 @@ const SingleDataTemplate = props => {
             return
         }
 
+        // check there is a custom function the parent wants to execute
         props.onClick ? props.onClick() : {}
 
-        if (props.disableExpand) {
-            return
+        // by default expand the container
+        var enableExpand = props.enableExpand ? props.enableExpand : true
+        if (enableExpand) {
+            height == expandHeight ? setHeight(initialHeight) : setHeight(expandHeight)
+            Animated.timing(curHeight, {
+                toValue: height,
+                duration: 1000
+            }).start()
         }
 
-        height == expandHeight ? setHeight(initialHeight) : setHeight(expandHeight)
-        Animated.timing(curHeight, {
-            toValue: height,
-            duration: 1000
-        }).start()
-
+        // by default don't highlight border
+        var highlightBorder = props.highlightBorder ? props.highlightBorder : true
+        if (highlightBorder) {
+            var toVal = borderStrength == 4 ? 0.3 : 4
+            setBorderStength(toVal)
+        }
     }
 
     return (
         <>
             <TouchableOpacity onPress={() => (changeHeight())} style={{
-                ...styles.square, ...props.containerStyle,
+                ...styles.square, ...props.containerStyle, borderWidth: borderStrength,
                 borderLeftColor: props.borderLeftColor ? props.borderLeftColor : "black"
             }}>
 

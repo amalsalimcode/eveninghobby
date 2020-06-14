@@ -7,7 +7,7 @@ let initial_data = {
 const BarGraphReducer = (state = initial_data, action) => {
     var state_cpy = JSON.parse(JSON.stringify(state))
     switch (action.type) {
-        case "ENABLE_BAR":
+        case "TOGGLE_BAR":
             state_cpy.enabledBars[action.uuid] ^= true
             return state_cpy
         case "CLEAR_ENABLED_BARS":

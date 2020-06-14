@@ -76,7 +76,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        barButtonPressed: (uuid) => dispatch({ type: 'ENABLE_BAR', uuid: uuid })
+        barButtonPressed: (uuid) => dispatch({ type: 'TOGGLE_BAR', uuid: uuid })
     }
 }
 

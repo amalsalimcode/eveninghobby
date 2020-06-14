@@ -81,7 +81,7 @@ const Accounts = props => {
             return (
                 <View style={{ flex: 1, justifyContent: "center" }}>
                     <ActivityIndicator />
-                    <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} disableExpand={true} key={uuidv4()}>
+                    <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
                         <Text >Click here to add new Account</Text>
                     </SingleDataTemplate>
                 </View>)
@@ -116,7 +116,7 @@ const Accounts = props => {
 
             // Ability to add a new Bank Account
             x.push(
-                <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} disableExpand={true} key={uuidv4()}>
+                <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
                     <Text >Click here to add new Account</Text>
                 </SingleDataTemplate>
             )

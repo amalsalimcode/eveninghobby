@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 
 
 export const bankMapping = {
-  "Wells Fargo": require("../../../../assets/bank_logos/wells.png"),
-  "Bank of America": require("../../../../assets/bank_logos/boa.png"),
-  "Citi": require("../../../../assets/bank_logos/citi.jpg"),
-  "US Bank": require("../../../../assets/bank_logos/us.png")
+    "Wells Fargo": require("../../../../assets/bank_logos/wells.png"),
+    "Bank of America": require("../../../../assets/bank_logos/boa.png"),
+    "Citi": require("../../../../assets/bank_logos/citi.jpg"),
+    "US Bank": require("../../../../assets/bank_logos/us.png")
 }
+
 
 
 const SingleAccount = props => {
@@ -26,12 +27,11 @@ const SingleAccount = props => {
         return (<></>)
     } else {
         return (
-            <SingleDataTemplate initialHeight={45} expandHeight={125}>
-
-                <View style={{marginTop: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+            <SingleDataTemplate onClick={() => {props.toggleAccount(props.data.accountId)}} initialHeight={45} expandHeight={45}>
+                <View style={{ marginTop: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
                         <Image style={{ height: 35, width: 50, marginRight: 10 }} source={bankMapping[props.data.institution]} />
-                        <Text style={{marginTop: 10}}>{props.data["accountName"]}</Text>
+                        <Text style={{ marginTop: 10 }}>{props.data["accountName"]}</Text>
                     </View>
                     <Text style={{ fontSize: fontSize }}>${expense_rounded}  </Text>
 
@@ -63,7 +63,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         clearEnabledBars: () => dispatch({ type: "CLEAR_ENABLED_BARS" }),
-        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
+        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction }),
+        toggleAccount: (accountId) => dispatch({ type: "TOGGLE_ACCOUNT", accountId: accountId })
     }
 }
 

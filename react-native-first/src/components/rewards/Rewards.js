@@ -46,7 +46,7 @@ const Rewards = props => {
 
                 <View style={{ marginVertical: 10 }}></View>
 
-                <SingleDataTemplate borderLeftColor="white" containerStyle={styles.newAccountContainer} disableExpand={true}>
+                <SingleDataTemplate borderLeftColor="white" containerStyle={styles.newAccountContainer} enableExpand={false}>
                     <Text >Click here to add new Credit Card</Text>
                 </SingleDataTemplate>
 
