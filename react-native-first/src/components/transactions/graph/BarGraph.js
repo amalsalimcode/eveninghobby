@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import SingleBarGraph from './SingleBarGraph'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Text, PanResponder, Animated } from 'react-native'
+import { View, StyleSheet, Text, PanResponder, Animated, ActivityIndicator } from 'react-native'
 import DashedLine from './DashedLine'
 import { theme } from '../../common/styles'
 
@@ -21,6 +21,9 @@ const BarGraph = props => {
 
     useEffect(() => {
         props.clearEnabledBars();
+        props.clearDataLoaded();
+        // this is making accounts become rendered extra for some reason
+        // props.clearAccountInfo();
     }, [props.curDate]);
 
     function bar_layout() {
@@ -53,22 +56,35 @@ const BarGraph = props => {
         )
     }
 
-    return (
-        <>
-            <View style={styles.plot_container}>
-                <DashedLine />
-                <Animated.View {...panResponder.panHandlers}>
-                    <View style={styles.values_container}>
-                        {bar_layout()}
-                    </View>
-                </Animated.View>
-            </View>
+    if (!props.dataLoaded) {
+        return (
+            <>
+                <View style={{...styles.plot_container, justifyContent: "center", alignContent: "center"}}>
+                    <ActivityIndicator />
+                </View>
+                <View style={styles.x_axis}>
+                    {x_axis_layout()}
+                </View>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <View style={styles.plot_container}>
+                    <DashedLine />
+                    <Animated.View {...panResponder.panHandlers}>
+                        <View style={styles.values_container}>
+                            {bar_layout()}
+                        </View>
+                    </Animated.View>
+                </View>
 
-            <View style={styles.x_axis}>
-                {x_axis_layout()}
-            </View>
-        </>
-    )
+                <View style={styles.x_axis}>
+                    {x_axis_layout()}
+                </View>
+            </>
+        )
+    }
 
 }
 
@@ -103,7 +119,8 @@ function mapStateToProps(state) {
     return {
         bar_data: state.TransactionsReducer.bar_data,
         meta: state.TransactionsReducer.meta_data,
-        curDate: state.TransactionsReducer.meta_data.fullDate
+        curDate: state.TransactionsReducer.meta_data.fullDate,
+        dataLoaded: state.BarSummaryReducer.dataLoaded
 
     }
 }
@@ -111,7 +128,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         clearEnabledBars: () => dispatch({ type: "CLEAR_ENABLED_BARS" }),
-        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction })
+        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction }),
+        clearDataLoaded: () => dispatch({ type: "CLEAR_TOTAL_EXPENSES_LOADED" }),
+        clearAccountInfo: () => dispatch({ type: "CLEAR_ACCOUNT_INFO" })
     }
 }
 

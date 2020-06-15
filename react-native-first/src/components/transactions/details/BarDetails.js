@@ -42,7 +42,7 @@ const BarDetails = props => {
     }
 
     return (
-        <View style={{height: windowHeight-300}}>
+        <View style={{ height: windowHeight - 300 }}>
             <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
                 <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
                     <View style={{ width: constants.windowWidth }}>
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        barData: state.TransactionsReducer.bar_data
     }
 }
 

@@ -54,7 +54,7 @@ const BarSummary = props => {
         }).then((response) => response.json())
             .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
 
-    }, [props.fullDate, props.enabledBars, props.enabledAccounts]);
+    }, [props.enabledBars, props.enabledAccounts]);
 
     var dt = new Date(props.fullDate)
     var dt_str = dt.getMonth() + 1 + "-" + dt.getDate() + "-" + dt.getFullYear()
@@ -124,10 +124,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         showSettings: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" }),
-        setTotalSpent: (enabledBars) => dispatch({
-            type: "SET_TOTAL_SPENT",
-            enabledBars: enabledBars
-        }),
         setAllTotalExpenses: (data, enabledBars) => dispatch({
             type: "SET_ALL_TOTAL_EXPENSES", data: data,
             enabledBars: enabledBars

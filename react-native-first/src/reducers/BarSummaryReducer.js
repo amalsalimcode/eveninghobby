@@ -6,7 +6,8 @@ let initial_data = {
     totalSpent: 0,
     highestSpent: 0,
     expensePerAccount: {},
-    serverData: undefined
+    serverData: undefined,
+    dataLoaded: false
 }
 
 const arrSum = arr => arr.reduce((a, b) => a + b, 0)
@@ -37,6 +38,7 @@ const BarSummaryReducer = (state = initial_data, action) => {
             state_cpy.highestSpent = Math.max(...state_cpy.expensePerDay)
             state_cpy.totalSpent = arrSum(expensePerDay).toFixed(2)
             state_cpy.expensePerAccount = expensePerAccount
+            state_cpy.dataLoaded = true
             return state_cpy
 
         case "SET_ALL_TOTAL_EXPENSES_CACHE":
@@ -71,22 +73,8 @@ const BarSummaryReducer = (state = initial_data, action) => {
             state_cpy.totalSpent = arrSum(expensePerDay).toFixed(2)
             state_cpy.expensePerAccount = expensePerAccount
             return state_cpy
-
-
-        case "SET_TOTAL_SPENT":
-            state_cpy.totalSpent = 200
-            return state_cpy
-
-            for (let idx = 0; idx < state_cpy.expensePerDay.length; idx++) {
-                if (!isBarEnabled(action.enabledBars, idx)) {
-                    continue
-                }
-                total += state_cpy.expensePerDay[idx]
-            }
-
-            // set newly computed totalSpent to the state
-            state_cpy.totalSpent = total.toFixed(2)
-
+        case "CLEAR_TOTAL_EXPENSES_LOADED":
+            state_cpy.dataLoaded = false
             return state_cpy
 
     }

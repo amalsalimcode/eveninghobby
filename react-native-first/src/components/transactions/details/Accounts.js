@@ -12,7 +12,7 @@ import { uuidv4 } from '../../common/constants'
 
 const Accounts = props => {
 
-    
+
     useEffect(() => {
 
         // get curr date
@@ -53,7 +53,7 @@ const Accounts = props => {
         props.navigation.navigate("AddAccount")
     }
 
-    const setPersonDetails= (count, name, data) => {
+    const setPersonDetails = (count, name, data) => {
         switch (count) {
             case 0:
                 data.avatarPath = require('../../../../assets/avatar-pink.png')
@@ -78,53 +78,42 @@ const Accounts = props => {
         let prevName = ""
         let personCount = 0
 
-        if (!props.dataLoaded) {
-            return (
-                <View style={{ flex: 1, justifyContent: "center" }}>
-                    <ActivityIndicator />
-                    <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} eExpand={true} key={uuidv4()}>
-                        <Text >Click here to add new Account</Text>
-                    </SingleDataTemplate>
-                </View>)
-        } else {
+        if (props.data.length) {
 
-            if (props.data.length) {
+            for (let idx = 0; idx < props.data.length; idx++) {
 
-                for (let idx = 0; idx < props.data.length; idx++) {
+                name = props.data[idx].firstName
 
-                    name = props.data[idx].firstName
-
-                    // new person
-                    if (name != prevName) {
-                        var data = {}
-                        setPersonDetails(personCount, name, data)
-                        x.push(
-                            < View style={{...styles.container}} key={uuidv4()} >
-                                <Image style={styles.tinyLogo} source={data.avatarPath} />
-                                <Text style={{ color: data.color }}> {name} </Text>
-                            </View >
-                        )
-                        personCount += 1
-                    }
-
+                // new person
+                if (name != prevName) {
+                    var data = {}
+                    setPersonDetails(personCount, name, data)
                     x.push(
-                        <SingleAccount key={uuidv4()} data={props.data[idx]} />
+                        < View style={{ ...styles.container }} key={uuidv4()} >
+                            <Image style={styles.tinyLogo} source={data.avatarPath} />
+                            <Text style={{ color: data.color }}> {name} </Text>
+                        </View >
                     )
-
-                    prevName = name
+                    personCount += 1
                 }
+
+                x.push(
+                    <SingleAccount key={uuidv4()} data={props.data[idx]} />
+                )
+
+                prevName = name
             }
-
-            // Ability to add a new Bank Account
-            x.push(
-                <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
-                    <Text >Click here to add new Account</Text>
-                </SingleDataTemplate>
-            )
         }
-        return x
-    }
 
+        // Ability to add a new Bank Account
+        x.push(
+            <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
+                <Text >Click here to add new Account</Text>
+            </SingleDataTemplate>
+        )
+        return x
+
+    }
 
     return (
         <ScrollView>
@@ -135,9 +124,6 @@ const Accounts = props => {
 
     )
 }
-
-
-
 
 var styles = StyleSheet.create({
     test: {
@@ -175,9 +161,7 @@ var styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         data: state.SettingsReducer.accountInfo,
-        dataLoaded: state.SettingsReducer.dataLoaded,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
-        enabledBars: state.BarGraphReducer.enabledBars
     }
 }
 

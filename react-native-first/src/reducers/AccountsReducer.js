@@ -1,6 +1,6 @@
 let initial_data = {
     enabledAccounts: {},
-    enabledPersons: {}
+    enabledPersons: {},
 }
 
 const AccountsReducer = (state = initial_data, action) => {
@@ -9,8 +9,6 @@ const AccountsReducer = (state = initial_data, action) => {
         case "TOGGLE_ACCOUNT":
             var toVal = !state_cpy.enabledAccounts[action.accountId] 
             state_cpy.enabledAccounts[action.accountId] = toVal
-            return state_cpy
-        case "TOGGLE_PERSON":
             return state_cpy
         case "CLEAR_ACCOUNT_SELECTION": 
             state_cpy.enabledAccounts = {}

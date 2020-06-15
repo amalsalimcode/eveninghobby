@@ -9,7 +9,7 @@ const FadeInView = (props) => {
       fadeAnim,
       {
         toValue: 1,
-        duration: 1000,
+        duration: 4000,
       }
     ).start();
   }, [])

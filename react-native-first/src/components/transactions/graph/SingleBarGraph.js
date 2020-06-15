@@ -31,12 +31,9 @@ const SingleBarGraph = props => {
             toValue: height,
             duration: 1000
         }).start()
-    }, [props.expensePerDay[props.uuid]]);
+    }, []);
 
     function bar_pressed() {
-        // if (isAnyAccountPressed(props.enabledAccounts)) {
-            // return
-        // }
         pressOpacity > 0.5 ? setPressOpacity(0.5) : setPressOpacity(1)
         props.barButtonPressed(props.uuid)
     }

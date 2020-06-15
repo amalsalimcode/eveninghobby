@@ -6,26 +6,16 @@
 
 import BarGraph from './graph/BarGraph'
 import { connect } from 'react-redux'
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native'
 import BarSummary from './summary/BarSummary'
 import constants from '../common/constants';
-import { usePrevious } from './utils'
 import BarDetails from './details/BarDetails';
 
 const Transactions = props => {
 
 
-    const prevValues = usePrevious(props.fullDate)
-
     useEffect(() => {
-
-        if (prevValues) {
-            /* when props.setTransactionData() is called, component re-renders, so disable it*/
-            if (JSON.stringify(prevValues.fullDate) == (JSON.stringify(props.fullDate))) {
-                return
-            }
-        }
 
         // get curr date
         var dt = new Date(props.fullDate)
@@ -64,7 +54,7 @@ const Transactions = props => {
 function mapStateToProps(state) {
     return {
         data_loaded: state.TransactionsReducer.meta_data.data_loaded,
-        fullDate: state.TransactionsReducer.meta_data.fullDate
+        fullDate: state.TransactionsReducer.meta_data.fullDate,
     }
 }
 
