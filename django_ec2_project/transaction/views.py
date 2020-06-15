@@ -96,9 +96,10 @@ class RetrieveTransaction(TransactionView):
         self.setup_kwargs()
         tr = Transaction.objects.annotate(accountId=F('account__accountId'),
                                           institution=F('account__credentials__bank'),
-                                          charge=F('amount'))
+                                          charge=F('amount'),
+                                          person=F('account__credentials__person__firstName'))
         transactions = tr.filter(**self.kwargs).values('charge', 'name', 'date',
-                                                       'accountId', 'institution')
+                                                       'accountId', 'institution', 'person')
         trans = []
         for tr in transactions:
             # put transaction date as indices eg: day 0
@@ -138,7 +139,7 @@ class RetrieveAccount(TransactionView):
                                            firstName=F('account__credentials__person__firstName'))
 
         accounts = acc.filter(**self.kwargs).distinct().values('accountId', 'accountName',
-                                                    'accountType', 'institution', 'firstName') \
+                                                               'accountType', 'institution', 'firstName') \
             .order_by('-firstName', '-account__credentials__bank')
         #
         # x = list(accounts)

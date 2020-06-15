@@ -12,6 +12,9 @@ const AccountsReducer = (state = initial_data, action) => {
             return state_cpy
         case "TOGGLE_PERSON":
             return state_cpy
+        case "CLEAR_ACCOUNT_SELECTION": 
+            state_cpy.enabledAccounts = {}
+            return state_cpy
     }
     return state
 }

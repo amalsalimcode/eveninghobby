@@ -11,15 +11,26 @@ import { usePrevious } from '../utils';
 const BarSummary = props => {
 
     const enabledBars = props.enabledBars
-    const prevValues = usePrevious({ enabledBars })
+    const prevBarValues = usePrevious({ enabledBars })
+
+    const enabledAccounts = props.enabledAccounts
+    const prevAccountValues = usePrevious({ enabledAccounts })
 
     useEffect(() => {
 
-        if (prevValues) {
-            if (JSON.stringify(prevValues.enabledBars) != (JSON.stringify(props.enabledBars))) {
-                props.setAllTotalExpensesCache(props.serverData, props.enabledBars)
-                return
-            }
+        var barsChanged = false
+        if (prevBarValues) {
+            barsChanged = JSON.stringify(prevBarValues.enabledBars) != (JSON.stringify(props.enabledBars))
+        }
+
+        var accountsChanged = false
+        if (prevAccountValues) {
+            accountsChanged = JSON.stringify(prevAccountValues.enabledAccounts) != (JSON.stringify(props.enabledAccounts))
+        }
+
+        if (barsChanged || accountsChanged) {
+            props.setAllTotalExpensesCache(props.serverData, props.enabledBars, props.enabledAccounts)
+            return
         }
 
         // get curr date
@@ -43,7 +54,7 @@ const BarSummary = props => {
         }).then((response) => response.json())
             .then((json) => props.setAllTotalExpenses(json, props.enabledBars));
 
-    }, [props.fullDate, props.enabledBars]);
+    }, [props.fullDate, props.enabledBars, props.enabledAccounts]);
 
     var dt = new Date(props.fullDate)
     var dt_str = dt.getMonth() + 1 + "-" + dt.getDate() + "-" + dt.getFullYear()
@@ -102,11 +113,11 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        visibleInstitutions: state.SettingsReducer.institutionVisibility,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
         totalSpent: state.BarSummaryReducer.totalSpent,
         enabledBars: state.BarGraphReducer.enabledBars,
-        serverData: state.BarSummaryReducer.serverData
+        serverData: state.BarSummaryReducer.serverData,
+        enabledAccounts: state.AccountsReducer.enabledAccounts
     }
 }
 
@@ -121,10 +132,11 @@ function mapDispatchToProps(dispatch) {
             type: "SET_ALL_TOTAL_EXPENSES", data: data,
             enabledBars: enabledBars
         }),
-        setAllTotalExpensesCache: (data, enabledBars) => dispatch({
+        setAllTotalExpensesCache: (data, enabledBars, enabledAccounts) => dispatch({
             type: "SET_ALL_TOTAL_EXPENSES_CACHE", data: data,
-            enabledBars: enabledBars
-        })
+            enabledBars: enabledBars, enabledAccounts: enabledAccounts
+        }),
+        clearAccountsClicked: () => dispatch({type: "CLEAR_ACCOUNT_SELECTION"})
     }
 }
 

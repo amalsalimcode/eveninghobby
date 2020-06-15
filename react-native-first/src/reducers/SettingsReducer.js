@@ -18,11 +18,11 @@ const SettingsReducer = (state = initialData, action) => {
             state_cpy.enable = !state_cpy.enable
             return state_cpy
         case "TOGGLE_AMEX_VISIBILITY":
-            state_cpy.institutionVisibility["AMEX"] = 
+            state_cpy.institutionVisibility["AMEX"] =
                 !state_cpy.institutionVisibility["AMEX"]
             return state_cpy
         case "TOGGLE_WELLS_VISIBILITY":
-            state_cpy.institutionVisibility["Wells Fargo"] = 
+            state_cpy.institutionVisibility["Wells Fargo"] =
                 !state_cpy.institutionVisibility["Wells Fargo"]
             return state_cpy
         case "SET_ACCOUNT_INFO":

@@ -20,15 +20,7 @@ const BarData = props => {
 
             for (transIdx = 0; transIdx < props.barData[barIdx].transaction_data.length; transIdx++) {
 
-                var institution = props.barData[barIdx].transaction_data[transIdx]["institution"]
                 var accountId = props.barData[barIdx].transaction_data[transIdx]["accountId"]
-
-                // if the inst is not listed, then by default show it
-                var isVisible = institution in props.isVisible ? !props.isVisible[institution] : false
-                if (isVisible) {
-                    continue
-                }
-
                 if (!isAccountEnabled(props.enabledAccounts, accountId)) {
                     continue
                 }
@@ -56,7 +48,6 @@ const BarData = props => {
 function mapStateToProps(state) {
     return {
         barData: state.TransactionsReducer.bar_data,
-        isVisible: state.SettingsReducer.institutionVisibility,
         enabledBars: state.BarGraphReducer.enabledBars,
         enabledAccounts: state.AccountsReducer.enabledAccounts
     }

@@ -12,6 +12,7 @@ import { uuidv4 } from '../../common/constants'
 
 const Accounts = props => {
 
+    
     useEffect(() => {
 
         // get curr date
@@ -81,7 +82,7 @@ const Accounts = props => {
             return (
                 <View style={{ flex: 1, justifyContent: "center" }}>
                     <ActivityIndicator />
-                    <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
+                    <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} eExpand={true} key={uuidv4()}>
                         <Text >Click here to add new Account</Text>
                     </SingleDataTemplate>
                 </View>)
@@ -176,6 +177,7 @@ function mapStateToProps(state) {
         data: state.SettingsReducer.accountInfo,
         dataLoaded: state.SettingsReducer.dataLoaded,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
+        enabledBars: state.BarGraphReducer.enabledBars
     }
 }
 

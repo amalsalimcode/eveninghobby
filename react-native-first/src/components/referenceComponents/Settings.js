@@ -17,8 +17,8 @@ const Settings = props => {
       body: JSON.stringify({
         "token": "asdfasdfasdfasdf",
       })
-    }).then((response) => response.json())
-      .then((json) => props.setAccountInfo(json));
+    }).then((response) => response.json());
+      // .then((json) => props.setAccountInfo(json));
   }, [])
 
 
@@ -101,7 +101,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setAccountInfo: (data) => dispatch({ type: "SET_ACCOUNT_INFO", data: data }),
     toggleVisibility: () => dispatch({ type: "TOGGLE_SETTINGS_VISIBILITY" }),
     toggleAmex: () => dispatch({ type: "TOGGLE_AMEX_VISIBILITY" }),
     toggleWells: () => dispatch({ type: "TOGGLE_WELLS_VISIBILITY" })

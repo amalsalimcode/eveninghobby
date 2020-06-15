@@ -10,6 +10,7 @@ import SingleDataTemplate from './SingleDataTemplate';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { sleep } from '../utils'
 
 
 const SingleBarData = props => {
@@ -36,7 +37,7 @@ const SingleBarData = props => {
     const purchaseDate = transaction["date"]
 
     const person = transaction["person"]
-    const borderColor = props.personData[person].color
+    const borderColor = person in props.personData ? props.personData[person].color : "black"
 
     return (
         <SingleDataTemplate onClick={changeHeight} expandHeight={150} borderLeftColor={borderColor}>

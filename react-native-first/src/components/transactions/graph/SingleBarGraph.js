@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Animated, StyleSheet } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { connect } from 'react-redux'
+import { isAccountEnabled, isAnyAccountPressed } from '../utils';
 
 const SingleBarGraph = props => {
 
@@ -33,6 +34,9 @@ const SingleBarGraph = props => {
     }, [props.expensePerDay[props.uuid]]);
 
     function bar_pressed() {
+        // if (isAnyAccountPressed(props.enabledAccounts)) {
+            // return
+        // }
         pressOpacity > 0.5 ? setPressOpacity(0.5) : setPressOpacity(1)
         props.barButtonPressed(props.uuid)
     }
@@ -70,13 +74,14 @@ function mapStateToProps(state) {
         expensePerDay: state.BarSummaryReducer.expensePerDay,
         highestSpent: state.BarSummaryReducer.highestSpent,
         enabledBars: state.BarGraphReducer.enabledBars,
-        curDate: state.TransactionsReducer.meta_data.fullDate
+        curDate: state.TransactionsReducer.meta_data.fullDate,
+        enabledAccounts: state.AccountsReducer.enabledAccounts
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        barButtonPressed: (uuid) => dispatch({ type: 'TOGGLE_BAR', uuid: uuid })
+        barButtonPressed: (uuid) => dispatch({ type: 'TOGGLE_BAR', uuid: uuid }),
     }
 }
 

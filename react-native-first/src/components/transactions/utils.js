@@ -26,9 +26,16 @@ export function isBarEnabled(enabledBars, curBarIdx) {
     return false
 }
 
-export function isAccountEnabled(enabledAccounts, accountId) {
+export function isAnyAccountPressed(enabledAccounts) {
+    for (account in enabledAccounts) {
+        if (enabledAccounts[account]) {
+            return true
+        }
+    }
+    return false
+}
 
-    // console.log("checking for accountId", accountId)
+export function isAccountEnabled(enabledAccounts, accountId) {
 
     /* check if any accountId is enabled */
     var all_disabled = true
@@ -44,11 +51,21 @@ export function isAccountEnabled(enabledAccounts, accountId) {
         return true
     }
 
+    if (!accountId) {
+        return all_disabled
+    }
+
     /* accountId has never been clicked, so its enabled */
     var enabled = accountId in enabledAccounts ? enabledAccounts[accountId] : false
 
     return enabled
 }
+
+  export function sleep(milliseconds){
+  /* now anywhere in your code, you can say sleep(5000)
+     and it will sleep for 5 seconds */
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
 
 export function usePrevious(value) {
     const ref = useRef();

@@ -1,5 +1,5 @@
 import constants from '../components/common/constants'
-import { isBarEnabled } from "../components/transactions/utils"
+import { isBarEnabled, isAccountEnabled, isAnyAccountPressed } from "../components/transactions/utils"
 
 let initial_data = {
     expensePerDay: Array(constants.diffDays),
@@ -41,23 +41,29 @@ const BarSummaryReducer = (state = initial_data, action) => {
 
         case "SET_ALL_TOTAL_EXPENSES_CACHE":
             /* totalSpent over multiple days */
+
             var expensePerAccount = {}
             var expensePerDay = []
+
             // for each day
             for (let idx = 0; idx < action.data.length; idx++) {
-                var total = 0
                 if (!isBarEnabled(action.enabledBars, idx)) {
-                    expensePerDay.push(total)
+                    expensePerDay.push(0)
                     continue
                 }
                 // for each account in each day
+                var total = 0
                 for (key in action.data[idx]) {
+
                     if (!expensePerAccount[key]) {
                         expensePerAccount[key] = 0
                     }
                     expensePerAccount[key] += action.data[idx][key]
-                    total += action.data[idx][key]
+                    if (isAccountEnabled(action.enabledAccounts, key)) {
+                        total += action.data[idx][key]
+                    }
                 }
+
                 expensePerDay.push(total)
             }
 

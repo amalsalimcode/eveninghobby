@@ -27,7 +27,7 @@ const SingleAccount = props => {
         return (<></>)
     } else {
         return (
-            <SingleDataTemplate onClick={() => {props.toggleAccount(props.data.accountId)}} initialHeight={45} expandHeight={45}>
+            <SingleDataTemplate onClick={() => { props.toggleAccount(props.data.accountId) }} initialHeight={45} expandHeight={45}>
                 <View style={{ marginTop: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
                         <Image style={{ height: 35, width: 50, marginRight: 10 }} source={bankMapping[props.data.institution]} />
@@ -62,8 +62,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        clearEnabledBars: () => dispatch({ type: "CLEAR_ENABLED_BARS" }),
-        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction }),
         toggleAccount: (accountId) => dispatch({ type: "TOGGLE_ACCOUNT", accountId: accountId })
     }
 }
