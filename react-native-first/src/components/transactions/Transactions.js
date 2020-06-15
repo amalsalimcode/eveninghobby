@@ -22,38 +22,47 @@ const Transactions = props => {
         var month = dt.getMonth() + 1
         var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
 
+        var request_body = JSON.stringify({
+            "email": "amal.salim@gmail.com",
+            "start_date": date_str,
+            "days": constants.diffDays,
+        })
+
         fetch('http://127.0.0.1:8000/transaction/', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                "email": "amal.salim@gmail.com",
-                "start_date": date_str,
-                "days": constants.diffDays,
-            })
+            body: request_body
         }).then((response) => response.json())
             .then((json) => props.setTransactionData(json));
+
+        fetch('http://127.0.0.1:8000/transaction/retrieveAccount', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: request_body
+        }).then((response) => response.json())
+            .then((json) => props.setAccountInfo(json));
 
     }, [props.fullDate]);
 
     return (
         // show loading sign until from backend is received
-        !props.data_loaded ?
-            <ActivityIndicator /> :
-            <>
-                <BarGraph />
-                <BarSummary />
-                <BarDetails {...props} />
-                <View style={{ height: 400 }} />
-            </>
+        <>
+            <BarGraph />
+            <BarSummary />
+            <BarDetails {...props} />
+            <View style={{ height: 400 }} />
+        </>
     )
 }
 
 function mapStateToProps(state) {
     return {
-        data_loaded: state.TransactionsReducer.meta_data.data_loaded,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
     }
 }
@@ -64,6 +73,7 @@ function mapDispatchToProps(dispatch) {
             type: 'SET_TRANSACTION_DATA',
             transactions: transactions,
         }),
+        setAccountInfo: (data) => dispatch({ type: "SET_ACCOUNT_INFO", data: data })
     }
 }
 

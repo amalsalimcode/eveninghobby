@@ -11,7 +11,7 @@ var dt = new Date(d.setDate(diff));
 let initial_data = {
     bar_data: [],
     meta_data: {
-        data_loaded: true,
+        dataLoaded: false,
         fullDate: dt.toString(),
     }
 }
@@ -29,6 +29,7 @@ function set_trans_data(state, response_data) {
         var diff_days = response_data[idx]["diff"]
         state.bar_data[diff_days].transaction_data.push(response_data[idx])
     }
+    state.meta_data.dataLoaded = true
 }
 
 function clear_trans_data(state) {
@@ -47,10 +48,6 @@ const TransactionsReducer = (state = initial_data, action) => {
             set_trans_data(state_cpy, action.transactions)
             // ack that data from backend is received
             // now the components can load
-            return state_cpy
-
-        case "SET_DATA_LOADED":
-            state_cpy.meta_data.data_loaded = true
             return state_cpy
 
         case "CHANGE_CUR_WEEK":

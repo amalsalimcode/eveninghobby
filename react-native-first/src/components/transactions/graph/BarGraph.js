@@ -23,7 +23,7 @@ const BarGraph = props => {
         props.clearEnabledBars();
         props.clearDataLoaded();
         // this is making accounts become rendered extra for some reason
-        // props.clearAccountInfo();
+        props.clearAccountInfo();
     }, [props.curDate]);
 
     function bar_layout() {

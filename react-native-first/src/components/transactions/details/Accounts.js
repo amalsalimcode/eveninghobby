@@ -5,36 +5,16 @@ import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
-import constants from '../../common/constants';
 import SingleAccount from './SingleAccount';
 import SingleDataTemplate from './SingleDataTemplate';
 import { uuidv4 } from '../../common/constants'
+import FadeInView from '../../common/FadeInView';
 
 const Accounts = props => {
 
 
     useEffect(() => {
 
-        // get curr date
-        var dt = new Date(props.fullDate)
-        var month = dt.getMonth() + 1
-        var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
-
-        var request_body = {
-            "email": "amal.salim@gmail.com",
-            "start_date": date_str,
-            "days": constants.diffDays,
-        }
-
-        fetch('http://127.0.0.1:8000/transaction/retrieveAccount', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(request_body)
-        }).then((response) => response.json())
-            .then((json) => props.setAccountInfo(json));
     }, [props.fullDate])
 
     const on_swipe = (gestureName) => {
@@ -115,14 +95,26 @@ const Accounts = props => {
 
     }
 
-    return (
-        <ScrollView>
-            <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.3, gestureIsClickThreshold: 100 }}>
-                {getAccounts()}
-            </GestureRecognizer>
-        </ScrollView>
+    if (!props.dataLoaded) {
+        return (
+            <>
+                <View style={{ ...styles.plot_container, justifyContent: "center", alignContent: "center" }}>
+                    <ActivityIndicator />
+                </View>
+            </>
+        )
+    } else {
+        return (
+            <ScrollView>
+                <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.3, gestureIsClickThreshold: 100 }}>
+                    <FadeInView>
+                        {getAccounts()}
+                    </FadeInView>
+                </GestureRecognizer>
+            </ScrollView>
 
-    )
+        )
+    }
 }
 
 var styles = StyleSheet.create({
@@ -162,17 +154,17 @@ function mapStateToProps(state) {
     return {
         data: state.SettingsReducer.accountInfo,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
+        dataLoaded: state.SettingsReducer.dataLoaded
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        setAccountInfo: (data) => dispatch({ type: "SET_ACCOUNT_INFO", data: data }),
         setBarDataSwipe: () => dispatch({
             type: 'SET_BAR_DATA_SWIPE',
             source: "accounts"
         }),
-        setScreen: (data) => dispatch({ type: "SET_SCREEN", data: data }),
+
         setPersonData: (data) => dispatch({ type: "SET_PERSON_INFO", data: data })
     }
 }
