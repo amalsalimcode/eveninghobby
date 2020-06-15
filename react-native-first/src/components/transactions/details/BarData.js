@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, ActivityIndicator } from 'react-native'
 import SingleBarData from './SingleBarData';
 import { isBarEnabled, isAccountEnabled } from '../utils'
+import FadeInView from '../../common/FadeInView';
 
 const BarData = props => {
 
@@ -37,11 +38,23 @@ const BarData = props => {
         )
     }
 
-    return (
-        <ScrollView>
-            {dataLayout()}
-        </ScrollView>
-    )
+    if (!props.dataLoaded) {
+        return (
+            <>
+                <View style={{ justifyContent: "center", alignContent: "center" }}>
+                    <ActivityIndicator />
+                </View>
+            </>
+        )
+    } else {
+        return (
+            <ScrollView>
+                <FadeInView>
+                    {dataLayout()}
+                </FadeInView>
+            </ScrollView>
+        )
+    }
 
 }
 
@@ -49,7 +62,8 @@ function mapStateToProps(state) {
     return {
         barData: state.TransactionsReducer.bar_data,
         enabledBars: state.BarGraphReducer.enabledBars,
-        enabledAccounts: state.AccountsReducer.enabledAccounts
+        enabledAccounts: state.AccountsReducer.enabledAccounts,
+        dataLoaded: state.SettingsReducer.dataLoaded
     }
 }
 
