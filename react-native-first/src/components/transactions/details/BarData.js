@@ -62,8 +62,8 @@ function mapStateToProps(state) {
     return {
         barData: state.TransactionsReducer.bar_data,
         enabledBars: state.BarGraphReducer.enabledBars,
-        enabledAccounts: state.AccountsReducer.enabledAccounts,
-        dataLoaded: state.SettingsReducer.dataLoaded
+        enabledAccounts: state.EnabledAccountsReducer.enabledAccounts,
+        dataLoaded: state.AccountsReducer.dataLoaded
     }
 }
 

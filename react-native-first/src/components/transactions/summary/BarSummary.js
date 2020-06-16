@@ -117,7 +117,7 @@ function mapStateToProps(state) {
         totalSpent: state.BarSummaryReducer.totalSpent,
         enabledBars: state.BarGraphReducer.enabledBars,
         serverData: state.BarSummaryReducer.serverData,
-        enabledAccounts: state.AccountsReducer.enabledAccounts
+        enabledAccounts: state.EnabledAccountsReducer.enabledAccounts
     }
 }
 

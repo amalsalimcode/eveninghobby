@@ -72,7 +72,7 @@ function mapStateToProps(state) {
         highestSpent: state.BarSummaryReducer.highestSpent,
         enabledBars: state.BarGraphReducer.enabledBars,
         curDate: state.TransactionsReducer.meta_data.fullDate,
-        enabledAccounts: state.AccountsReducer.enabledAccounts
+        enabledAccounts: state.EnabledAccountsReducer.enabledAccounts
     }
 }
 

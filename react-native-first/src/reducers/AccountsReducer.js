@@ -1,20 +1,23 @@
-let initial_data = {
-    enabledAccounts: {},
-    enabledPersons: {},
+
+let initialData = {
+    accountInfo: [],
+    dataLoaded: false,
 }
 
-const AccountsReducer = (state = initial_data, action) => {
+const AccountsReducer = (state = initialData, action) => {
     var state_cpy = JSON.parse(JSON.stringify(state))
     switch (action.type) {
-        case "TOGGLE_ACCOUNT":
-            var toVal = !state_cpy.enabledAccounts[action.accountId] 
-            state_cpy.enabledAccounts[action.accountId] = toVal
+        case "SET_ACCOUNT_INFO":
+            state_cpy.accountInfo = [...action.data]
+            state_cpy.dataLoaded = true
             return state_cpy
-        case "CLEAR_ACCOUNT_SELECTION": 
-            state_cpy.enabledAccounts = {}
+        case "CLEAR_ACCOUNT_INFO":
+            state_cpy.accountInfo = []
+            state_cpy.dataLoaded = false
             return state_cpy
+
     }
     return state
 }
 
-export default AccountsReducer 
+export default AccountsReducer

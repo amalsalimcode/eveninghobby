@@ -152,9 +152,9 @@ var styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        data: state.SettingsReducer.accountInfo,
+        data: state.AccountsReducer.accountInfo,
         fullDate: state.TransactionsReducer.meta_data.fullDate,
-        dataLoaded: state.SettingsReducer.dataLoaded
+        dataLoaded: state.AccountsReducer.dataLoaded
     }
 }
 
