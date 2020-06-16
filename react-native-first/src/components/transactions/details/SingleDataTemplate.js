@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import React, { useRef, useState } from 'react';
 import { Animated, View, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import GradientBackground from '../../common/GradientBackground';
+import { theme } from '../../common/styles';
 
 
 const SingleDataTemplate = props => {
@@ -17,7 +19,7 @@ const SingleDataTemplate = props => {
     const curHeight = useRef(new Animated.Value(initialHeight)).current;
 
     // upon click, adjust borderWidth
-    const [borderStrength, setBorderStength] = useState(0.3)
+    const [borderStrength, setBorderStength] = useState(1)
 
     const changeHeight = () => {
 
@@ -42,29 +44,27 @@ const SingleDataTemplate = props => {
 
         // by default don't highlight border
         var highlightBorder = props.highlightBorder ? props.highlightBorder : true
-        if (highlightBorder) {
-            var toVal = borderStrength == 4 ? 0.3 : 4
+        if (highlightBorder && !props.borderLeftColor) {
+            var toVal = borderStrength == 4 ? 1 : 4
             setBorderStength(toVal)
         }
     }
 
     return (
-        <>
-            <TouchableOpacity onPress={() => (changeHeight())} style={{
-                ...styles.square, ...props.containerStyle, borderWidth: borderStrength,
-                borderLeftColor: props.borderLeftColor ? props.borderLeftColor : "black"
-            }}>
+        <TouchableOpacity onPress={() => (changeHeight())} style={{
+            ...styles.square, ...props.containerStyle, borderWidth: borderStrength,
+            borderLeftColor: props.borderLeftColor ? props.borderLeftColor : "",
+            borderLeftWidth: props.borderLeftColor ? 2 : borderStrength
+        }}>
+            <Animated.View style={{ height: curHeight, paddingTop: 3 }}>
+                <View style={styles.viewStyle}>
 
-                <Animated.View style={{ height: curHeight, paddingTop: 3 }}>
-                    <View style={styles.viewStyle}>
+                    {props.children}
 
-                        {props.children}
+                </View>
+            </Animated.View>
 
-                    </View>
-                </Animated.View>
-
-            </TouchableOpacity>
-        </>
+        </TouchableOpacity>
     )
 }
 
@@ -72,9 +72,6 @@ const styles = StyleSheet.create({
     square: {
         alignSelf: "center",
         borderColor: "grey",
-        borderLeftWidth: 4,
-        backgroundColor: "white",
-        borderWidth: 0.3,
         borderRadius: 1,
         width: "95%",
         shadowOpacity: 0.1,

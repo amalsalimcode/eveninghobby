@@ -11,6 +11,8 @@ import { ActivityIndicator, Text, View } from 'react-native'
 import BarSummary from './summary/BarSummary'
 import constants from '../common/constants';
 import BarDetails from './details/BarDetails';
+import GradientBackground from '../common/GradientBackground';
+import { theme } from '../common/styles';
 
 const Transactions = props => {
 
@@ -52,12 +54,12 @@ const Transactions = props => {
 
     return (
         // show loading sign until from backend is received
-        <>
+        < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
             <BarGraph />
             <BarSummary />
             <BarDetails {...props} />
             <View style={{ height: 400 }} />
-        </>
+        </GradientBackground>
     )
 }
 

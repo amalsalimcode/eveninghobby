@@ -9,6 +9,7 @@ import SingleAccount from './SingleAccount';
 import SingleDataTemplate from './SingleDataTemplate';
 import { uuidv4 } from '../../common/constants'
 import FadeInView from '../../common/FadeInView';
+import { theme } from '../../common/styles';
 
 const Accounts = props => {
 
@@ -71,7 +72,7 @@ const Accounts = props => {
                     x.push(
                         < View style={{ ...styles.container }} key={uuidv4()} >
                             <Image style={styles.tinyLogo} source={data.avatarPath} />
-                            <Text style={{ color: data.color }}> {name} </Text>
+                            <Text> {name} </Text>
                         </View >
                     )
                     personCount += 1
@@ -88,7 +89,7 @@ const Accounts = props => {
         // Ability to add a new Bank Account
         x.push(
             <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
-                <Text >Click here to add new Account</Text>
+                <Text style={{color: "white"}}>Click here to add new Account</Text>
             </SingleDataTemplate>
         )
         return x
@@ -96,9 +97,10 @@ const Accounts = props => {
     }
 
     if (!props.dataLoaded) {
+        console.log("data not loaded yet")
         return (
             <>
-                <View style={{ ...styles.plot_container, justifyContent: "center", alignContent: "center" }}>
+                <View style={{ justifyContent: "center", alignContent: "center" }}>
                     <ActivityIndicator />
                 </View>
             </>
@@ -143,9 +145,9 @@ var styles = StyleSheet.create({
         height: 50
     },
     newAccountContainer: {
-        borderRightWidth: 4,
-        borderRightColor: "black",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: theme.primary,
+        borderRadius: 10
 
     }
 });
