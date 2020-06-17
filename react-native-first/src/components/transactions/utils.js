@@ -61,11 +61,11 @@ export function isAccountEnabled(enabledAccounts, accountId) {
     return enabled
 }
 
-  export function sleep(milliseconds){
-  /* now anywhere in your code, you can say sleep(5000)
-     and it will sleep for 5 seconds */
+export function sleep(milliseconds) {
+    /* now anywhere in your code, you can say sleep(5000)
+       and it will sleep for 5 seconds */
     return new Promise(resolve => setTimeout(resolve, milliseconds))
-  }
+}
 
 export function usePrevious(value) {
     const ref = useRef();
@@ -73,4 +73,17 @@ export function usePrevious(value) {
         ref.current = value;
     });
     return ref.current;
+}
+
+export function getStartOfWeek(arg) {
+
+    var d = arg == undefined ? new Date() : arg
+    var day = d.getDay()
+
+    // if current day is Saturday (6), don't subtract
+    var days_to_subtract = day == 6 ? 0 : day + 1
+    var diff = d.getDate() - days_to_subtract;
+    var dt = new Date(d.setDate(diff));
+
+    return dt.toString()
 }

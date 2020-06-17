@@ -6,8 +6,6 @@ import { connect } from 'react-redux'
 import React, { useRef, useState } from 'react';
 import { Animated, View, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import GradientBackground from '../../common/GradientBackground';
-import { theme } from '../../common/styles';
 
 
 const SingleDataTemplate = props => {
@@ -19,7 +17,7 @@ const SingleDataTemplate = props => {
     const curHeight = useRef(new Animated.Value(initialHeight)).current;
 
     // upon click, adjust borderWidth
-    const [borderStrength, setBorderStength] = useState(1)
+    const [borderStrength, setBorderStength] = useState(0.7)
 
     const changeHeight = () => {
 
@@ -33,7 +31,7 @@ const SingleDataTemplate = props => {
         props.onClick ? props.onClick() : {}
 
         // by default expand the container
-        var enableExpand = props.enableExpand ? props.enableExpand : true
+        var enableExpand = props.enableExpand === false ? false : true 
         if (enableExpand) {
             height == expandHeight ? setHeight(initialHeight) : setHeight(expandHeight)
             Animated.timing(curHeight, {
@@ -45,7 +43,7 @@ const SingleDataTemplate = props => {
         // by default don't highlight border
         var highlightBorder = props.highlightBorder ? props.highlightBorder : true
         if (highlightBorder && !props.borderLeftColor) {
-            var toVal = borderStrength == 4 ? 1 : 4
+            var toVal = borderStrength == 4 ? 0.7 : 4
             setBorderStength(toVal)
         }
     }
@@ -71,7 +69,7 @@ const SingleDataTemplate = props => {
 const styles = StyleSheet.create({
     square: {
         alignSelf: "center",
-        borderColor: "grey",
+        borderColor: "#3e424b",
         borderRadius: 1,
         width: "95%",
         shadowOpacity: 0.1,

@@ -10,39 +10,45 @@ import constants from "../../common/constants";
 const windowHeight = Dimensions.get('window').height;
 
 var goHidden = true;
+const bounceValue = new Animated.Value(0)
+
+export function toggleAccountTransaction(notifySubscriber, direction) {
+
+    let toVal = null
+    if (direction == "left") {
+        toVal = 0
+    } else if (direction == "right") {
+        toVal = constants.windowWidth * -1
+    }
+
+    notifySubscriber()
+
+    goHidden = !goHidden
+    Animated.timing(bounceValue, {
+        toValue: toVal,
+        duration: 1000
+    }).start(notifySubscriber)
+}
 
 const BarDetails = props => {
 
     useEffect(() => {
     }, []);
 
-
-    const bounceValue = new Animated.Value(0)
-
-    const toggleSubview = () => {
-        props.toggleBarDataSwipe()
-
-        goHidden = !goHidden
-        Animated.timing(bounceValue, {
-            toValue: goHidden ? 0 : constants.windowWidth * -1,
-            duration: 1000
-        }).start(props.toggleBarDataSwipe)
-    }
-
     const on_swipe = (gestureName) => {
         const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
         switch (gestureName) {
             case SWIPE_LEFT:
-                toggleSubview()
+                toggleAccountTransaction(props.toggleBarDataSwipe, "right")
                 return
             case SWIPE_RIGHT:
-                toggleSubview()
+                toggleAccountTransaction(props.toggleBarDataSwipe, "left")
                 return
         }
     }
 
     return (
-        <View style={{ height: windowHeight - 300 }}>
+        <View style={{ height: windowHeight - 340 }}>
             <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
                 <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
                     <View style={{ width: constants.windowWidth }}>

@@ -128,7 +128,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         clearEnabledBars: () => dispatch({ type: "CLEAR_ENABLED_BARS" }),
-        changeCurWeek: (direction) => dispatch({ type: "CHANGE_CUR_WEEK", direction: direction }),
+        changeCurWeek: (direction) => dispatch({ type: "ADD_SUB_CUR_WEEK", direction: direction }),
         clearDataLoaded: () => dispatch({ type: "CLEAR_TOTAL_EXPENSES_LOADED" }),
         clearAccountInfo: () => dispatch({ type: "CLEAR_ACCOUNT_INFO" })
     }

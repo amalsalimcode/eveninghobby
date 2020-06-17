@@ -16,7 +16,7 @@ const SlideView = props => {
 
     const bounceValue = new Animated.Value(0)
 
-    const toggleSubview = () => {
+    const toggleAccountTransaction = () => {
         props.toggleBarDataSwipe()
 
         goHidden = !goHidden
@@ -30,10 +30,10 @@ const SlideView = props => {
         const { SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections;
         switch (gestureName) {
             case SWIPE_LEFT:
-                toggleSubview()
+                toggleAccountTransaction()
                 return
             case SWIPE_RIGHT:
-                toggleSubview()
+                toggleAccountTransaction()
                 return
         }
     }

@@ -12,7 +12,7 @@ export const COLORS = {
     }
 }
 
-const colorPallette  = {
+const colorPallette = {
     "zima": {
         primary: "#003f5c",
         secondary: "#191919",
@@ -33,7 +33,7 @@ const colorPallette  = {
         vibrantPrimary: "#ff427f",
         vibrantSecondary: "orange",
         subtlePrimary: "#bdbdbd",
-        subleSecondary: "#9e9e9e"
+        subleSecondary: "#fffaf0"
     }
 }
 export const theme = colorPallette["grey"]
@@ -63,5 +63,10 @@ export const commonStyles = StyleSheet.create({
         backgroundColor: "grey",
         justifyContent: "flex-start",
         alignItems: "center",
+    },
+    overlayStyle: {
+        backgroundColor: theme.subtlePrimary,
+        borderWidth: 0.5,
+        borderRadius: 12
     },
 });

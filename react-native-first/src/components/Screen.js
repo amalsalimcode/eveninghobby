@@ -6,9 +6,10 @@ import { connect } from 'react-redux'
 import GradientColor from './referenceComponents/GradientColor';
 import MainNav from './MainNav';
 import GradientBackground from './common/GradientBackground';
-import CardInput from './referenceComponents/CardInput';
 import Rewards from './rewards/Rewards';
 import Home from './home/Home';
+import TransactionsNav from './transactions/TransactionsNav'
+import ChangeDate from './transactions/summary/ChangeDate';
 
 const Screen = props => {
 
@@ -27,7 +28,7 @@ const Screen = props => {
       case 5:
         return (<SlideView />)
       case 6:
-        return (<GradientColor />)
+        return (<ChangeDate/>)
       default:
         console.log("nothing doing")
         return

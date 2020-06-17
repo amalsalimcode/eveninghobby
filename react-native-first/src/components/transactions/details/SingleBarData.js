@@ -10,7 +10,6 @@ import SingleDataTemplate from './SingleDataTemplate';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import { sleep } from '../utils'
 
 
 const SingleBarData = props => {

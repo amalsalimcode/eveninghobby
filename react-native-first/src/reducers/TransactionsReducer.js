@@ -1,18 +1,11 @@
 import constants from '../components/common/constants'
-
-var d = new Date();
-var day = d.getDay()
-
-// if current day is Saturday (6), don't subtract
-var days_to_subtract = day == 6 ? 0 : day + 1
-var diff = d.getDate() - days_to_subtract;
-var dt = new Date(d.setDate(diff));
+import { getStartOfWeek } from '../components/transactions/utils';
 
 let initial_data = {
     bar_data: [],
     meta_data: {
         dataLoaded: false,
-        fullDate: dt.toString(),
+        fullDate: getStartOfWeek(null)
     }
 }
 
@@ -50,10 +43,14 @@ const TransactionsReducer = (state = initial_data, action) => {
             // now the components can load
             return state_cpy
 
-        case "CHANGE_CUR_WEEK":
+        case "ADD_SUB_CUR_WEEK":
             var dt = new Date(state_cpy.meta_data.fullDate);
             dt.setDate(dt.getDate() + constants.diffDays * action.direction);
             state_cpy.meta_data.fullDate = dt.toString()
+            return state_cpy
+
+        case "SET_CUR_WEEK":
+            state_cpy.meta_data.fullDate = action.newDate
             return state_cpy
     }
     return state

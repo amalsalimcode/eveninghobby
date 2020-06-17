@@ -1,11 +1,12 @@
 'use strict'
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import constants from '../../common/constants';
 import { usePrevious } from '../utils';
+import ChangeDate from './ChangeDate';
 
 
 const BarSummary = props => {
@@ -15,6 +16,8 @@ const BarSummary = props => {
 
     const enabledAccounts = props.enabledAccounts
     const prevAccountValues = usePrevious({ enabledAccounts })
+
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
 
@@ -60,36 +63,31 @@ const BarSummary = props => {
     var dt_str = dt.getMonth() + 1 + "-" + dt.getDate() + "-" + dt.getFullYear()
 
     return (
-        <>
-            <TouchableOpacity onPress={props.showSettings} style={styles.square}>
-                <Animated.View style={{ height: 30, paddingTop: 6 }}>
-                    <View style={{ marginLeft: 10 }} shadowOffset={{ height: 10 }}
-                        shadowColor='black'
-                        shadowOpacity={0.4}
-                        shadowOffset={{ height: 2, width: 2 }}
-                    >
-                        <View style={{ flexDirection: "row" }}>
-                            <View style={{ flex: 1, alignItems: "flex-start", marginLeft: 35 }}>
-                                <Text>Week Start: </Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Text>    {dt_str}</Text>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: "row" }}>
-                            <View style={{ flex: 1, alignItems: "flex-start", marginLeft: 35 }}>
-                                <Text>Expense This Week: </Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Text>    ${props.totalSpent} </Text>
-                            </View>
-                        </View>
+        <TouchableOpacity onPress={() => {setShowDatePicker(true)}} style={{ ...styles.square, justifyContent: "center" }}>
+            <View style={{ marginLeft: 10 }} shadowOffset={{ height: 10 }}
+                shadowColor='black'
+                shadowOpacity={0.4}
+                shadowOffset={{ height: 2, width: 2 }}
+            >
+                <View style={{ flexDirection: "row" }}>
+                    <View style={{ flex: 1, alignItems: "flex-start", marginLeft: 35 }}>
+                        <Text>Week Start: </Text>
                     </View>
-                </Animated.View>
-
-                {/* <Settings /> */}
-            </TouchableOpacity>
-        </>
+                    <View style={{ flex: 1 }}>
+                        <Text>    {dt_str}</Text>
+                    </View>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                    <View style={{ flex: 1, alignItems: "flex-start", marginLeft: 35 }}>
+                        <Text>Expense This Week: </Text>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <Text>    ${props.totalSpent} </Text>
+                    </View>
+                </View>
+                <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker}/>
+            </View>
+        </TouchableOpacity>
     )
 }
 
@@ -131,7 +129,7 @@ function mapDispatchToProps(dispatch) {
             type: "SET_ALL_TOTAL_EXPENSES_CACHE", data: data,
             enabledBars: enabledBars, enabledAccounts: enabledAccounts
         }),
-        clearAccountsClicked: () => dispatch({type: "CLEAR_ACCOUNT_SELECTION"})
+        clearAccountsClicked: () => dispatch({ type: "CLEAR_ACCOUNT_SELECTION" })
     }
 }
 
