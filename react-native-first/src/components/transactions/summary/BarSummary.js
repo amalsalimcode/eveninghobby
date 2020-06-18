@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         shadowRadius: 40,
         marginBottom: 10,
         marginTop: 20,
-        height: 48
+        height: 48,
     },
 });
 

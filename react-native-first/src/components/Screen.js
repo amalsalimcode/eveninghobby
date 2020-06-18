@@ -1,12 +1,12 @@
 import React from 'react'
 import AnimationSample from './referenceComponents/AnimationSample';
 import Transactions from './transactions/Transactions';
-import SlideView from './referenceComponents/SlideView';
 import { connect } from 'react-redux'
 import MainNav from './MainNav';
 import GradientBackground from './common/GradientBackground';
 import Home from './home/Home';
-import Search from './transactions/Search';
+import AddAccount from './transactions/details/manageAccounts/AddAccount';
+import ManageAccounts from './transactions/details/manageAccounts/ManageAccounts';
 
 const Screen = props => {
 
@@ -23,9 +23,7 @@ const Screen = props => {
       case 4:
         return (<Transactions />)
       case 5:
-        return (<SlideView />)
-      case 6:
-        return (<Search/>)
+        return (<ManageAccounts/>)
       default:
         console.log("nothing doing")
         return

@@ -75,8 +75,8 @@ var styles = StyleSheet.create({
         margin: 2,
     },
     visit: {
-        fontWeight: '300',
-        fontSize: 20,
+        // fontWeight: '300',
+        fontSize: 16,
         color: "black",
         marginBottom: 3
 

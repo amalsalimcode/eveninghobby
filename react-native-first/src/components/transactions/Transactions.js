@@ -13,6 +13,8 @@ import BarDetails from './details/BarDetails';
 import GradientBackground from '../common/GradientBackground';
 import { theme } from '../common/styles';
 import BottomToolbar from './BottomToolbar';
+import ManageAccounts from './details/manageAccounts/ManageAccounts';
+import AddAccount from './details/manageAccounts/AddAccount';
 
 const Transactions = props => {
 
@@ -56,7 +58,8 @@ const Transactions = props => {
         // show loading sign until from backend is received
         < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
             <BarGraph />
-            <BarSummary />
+            {/* <BarSummary /> */}
+            <AddAccount />
             <BarDetails {...props} />
             <BottomToolbar {...props} />
         </GradientBackground >

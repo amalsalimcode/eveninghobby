@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Transactions from './transactions/Transactions';
 import Rewards from './rewards/Rewards'
 import Receipts from './receipts/Receipts'
-import AddAccount from './transactions/details/AddAccount'
+import AddAccount from './transactions/details/manageAccounts/AddAccount'
 import AuthScreen from './login/AuthScreen';
 import SignIn from './login/SignIn';
 import SignUp from './login/SignUp';
