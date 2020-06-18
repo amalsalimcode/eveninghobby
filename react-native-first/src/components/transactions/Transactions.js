@@ -6,18 +6,13 @@
 
 import BarGraph from './graph/BarGraph'
 import { connect } from 'react-redux'
-import React, { useEffect, useRef } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native'
+import React, { useEffect } from 'react';
 import BarSummary from './summary/BarSummary'
 import constants from '../common/constants';
-import BarDetails, { toggleAccountTransaction } from './details/BarDetails';
+import BarDetails from './details/BarDetails';
 import GradientBackground from '../common/GradientBackground';
 import { theme } from '../common/styles';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import BottomToolbar from './BottomToolbar';
 
 const Transactions = props => {
 
@@ -63,55 +58,7 @@ const Transactions = props => {
             <BarGraph />
             <BarSummary />
             <BarDetails {...props} />
-            <View style={{ height: 10 }} />
-
-            <View style={{ height: 60, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5 }} >
-                <View style={{ height: 10 }} />
-
-                <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-
-                    <TouchableOpacity onPress={() => { props.changeCurWeek(-1) }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <AntDesign name="swapleft" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Previous Week</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { toggleAccountTransaction(() => { }, "left") }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <Feather name="dollar-sign" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Transactions</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { toggleAccountTransaction(() => { }, "left") }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <AntDesign name="search1" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Search</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { toggleAccountTransaction(() => { }, "right") }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <MaterialCommunityIcons name="bank-outline" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Bank Accounts</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { props.changeCurWeek(1) }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <AntDesign name="swapright" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Next Week</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                </View>
-
-
-
-            </View>
-
-            <View style={{ height: 100, backgroundColor: theme.subtlePrimary }} />
+            <BottomToolbar {...props} />
         </GradientBackground >
     )
 }

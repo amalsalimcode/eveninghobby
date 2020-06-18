@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Button, Platform, Text } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Overlay } from 'react-native-elements';
-import { theme } from '../../common/styles';
+import { theme, commonStyles } from '../../common/styles';
 import SingleDataTemplate from '../details/SingleDataTemplate';
 import { getStartOfWeek } from '../utils';
 import { connect } from 'react-redux'
@@ -35,24 +35,28 @@ const ChangeDate = props => {
         console.log("here is start of the week", newDt)
     }
 
-    return (
-        <>
-            {/* {Platform.OS == 'ios' && <Button title="hi amal"/>} */}
-            <Overlay onBackdropPress={() => { props.setVisible(false) }} overlayStyle={{ backgroundColor: theme.subtlePrimary, borderWidth: 0.5, borderRadius: 12 }} isVisible={props.visible} height={300}>
-                <View style={{ height: 280, justifyContent: "space-evenly" }}>
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        textColor="red"
-                        value={date}
-                        mode='date'
-                        display="spinner"
-                        onChange={onChange}
-                        style={{}}
-                        overlayStyle={{ backgroundColor: theme.subtlePrimary }}
-                        maximumDate={new Date()}
-                        minimumDate={minimumDate}
-                    />
+    const getDatePicker = () => {
+        return (
+            <DateTimePicker
+                testID="dateTimePicker"
+                textColor="red"
+                value={date}
+                mode='date'
+                display="spinner"
+                onChange={onChange}
+                style={{}}
+                overlayStyle={{ backgroundColor: theme.subtlePrimary }}
+                maximumDate={new Date()}
+                minimumDate={minimumDate}
+            />
+        )
+    }
 
+    if (Platform.OS == 'ios') {
+        return (
+            <Overlay onBackdropPress={() => { props.setVisible(false) }} overlayStyle={commonStyles.overlayStyle} isVisible={props.visible} height={300}>
+                <View style={{ height: 280, justifyContent: "space-evenly" }}>
+                    {getDatePicker()}
                     <SingleDataTemplate onClick={() => { applyDateChange() }}
                         containerStyle={{
                             alignItems: "center",
@@ -63,8 +67,11 @@ const ChangeDate = props => {
                     </SingleDataTemplate>
                 </View>
             </Overlay>
-        </>
-    );
+        );
+    } else {
+        return(props.visible ? getDatePicker() : <></>)
+    }
+
 };
 
 
@@ -75,7 +82,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setWeek: (newDate) => dispatch({type: "SET_CUR_WEEK", newDate: newDate})
+        setWeek: (newDate) => dispatch({ type: "SET_CUR_WEEK", newDate: newDate })
     }
 }
 

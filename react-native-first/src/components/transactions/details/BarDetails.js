@@ -48,19 +48,21 @@ const BarDetails = props => {
     }
 
     return (
-        <View style={{ height: windowHeight - 340 }}>
-            <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
-                <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
-                    <View style={{ width: constants.windowWidth }}>
-                        <BarData />
-                    </View>
-                    <View style={{ width: constants.windowWidth }}>
-                        <Accounts {...props} />
-                    </View>
-                </Animated.View>
-            </GestureRecognizer >
-        </View>
-
+        <>
+            <View style={{ height: windowHeight - 340 }}>
+                <GestureRecognizer onSwipe={(direction, state) => on_swipe(direction, state)} config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 800 }}>
+                    <Animated.View style={[styles.subView, { transform: [{ translateX: bounceValue }] }]}>
+                        <View style={{ width: constants.windowWidth }}>
+                            <BarData />
+                        </View>
+                        <View style={{ width: constants.windowWidth }}>
+                            <Accounts {...props} />
+                        </View>
+                    </Animated.View>
+                </GestureRecognizer >
+            </View>
+            <View style={{ height: 10 }} />
+        </>
     )
 }
 

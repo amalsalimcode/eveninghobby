@@ -3,13 +3,10 @@ import AnimationSample from './referenceComponents/AnimationSample';
 import Transactions from './transactions/Transactions';
 import SlideView from './referenceComponents/SlideView';
 import { connect } from 'react-redux'
-import GradientColor from './referenceComponents/GradientColor';
 import MainNav from './MainNav';
 import GradientBackground from './common/GradientBackground';
-import Rewards from './rewards/Rewards';
 import Home from './home/Home';
-import TransactionsNav from './transactions/TransactionsNav'
-import ChangeDate from './transactions/summary/ChangeDate';
+import Search from './transactions/Search';
 
 const Screen = props => {
 
@@ -28,7 +25,7 @@ const Screen = props => {
       case 5:
         return (<SlideView />)
       case 6:
-        return (<ChangeDate/>)
+        return (<Search/>)
       default:
         console.log("nothing doing")
         return

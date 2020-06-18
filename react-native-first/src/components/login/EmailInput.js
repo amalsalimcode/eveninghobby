@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Input } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { View, TextInput, Image } from 'react-native';
 import { commonStyles, theme } from '../common/styles'
-import { ThemeProvider } from 'react-native-paper';
 
 
 const EmailInput = props => {

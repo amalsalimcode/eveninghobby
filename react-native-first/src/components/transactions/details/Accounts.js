@@ -13,9 +13,7 @@ import { theme } from '../../common/styles';
 
 const Accounts = props => {
 
-
     useEffect(() => {
-
     }, [props.fullDate])
 
     const on_swipe = (gestureName) => {
@@ -135,7 +133,7 @@ var styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         alignSelf: "center",
-        borderWidth: 1,
+        borderWidth: 0.3,
         borderRadius: 10,
         shadowColor: "black",
         width: "95%",

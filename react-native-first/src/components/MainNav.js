@@ -11,6 +11,7 @@ import AuthScreen from './login/AuthScreen';
 import SignIn from './login/SignIn';
 import SignUp from './login/SignUp';
 import Home from './home/Home';
+import Search from './transactions/Search';
 
 const Stack = createStackNavigator();
 
@@ -22,10 +23,11 @@ export default function MainNav() {
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="Home" component={Home} options={{ title: "", headerStyle: { backgroundColor: "red" } }} />
-                <Stack.Screen name="Transactions" component={Transactions} options={{ title: "", headerStyle: { backgroundColor: "white" } }} />
-                <Stack.Screen name="Rewards" component={Rewards} options={{ title: "", headerStyle: { backgroundColor: "white" } }} />
-                <Stack.Screen name="Receipts" component={Receipts} options={{ title: "", headerStyle: { backgroundColor: "white" } }} />
-                <Stack.Screen name="AddAccount" component={AddAccount} options={{ title: "", headerStyle: { backgroundColor: "white" } }} />
+                <Stack.Screen name="Transactions" component={Transactions} />
+                <Stack.Screen name="Rewards" component={Rewards} />
+                <Stack.Screen name="Receipts" component={Receipts} />
+                <Stack.Screen name="AddAccount" component={AddAccount} />
+                <Stack.Screen name="Search" component={Search} />
             </Stack.Navigator>
         </NavigationContainer>
     );
