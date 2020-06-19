@@ -10,11 +10,9 @@ const SemiCircleTemplate = props => {
     useEffect(() => {
     }, []);
 
-    console.log("here is email", props.email, "account", props.accountInfo)
-
     return (
         <TouchableWithoutFeedback style={[styles.circle]}>
-            <View style={{ marginTop: 250, alignItems: "center" }}>
+            <View style={{ marginTop: 300, alignItems: "center" }}>
                 {props.children}
             </View>
         </TouchableWithoutFeedback>
@@ -24,16 +22,16 @@ const SemiCircleTemplate = props => {
 const styles = StyleSheet.create({
 
     circle: {
-        marginTop: -constants.windowWidth/2 - 50,
+        marginTop: -constants.windowWidth/2 - 80,
+        marginLeft: -constants.windowWidth/2,
+        marginRight: -constants.windowWidth/2,
         // first width is determined, and then
         // marginLeft to center the circle
-        marginLeft: -constants.windowWidth/2,
         width: constants.windowWidth*2,
         height: constants.windowHeight / 2 + 50,
         borderBottomStartRadius: 500,
         borderBottomEndRadius: 500,
         borderColor: theme.subleSecondary,
-        borderWidth: 10,
         backgroundColor: "black",
         opacity: 0.5,
         justifyContent: "center"

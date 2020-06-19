@@ -29,7 +29,7 @@ const Accounts = props => {
     }
 
     const newAccount = () => {
-        props.navigation.navigate("ManagePersons")
+        props.navigation.navigate("ManagePeople")
     }
 
     const setPersonDetails = (count, data) => {
@@ -65,7 +65,7 @@ const Accounts = props => {
                 // new person
                 if (name != prevName) {
                     var data = {email: props.data[idx].email,
-                                name: name}
+                                name: name + " " + props.data[idx].lastName}
                     setPersonDetails(personCount, data)
                     x.push(
                         < View style={{ ...styles.container }} key={uuidv4()} >
@@ -77,7 +77,7 @@ const Accounts = props => {
                 }
 
                 x.push(
-                    <SingleAccount key={uuidv4()} data={props.data[idx]} />
+                    <SingleAccount key={uuidv4()} showExpense={true} data={props.data[idx]} />
                 )
 
                 prevName = name

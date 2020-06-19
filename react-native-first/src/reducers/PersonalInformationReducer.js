@@ -3,7 +3,7 @@ let initial_data = {
     name: "",
     number: "",
     code: "",
-    email: ""
+    email: "amal.salim@gmail.com"
 }
 
 const PersonalInformationReducer = (state=initial_data, action) => {

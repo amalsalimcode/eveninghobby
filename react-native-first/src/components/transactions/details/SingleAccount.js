@@ -20,32 +20,21 @@ const SingleAccount = props => {
     var accountId = props.data["accountId"]
     var expense = props.expensePerAccount[accountId]
 
-    var expense_rounded = expense ? Number((expense).toFixed(1)) : expense
-    const [fontSize, setFontSize] = useState(15);
+    var expense_rounded = "$" + (expense ? Number((expense).toFixed(1)) : expense)
 
-    if (!expense) {
+    if (!expense && props.showExpense) {
         return (<></>)
     } else {
         return (
-            <SingleDataTemplate onClick={() => { props.toggleAccount(props.data.accountId) }} initialHeight={45} expandHeight={45}>
+            <SingleDataTemplate onClick={() => { props.toggleAccount(props.data.accountId) }} initialHeight={45} expandHeight={45} {...props}>
                 <View style={{ marginTop: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                     <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
                         <Image style={{ height: 35, width: 50, marginRight: 10 }} source={bankMapping[props.data.institution]} />
                         <Text style={{ marginTop: 10 }}>{props.data["accountName"]}</Text>
                     </View>
-                    <Text style={{ fontSize: fontSize }}>${expense_rounded}  </Text>
-
+                    {props.showExpense ? <Text>{expense_rounded}</Text>: <></>}
+                    {props.children}
                 </View >
-                <Text></Text>
-                <Text>
-                    Account ID: {accountId}
-                </Text>
-                <Text>
-                    {/* Account Type: {props.data["accountType"]} */}
-                </Text>
-                <Text>
-                    {/* Bank: {props.data["institution"]} */}
-                </Text>
             </SingleDataTemplate >
         );
     }

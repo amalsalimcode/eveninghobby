@@ -41,7 +41,7 @@ const SingleDataTemplate = props => {
         }
 
         // by default don't highlight border
-        var highlightBorder = props.highlightBorder ? props.highlightBorder : true
+        var highlightBorder = props.highlightBorder === false ? props.highlightBorder : true
         if (highlightBorder && !props.borderLeftColor) {
             var toVal = borderStrength == 4 ? 0.7 : 4
             setBorderStength(toVal)

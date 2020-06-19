@@ -1,62 +1,49 @@
 import React, { useEffect } from "react";
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
-import SemiCircleTemplate from "./SemiCircleTemplate";
 import { Text, Button, View } from "react-native";
 import constants, { uuidv4 } from "../../../common/constants";
 import Person from "./Person";
+import ManagePeopleBottomToolbar from "./ManagePeopleBottomToolbar";
 
 const ManagePeople = props => {
 
     useEffect(() => {
     }, []);
 
-
     var accountPerPerson = {}
     for (let idx = 0; idx < props.accountInfo.length; idx++) {
-        let email = props.accountInfo[idx]["email"]
-        if (!(email in accountPerPerson)) {
-            accountPerPerson[email] = []
+        let curEmail = props.accountInfo[idx]["email"]
+        if (!(curEmail in accountPerPerson)) {
+            accountPerPerson[curEmail] = []
         }
-        accountPerPerson[email].push(props.accountInfo[idx])
+        accountPerPerson[curEmail].push(props.accountInfo[idx])
     }
-
     var accountsView = []
 
     // first put in the signed in user
-    accountsView.push(<Person accountDetails={accountPerPerson[props.email]} key={uuidv4()} />)
-    accountsView.push(<Person accountDetails={accountPerPerson[props.email]} key={uuidv4()} />)
+    var account = props.email in accountPerPerson ? accountPerPerson[props.email] : []
+    accountsView.push(<Person personEmail={props.email} accountDetails={account} allowAddAccount={true} key={uuidv4()} />)
 
-    for (email in accountPerPerson) {
-        if (email == props.email) {
+    for (emailKey in accountPerPerson) {
+        if (emailKey == props.email) {
             continue
         }
-        accountsView.push(<Person accountDetails={accountPerPerson[props.email]} key={uuidv4()} />)
+        accountsView.push(<Person personEmail={emailKey} accountDetails={accountPerPerson[emailKey]} key={uuidv4()} />)
     }
 
-    console.log("accounts so far", accountsView.length)
-    return (
-        <>
-            <ScrollView horizontal={true}>
-                {accountsView}
-            </ScrollView>
-        </>
-    )
-
+    let iter = 0
+    var viewScroller = null
     let scroller = null
     return (
         <>
-            <ScrollView horizontal={true} ref={(node) => scroller = node}>
-                <View style={{ width: constants.windowWidth, flex: 1, justifyContent: "center", backgroundColor: "red" }}>
-                    <Button title="press" onPress={() => { scroller.scrollTo({ x: constants.windowWidth }) }} />
-                </View>
-                <View style={{ width: constants.windowWidth, flex: 1, justifyContent: "center", backgroundColor: "blue" }}>
-                    <Button title="press" onPress={() => { scroller.scrollTo({ x: constants.windowWidth * -1 }) }} />
-                </View>
+            <ScrollView contentContainerStyle={{ height: constants.windowHeight - 50 }} horizontal={true} ref={(node) => viewScroller = node} >
+                {accountsView}
+                {/* <ManagePeopleBottomToolbar scroller={viewScroller} maxScrollCount={accountsView.length}/> */}
             </ScrollView>
+            
         </>
     )
-
 }
 
 function mapStateToProps(state) {

@@ -14,7 +14,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
-const BottomToolbar = props => {
+const TransactionsBottomToolbar = props => {
 
 
     useEffect(() => {
@@ -80,4 +80,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BottomToolbar)
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsBottomToolbar)

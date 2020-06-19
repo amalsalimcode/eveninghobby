@@ -5,7 +5,18 @@
  *                       avatarFileName: "filename"}} 
  */
 let initial_data = {
-    people: {},
+    people: {
+        "amal.salim@gmail.com": {
+            "avatarFileName": "avatar-green",
+            "color": "green",
+            "name": "Amal Salim",
+        },
+        "nicole@gmail.com": {
+            "avatarFileName": "avatar-pink",
+            "color": "#ff427f",
+            "name": "Nicole Chan",
+        },
+    }
 }
 
 const PersonReducer = (state = initial_data, action) => {

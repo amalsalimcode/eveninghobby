@@ -12,7 +12,7 @@ import constants from '../common/constants';
 import BarDetails from './details/BarDetails';
 import GradientBackground from '../common/GradientBackground';
 import { theme } from '../common/styles';
-import BottomToolbar from './BottomToolbar';
+import TransactionsBottomToolbar from './TransactionsBottomToolbar';
 import ManageAccounts from './details/managePeople/ManagePeople';
 import AddAccount from './details/managePeople/SemiCircleTemplate';
 
@@ -61,7 +61,7 @@ const Transactions = props => {
             <BarGraph />
             <BarSummary />
             <BarDetails {...props} />
-            <BottomToolbar {...props} />
+            <TransactionsBottomToolbar {...props} />
         </GradientBackground >
     )
 }
