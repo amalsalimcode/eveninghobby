@@ -29,24 +29,23 @@ const Accounts = props => {
     }
 
     const newAccount = () => {
-        props.navigation.navigate("AddAccount")
+        props.navigation.navigate("ManagePersons")
     }
 
-    const setPersonDetails = (count, name, data) => {
+    const setPersonDetails = (count, data) => {
         switch (count) {
             case 0:
-                data.avatarPath = require('../../../../assets/avatar-pink.png')
                 data.color = "#ff427f"
-                data.name = name
+                data.avatarFileName = "avatar-pink"
+                data.avatarPath = require('../../../../assets/avatar-pink.png')
                 props.setPersonData(data)
                 return
             default:
-                data.avatarPath = require('../../../../assets/avatar-green.png')
                 data.color = "green"
-                data.name = name
+                data.avatarFileName = "avatar-green"
+                data.avatarPath = require('../../../../assets/avatar-green.png')
                 props.setPersonData(data)
                 return
-
         }
     }
 
@@ -65,8 +64,9 @@ const Accounts = props => {
 
                 // new person
                 if (name != prevName) {
-                    var data = {}
-                    setPersonDetails(personCount, name, data)
+                    var data = {email: props.data[idx].email,
+                                name: name}
+                    setPersonDetails(personCount, data)
                     x.push(
                         < View style={{ ...styles.container }} key={uuidv4()} >
                             <Image style={styles.tinyLogo} source={data.avatarPath} />
@@ -87,7 +87,7 @@ const Accounts = props => {
         // Ability to add a new Bank Account
         x.push(
             <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
-                <Text style={{color: "white"}}>Click here to add new Account</Text>
+                <Text style={{color: "white"}}>Click here to add or manage accounts</Text>
             </SingleDataTemplate>
         )
         return x

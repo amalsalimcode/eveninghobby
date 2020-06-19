@@ -13,8 +13,8 @@ import BarDetails from './details/BarDetails';
 import GradientBackground from '../common/GradientBackground';
 import { theme } from '../common/styles';
 import BottomToolbar from './BottomToolbar';
-import ManageAccounts from './details/manageAccounts/ManageAccounts';
-import AddAccount from './details/manageAccounts/AddAccount';
+import ManageAccounts from './details/managePeople/ManagePeople';
+import AddAccount from './details/managePeople/SemiCircleTemplate';
 
 const Transactions = props => {
 
@@ -25,9 +25,10 @@ const Transactions = props => {
         var dt = new Date(props.fullDate)
         var month = dt.getMonth() + 1
         var date_str = dt.getFullYear() + "-" + month + "-" + dt.getDate()
+        var email = props.email ? props.email : "amal.salim@gmail.com"
 
         var request_body = JSON.stringify({
-            "email": "amal.salim@gmail.com",
+            "email": email,
             "start_date": date_str,
             "days": constants.diffDays,
         })
@@ -58,8 +59,7 @@ const Transactions = props => {
         // show loading sign until from backend is received
         < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
             <BarGraph />
-            {/* <BarSummary /> */}
-            <AddAccount />
+            <BarSummary />
             <BarDetails {...props} />
             <BottomToolbar {...props} />
         </GradientBackground >
@@ -69,6 +69,7 @@ const Transactions = props => {
 function mapStateToProps(state) {
     return {
         fullDate: state.TransactionsReducer.meta_data.fullDate,
+        email: state.PersonalInformationReducer.email
     }
 }
 

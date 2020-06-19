@@ -6,12 +6,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Transactions from './transactions/Transactions';
 import Rewards from './rewards/Rewards'
 import Receipts from './receipts/Receipts'
-import AddAccount from './transactions/details/manageAccounts/AddAccount'
+import AddAccount from './transactions/details/managePeople/SemiCircleTemplate'
 import AuthScreen from './login/AuthScreen';
 import SignIn from './login/SignIn';
 import SignUp from './login/SignUp';
 import Home from './home/Home';
 import Search from './transactions/Search';
+import ManagePeople from './transactions/details/managePeople/ManagePeople';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ export default function MainNav() {
                 <Stack.Screen name="Receipts" component={Receipts} />
                 <Stack.Screen name="AddAccount" component={AddAccount} />
                 <Stack.Screen name="Search" component={Search} />
+                <Stack.Screen name="ManagePeople" component={ManagePeople} />
             </Stack.Navigator>
         </NavigationContainer>
     );

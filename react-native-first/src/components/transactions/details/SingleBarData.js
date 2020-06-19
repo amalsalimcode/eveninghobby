@@ -35,8 +35,9 @@ const SingleBarData = props => {
     const amount = transaction["charge"]
     const purchaseDate = transaction["date"]
 
-    const person = transaction["person"]
-    const borderColor = person in props.personData ? props.personData[person].color : "black"
+    const email = transaction["email"]
+
+    const borderColor = email in props.personData ? props.personData[email].color : "black"
 
     return (
         <SingleDataTemplate onClick={changeHeight} expandHeight={150} borderLeftColor={borderColor}>
@@ -97,7 +98,7 @@ function mapStateToProps(state) {
     return {
         barData: state.TransactionsReducer.bar_data,
         swipeIntercept: state.SwipeReducer.barDataSwiped,
-        personData: state.PersonReducer,
+        personData: state.PersonReducer.people
     }
 }
 

@@ -2,7 +2,8 @@ import { Dimensions } from "react-native";
 
 let constants = {
     diffDays: 7,
-    windowWidth: Dimensions.get('window').width
+    windowWidth: Dimensions.get('window').width,
+    windowHeight: Dimensions.get('window').height
 }
 
 

@@ -97,8 +97,9 @@ class RetrieveTransaction(TransactionView):
         tr = Transaction.objects.annotate(accountId=F('account__accountId'),
                                           institution=F('account__credentials__bank'),
                                           charge=F('amount'),
-                                          person=F('account__credentials__person__firstName'))
-        transactions = tr.filter(**self.kwargs).values('charge', 'name', 'date',
+                                          person=F('account__credentials__person__firstName'),
+                                          email=F('account__credentials__person__email'))
+        transactions = tr.filter(**self.kwargs).values('charge', 'name', 'date', 'email',
                                                        'accountId', 'institution', 'person')
         trans = []
         for tr in transactions:
@@ -136,12 +137,13 @@ class RetrieveAccount(TransactionView):
                                            accountId=F('account__accountId'),
                                            accountName=F('account__accountName'),
                                            accountType=F('account__accountName'),
-                                           firstName=F('account__credentials__person__firstName'))
+                                           firstName=F('account__credentials__person__firstName'),
+                                           email=F('account__credentials__person__email'))
 
-        accounts = acc.filter(**self.kwargs).distinct().values('accountId', 'accountName',
-                                                               'accountType', 'institution', 'firstName') \
+        accounts = acc.filter(**self.kwargs).distinct().values('accountId', 'accountName', 'accountType',
+                                                               'institution', 'firstName', 'email') \
             .order_by('-firstName', '-account__credentials__bank')
-        #
+
         # x = list(accounts)
         # import pprint
         # pprint.pprint(x)
