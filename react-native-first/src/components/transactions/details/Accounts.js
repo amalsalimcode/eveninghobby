@@ -87,7 +87,7 @@ const Accounts = props => {
         // Ability to add a new Bank Account
         x.push(
             <SingleDataTemplate onClick={newAccount} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
-                <Text style={{color: "white"}}>Click here to add or manage accounts</Text>
+                <Text style={{color: "white"}}>Click here to manage accounts</Text>
             </SingleDataTemplate>
         )
         return x
@@ -124,6 +124,8 @@ var styles = StyleSheet.create({
     tinyLogo: {
         width: 40,
         height: 40,
+        marginLeft: 15,   
+        marginRight: 10
     },
     avatar: {
     },

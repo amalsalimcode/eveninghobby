@@ -32,7 +32,10 @@ const Person = props => {
         for (let idx = 0; idx < props.accountDetails.length; idx++) {
             accounts.push(
                 <SingleAccount onClick={() => { console.log("need to implement delete") }} data={props.accountDetails[idx]} showExpense={false} key={uuidv4()} highlightBorder={false} >
-                    <Entypo style={{ marginTop: 5 }} name="circle-with-cross" size={24} color="brown" />
+                    {props.allowAddAccount ?
+                        <Entypo style={{ marginTop: 5 }} name="circle-with-cross" size={24} color="brown" /> :
+                        <></>
+                    }
                 </SingleAccount>
             )
         }
@@ -68,6 +71,7 @@ var styles = StyleSheet.create({
     logo: {
         width: 70,
         height: 70,
+        marginTop: 20
     },
     avatar: {
     },

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from 'react-redux';
 import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler";
-import { Text, Button, View } from "react-native";
 import constants, { uuidv4 } from "../../../common/constants";
 import Person from "./Person";
 import ManagePeopleBottomToolbar from "./ManagePeopleBottomToolbar";
@@ -10,6 +9,8 @@ const ManagePeople = props => {
 
     useEffect(() => {
     }, []);
+
+    const [viewScroller, setViewScroller] = useState(null)
 
     var accountPerPerson = {}
     for (let idx = 0; idx < props.accountInfo.length; idx++) {
@@ -32,16 +33,14 @@ const ManagePeople = props => {
         accountsView.push(<Person personEmail={emailKey} accountDetails={accountPerPerson[emailKey]} key={uuidv4()} />)
     }
 
+
     let iter = 0
-    var viewScroller = null
-    let scroller = null
     return (
         <>
-            <ScrollView contentContainerStyle={{ height: constants.windowHeight - 50 }} horizontal={true} ref={(node) => viewScroller = node} >
+            <ScrollView scrollEnabled={false} contentContainerStyle={{ height: constants.windowHeight - 50 }} horizontal={true} ref={(node) => setViewScroller(node)} >
                 {accountsView}
-                {/* <ManagePeopleBottomToolbar scroller={viewScroller} maxScrollCount={accountsView.length}/> */}
             </ScrollView>
-            
+            <ManagePeopleBottomToolbar scroller={viewScroller} maxScrollCount={accountsView.length} />
         </>
     )
 }
