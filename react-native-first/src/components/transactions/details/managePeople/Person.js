@@ -10,8 +10,6 @@ import SingleAccount from '../SingleAccount';
 import { Entypo } from '@expo/vector-icons';
 import SingleDataTemplate from '../SingleDataTemplate';
 
-const { width, height } = Dimensions.get('window');
-
 const Person = props => {
 
     const getAvatarPath = (fileId) => {
@@ -25,13 +23,27 @@ const Person = props => {
         }
     }
 
+    const deleteAccount = (idx) => {
+        var request_body = JSON.stringify({
+            "accountId": props.accountDetails[idx]["accountId"]
+        })
+
+        fetch('http://127.0.0.1:8000/account/delete', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: request_body
+        }).then((response) => { props.renderAccountsAgain()});
+    }
 
     let personInfo = props.peopleInfo[props.personEmail]
     const retrieveAccounts = () => {
         let accounts = []
         for (let idx = 0; idx < props.accountDetails.length; idx++) {
             accounts.push(
-                <SingleAccount onClick={() => { console.log("need to implement delete") }} data={props.accountDetails[idx]} showExpense={false} key={uuidv4()} highlightBorder={false} >
+                <SingleAccount onClick={() => { deleteAccount(idx) }} data={props.accountDetails[idx]} showExpense={false} key={uuidv4()} highlightBorder={false} >
                     {props.allowAddAccount ?
                         <Entypo style={{ marginTop: 5 }} name="circle-with-cross" size={24} color="brown" /> :
                         <></>

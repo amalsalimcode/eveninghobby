@@ -22,17 +22,18 @@ class AccountInfo(View):
         body = json.loads(request.body)
         environment = body.get("environment", DEFAULT_ENV_PLAID)
         try:
-            person = Person.objects.get(token=body["token"])
+            person = Person.objects.get(email=body["email"])
         except (KeyError, Person.DoesNotExist):
             return HttpResponse("No Token or Invalid Token", status=400)
 
         acc = Account.objects.annotate(institution=F('credentials__bank'),
-                                       firstName=F('credentials__person__firstName'))
+                                       firstName=F('credentials__person__firstName'),
+                                       email=F('credentials__person__email'))
 
         acc_val = acc.filter(credentials__person__personGroup=person.personGroup,
                              credentials__environment=environment). \
             values('accountId', 'accountName', 'accountType', 'institution',
-                   'firstName').order_by('firstName', 'credentials__bank')
+                   'firstName', 'email').order_by('firstName', 'credentials__bank')
 
         return HttpResponse(json.dumps(list(acc_val)))
 
@@ -54,6 +55,18 @@ class CreateAccount(View):
             "person_email": person_email
         }
         return render(request, 'index.ejs', context)
+
+
+class DeleteAccount(View):
+
+    def get(self, request):
+        return HttpResponse("Not allowed", status=400)
+
+    def post(self, request):
+        body = json.loads(request.body)
+        print('here is the accountId', body["accountId"])
+        Account.objects.get(accountId=body["accountId"]).delete()
+        return HttpResponse(status=200)
 
 
 def get_access_token(request):

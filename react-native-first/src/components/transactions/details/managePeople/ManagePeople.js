@@ -4,51 +4,82 @@ import { TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handl
 import constants, { uuidv4 } from "../../../common/constants";
 import Person from "./Person";
 import ManagePeopleBottomToolbar from "./ManagePeopleBottomToolbar";
+import { View, ActivityIndicator } from "react-native";
 
 const ManagePeople = props => {
 
+    const [accountInfo, setAccountInfo] = useState('');
+    const [renderAccounts, requestRenderAccounts] = useState(1);
+
     useEffect(() => {
-    }, []);
+
+        var email = props.email ? props.email : "amal.salim@gmail.com"
+        var request_body = JSON.stringify({
+            "email": email
+        })
+
+        fetch('http://127.0.0.1:8000/account/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: request_body
+        }).then((response) => response.json())
+            .then((json) => { setAccountInfo(json) });
+    }, [renderAccounts]);
+
+    const renderAccountsAgain = () => {
+        requestRenderAccounts(renderAccounts * -1)
+    }
 
     const [viewScroller, setViewScroller] = useState(null)
 
     var accountPerPerson = {}
-    for (let idx = 0; idx < props.accountInfo.length; idx++) {
-        let curEmail = props.accountInfo[idx]["email"]
+    for (let idx = 0; idx < accountInfo.length; idx++) {
+        let curEmail = accountInfo[idx]["email"]
         if (!(curEmail in accountPerPerson)) {
             accountPerPerson[curEmail] = []
         }
-        accountPerPerson[curEmail].push(props.accountInfo[idx])
+        accountPerPerson[curEmail].push(accountInfo[idx])
     }
     var accountsView = []
 
     // first put in the signed in user
     var account = props.email in accountPerPerson ? accountPerPerson[props.email] : []
-    accountsView.push(<Person personEmail={props.email} accountDetails={account} allowAddAccount={true} key={uuidv4()} />)
+    accountsView.push(<Person personEmail={props.email} accountDetails={account} allowAddAccount={true} key={uuidv4()} renderAccountsAgain={renderAccountsAgain}/>)
 
-    for (emailKey in accountPerPerson) {
-        if (emailKey == props.email) {
+    for (email in accountPerPerson) {
+        if (email == props.email) {
             continue
         }
-        accountsView.push(<Person personEmail={emailKey} accountDetails={accountPerPerson[emailKey]} key={uuidv4()} />)
+        accountsView.push(<Person personEmail={email} accountDetails={accountPerPerson[email]} key={uuidv4()} />)
     }
 
-
-    let iter = 0
-    return (
-        <>
-            <ScrollView scrollEnabled={false} contentContainerStyle={{ height: constants.windowHeight - 50 }} horizontal={true} ref={(node) => setViewScroller(node)} >
-                {accountsView}
-            </ScrollView>
-            <ManagePeopleBottomToolbar scroller={viewScroller} maxScrollCount={accountsView.length} />
-        </>
-    )
+    // console.log("accountinfo is ", accountInfo)
+    if (!accountInfo) {
+        return (
+            <>
+                <View style={{ height: 150, justifyContent: "center", alignContent: "center" }}>
+                    <ActivityIndicator />
+                </View>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <ScrollView scrollEnabled={false} contentContainerStyle={{ height: constants.windowHeight - 50 }} horizontal={true} ref={(node) => setViewScroller(node)} >
+                    {accountsView}
+                </ScrollView>
+                <ManagePeopleBottomToolbar scroller={viewScroller} maxScrollCount={accountsView.length} />
+            </>
+        )
+    }
 }
 
 function mapStateToProps(state) {
     return {
         email: state.PersonalInformationReducer.email,
-        accountInfo: state.AccountsReducer.accountInfo,
     }
 }
 
