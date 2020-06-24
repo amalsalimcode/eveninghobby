@@ -18,6 +18,7 @@ class Person(models.Model):
     email = models.CharField(max_length=30, unique=True)
     token = models.TextField()
     personGroup = models.ForeignKey(PersonGroup, default=None, on_delete=models.SET_DEFAULT)
+    avatarId = models.CharField(max_length=35)
 
     def __str__(self):
         return '{}'.format(self.email)
@@ -37,6 +38,7 @@ class BankCred(models.Model):
 
 class Account(models.Model):
     credentials = models.ForeignKey(BankCred, on_delete=models.CASCADE)
+    restricted = models.BooleanField(default=False)
     accountId = models.TextField(unique=True)
     accountName = models.TextField()
     accountType = models.CharField(max_length=30)

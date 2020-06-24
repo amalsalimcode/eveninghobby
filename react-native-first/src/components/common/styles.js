@@ -29,7 +29,7 @@ const colorPallette = {
         secondary: "#191919",
         inputText: "#17181B",
         placeholderText: "#17181B",
-        inputBg: "grey",
+        inputBg: "white",
         vibrantPrimary: "#ff427f",
         vibrantSecondary: "orange",
         subtlePrimary: "#bdbdbd",

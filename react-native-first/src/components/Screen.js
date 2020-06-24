@@ -5,10 +5,8 @@ import { connect } from 'react-redux'
 import MainNav from './MainNav';
 import GradientBackground from './common/GradientBackground';
 import Home from './home/Home';
-import AddAccount from './transactions/details/managePeople/SemiCircleTemplate';
-import ManageAccounts from './transactions/details/managePeople/ManagePeople';
-import Person from './transactions/details/managePeople/Person';
-import ManagePeople from './transactions/details/managePeople/ManagePeople';
+import RestrictedPerson from './transactions/details/managePeople/RestrictedPerson';
+import Receipts from './receipts/Receipts';
 
 const Screen = props => {
 
@@ -25,7 +23,7 @@ const Screen = props => {
       case 4:
         return (<Transactions />)
       case 5:
-        return (<ManagePeople/>)
+        return (<Receipts/>)
       default:
         console.log("nothing doing")
         return

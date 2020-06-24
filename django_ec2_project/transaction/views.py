@@ -139,9 +139,10 @@ class RetrieveAccount(TransactionView):
                                            accountType=F('account__accountName'),
                                            firstName=F('account__credentials__person__firstName'),
                                            lastName=F('account__credentials__person__lastName'),
+                                           avatarId=F('account__credentials__person__avatarId'),
                                            email=F('account__credentials__person__email'))
 
-        accounts = acc.filter(**self.kwargs).distinct().values('accountId', 'accountName', 'accountType',
+        accounts = acc.filter(**self.kwargs).distinct().values('accountId', 'accountName', 'accountType', 'avatarId',
                                                                'institution', 'firstName', 'lastName', 'email') \
             .order_by('-firstName', '-account__credentials__bank')
 

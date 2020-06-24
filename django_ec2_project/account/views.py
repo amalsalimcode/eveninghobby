@@ -33,7 +33,8 @@ class AccountInfo(View):
         acc_val = acc.filter(credentials__person__personGroup=person.personGroup,
                              credentials__environment=environment). \
             values('accountId', 'accountName', 'accountType', 'institution',
-                   'firstName', 'email').order_by('firstName', 'credentials__bank')
+                   'firstName', 'email', 'restricted', 'extraData').order_by('firstName',
+                                                                             'credentials__bank')
 
         return HttpResponse(json.dumps(list(acc_val)))
 
@@ -64,7 +65,6 @@ class DeleteAccount(View):
 
     def post(self, request):
         body = json.loads(request.body)
-        print('here is the accountId', body["accountId"])
         Account.objects.get(accountId=body["accountId"]).delete()
         return HttpResponse(status=200)
 

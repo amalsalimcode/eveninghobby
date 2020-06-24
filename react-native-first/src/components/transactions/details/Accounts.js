@@ -34,13 +34,13 @@ const Accounts = props => {
 
     const setPersonDetails = (count, data) => {
         switch (count) {
-            case 0:
+            case 'pink':
                 data.color = "#ff427f"
                 data.avatarFileName = "avatar-pink"
                 data.avatarPath = require('../../../../assets/avatar-pink.png')
                 props.setPersonData(data)
                 return
-            default:
+            case 'green':
                 data.color = "green"
                 data.avatarFileName = "avatar-green"
                 data.avatarPath = require('../../../../assets/avatar-green.png')
@@ -66,7 +66,7 @@ const Accounts = props => {
                 if (name != prevName) {
                     var data = {email: props.data[idx].email,
                                 name: name + " " + props.data[idx].lastName}
-                    setPersonDetails(personCount, data)
+                    setPersonDetails(props.data[idx].avatarId, data)
                     x.push(
                         < View style={{ ...styles.container }} key={uuidv4()} >
                             <Image style={styles.tinyLogo} source={data.avatarPath} />

@@ -29,14 +29,19 @@ const Home = props => {
                             <Text style={styles.visit}>Rewards</Text>
                         </View>
                     </TouchableOpacity>
-                    <CardFlip style={{ height: 200, width: constants.windowWidth - 50 }} ref={(card) => mainCard = card} >
+                    <TouchableOpacity onPress={() => { props.navigation.navigate("ManagePeople") }}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.visit}>Manage Accounts</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {/* <CardFlip style={{ height: 200, width: constants.windowWidth - 50 }} ref={(card) => mainCard = card} >
                         <TouchableOpacity style={{ }} onPress={() => mainCard.flip()}>
                             <Image style={{...styles.adSpaceContainer, borderWidth: 0}} source={require('../../../assets/philz.jpg')} />
                         </TouchableOpacity>
                         <TouchableOpacity style={{ ...styles.adSpaceContainer, backgroundColor: "blue" }} onPress={() => mainCard.flip()}>
                             <Image style={{...styles.adSpaceContainer, borderWidth: 0}} source={require('../../../assets/barCode.jpg')} />
                         </TouchableOpacity>
-                    </CardFlip>
+                    </CardFlip> */}
                 </View>
             </FadeInView>
         </ GradientBackground >

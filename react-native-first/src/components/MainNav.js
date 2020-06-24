@@ -12,6 +12,9 @@ import SignUp from './login/SignUp';
 import Home from './home/Home';
 import Search from './transactions/Search';
 import ManagePeople from './transactions/details/managePeople/ManagePeople';
+import AddAccount from './transactions/details/managePeople/AddAccount';
+import RestrictedPerson from './transactions/details/managePeople/RestrictedPerson';
+import ShareTransactions from './transactions/details/managePeople/ShareTransactions';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +32,8 @@ export default function MainNav() {
                 <Stack.Screen name="AddAccount" component={AddAccount} />
                 <Stack.Screen name="Search" component={Search} />
                 <Stack.Screen name="ManagePeople" component={ManagePeople} />
+                <Stack.Screen name="RestrictedPerson" component={RestrictedPerson} />
+                <Stack.Screen name="ShareTransactions" component={ShareTransactions} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -9,6 +9,7 @@ import { theme } from '../../../common/styles';
 import SingleAccount from '../SingleAccount';
 import { Entypo } from '@expo/vector-icons';
 import SingleDataTemplate from '../SingleDataTemplate';
+import GradientBackground from '../../../common/GradientBackground';
 
 const Person = props => {
 
@@ -35,7 +36,7 @@ const Person = props => {
                 'Content-Type': 'application/json'
             },
             body: request_body
-        }).then((response) => { props.renderAccountsAgain()});
+        }).then((response) => { props.renderAccountsAgain() });
     }
 
     let personInfo = props.peopleInfo[props.personEmail]
@@ -55,7 +56,7 @@ const Person = props => {
     }
 
     return (
-        <>
+        < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
             <View>
                 <SemiCircleTemplate>
                     <Image style={styles.logo} source={getAvatarPath(personInfo.avatarFileName)} />
@@ -72,7 +73,7 @@ const Person = props => {
                     <View style={{ height: 50 }} />
                 </ScrollView>
             </View>
-        </>
+        </ GradientBackground>
     )
 }
 
