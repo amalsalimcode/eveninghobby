@@ -7,6 +7,7 @@ import GradientBackground from './common/GradientBackground';
 import Home from './home/Home';
 import RestrictedPerson from './transactions/details/managePeople/RestrictedPerson';
 import Receipts from './receipts/Receipts';
+import ImgPicker from './referenceComponents/ImgPicker';
 
 const Screen = props => {
 
@@ -15,7 +16,7 @@ const Screen = props => {
       case 0:
         return (<MainNav/>)
       case 1:
-        return(<GradientBackground />)
+        return(<ImgPicker />)
       case 2:
         return (<AnimationSample />)
       case 3:

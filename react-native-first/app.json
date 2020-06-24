@@ -22,7 +22,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets.",
+        "NSContactsUsageDescription": "Allow Expo experiences to access your contacts",
+        "NSLocationWhenInUseUsageDescription": "Allow Expo experiences to use your location",
+        "NSMicrophoneUsageDescription": "Allow Expo experiences to access your microphone",
+        "NSMotionUsageDescription": "Allow Expo experiences to access your device's accelerometer",
+        "NSPhotoLibraryAddUsageDescription": "Give Expo experiences permission to save photos",
+        "NSPhotoLibraryUsageDescription": "Give Expo experiences permission to access your photos"
+      }
     },
     "description": ""
   }
