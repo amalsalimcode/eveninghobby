@@ -42,7 +42,8 @@ export default function ImgPicker() {
         // Upload the image using the fetch and FormData APIs
         let formData = new FormData();
         // Assume "photo" is the name of the form field the server expects
-        formData.append('photo', { uri: localUri, name: filename, type });
+        console.log("here is the type", type)
+        formData.append('photo', { uri: localUri, name: filename, type: type });
 
         return await fetch(YOUR_SERVER_URL, {
             method: 'POST',
@@ -71,8 +72,6 @@ export default function ImgPicker() {
 
     async function snap() {
         let photo = await cam.takePictureAsync()
-        console.log("hi amal, i took a photo")
-        console.log(photo)
 
 
         // ImagePicker saves the taken photo to disk and returns a local URI to it
@@ -86,11 +85,11 @@ export default function ImgPicker() {
         // Upload the image using the fetch and FormData APIs
         let formData = new FormData();
         // Assume "photo" is the name of the form field the server expects
-        formData.append('photo', { uri: localUri, name: filename, type });
+        formData.append('image', { uri: image ? image : localUri, name: 'test2.jpg', type: type });
 
         console.log(formData)
 
-        return await fetch('http://127.0.0.1:8000/account/upload', {
+        return await fetch('http://127.0.0.1:8000/account/receipt', {
             method: 'POST',
             body: formData,
             headers: {

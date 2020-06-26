@@ -1,15 +1,18 @@
 import json
 
 import plaid
+from django.core.files.base import ContentFile
 from django.db.models import F
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
+from account.forms import HotelForm
 from account.utils import create_new_cred_plaid, get_client_plaid
 from django_ec2_project.settings import PLAID_PRODUCTS, PLAID_COUNTRY_CODES, DEFAULT_ENV_PLAID
-from transaction.models import Person, Account
+from transaction.models import Person, Account, Hotel
 from transaction.utils import update_plaid_transactions
+from django.core.files.storage import default_storage
 
 
 class AccountInfo(View):
@@ -90,3 +93,37 @@ def get_access_token(request):
 
     return HttpResponse(exchange_response)
 
+
+class Receipt(View):
+
+    def get(self, request):
+        return HttpResponse("Not allowed", status=400)
+
+    def post(self, request):
+        # x = request.body.split("\r")[0][2:]
+        # print("here is the body", request.body)
+        # f = open("demofile2.jpg", "w")
+        # f.write(request.body)
+        # f.close()
+        print("i got a request")
+        x = request.FILES['image']
+        Hotel.objects.create(hotel_Main_Img=x)
+        print("i think i created")
+
+        return HttpResponse(status=200)
+
+
+def hotel_image_view(request):
+    if request.method == 'POST':
+        form = HotelForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponse("successfully uploaded")
+    else:
+        form = HotelForm()
+    return render(request, 'hotel_image_form.html', {'form': form})
+
+
+def success(request):
+    return HttpResponse('successfully uploaded')

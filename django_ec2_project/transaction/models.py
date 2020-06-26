@@ -60,3 +60,8 @@ class Transaction(models.Model):
 
     def __str__(self):
         return '{} {} ${}'.format(self.date, self.name, self.amount)
+
+
+class Hotel(models.Model):
+    name = models.CharField(max_length=50)
+    hotel_Main_Img = models.ImageField(upload_to='images/')
