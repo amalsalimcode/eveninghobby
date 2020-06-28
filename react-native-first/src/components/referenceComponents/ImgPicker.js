@@ -6,6 +6,9 @@ import { Camera } from 'expo-camera';
 
 export default function ImgPicker() {
     const [image, setImage] = useState(null);
+    const [newImg, setNewImg] = useState(null);
+
+    console.log("This is what i have", newImg)
 
     useEffect(() => {
         (async () => {
@@ -19,7 +22,26 @@ export default function ImgPicker() {
     }, []);
 
 
-    const takeAndUploadPhotoAsync = async () => {
+    const getImage = async () => {
+        console.log("im here")
+
+        var request_body = JSON.stringify({
+            "test": "testVal"
+        })
+
+        fetch('http://127.0.0.1:8000/account/receipt', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: request_body
+        }).then((response) => response.json())
+            .then((json) => { setNewImg(json["image"]) })
+
+    }
+
+    const snap = async () => {
         // Display the camera to the user and wait for them to take a photo or to cancel
         // the action
         let result = await ImagePicker.launchCameraAsync({
@@ -70,7 +92,7 @@ export default function ImgPicker() {
         }
     };
 
-    async function snap() {
+    async function takeAndUploadPhotoAsync() {
         let photo = await cam.takePictureAsync()
 
 
@@ -85,7 +107,7 @@ export default function ImgPicker() {
         // Upload the image using the fetch and FormData APIs
         let formData = new FormData();
         // Assume "photo" is the name of the form field the server expects
-        formData.append('image', { uri: image ? image : localUri, name: 'test2.jpg', type: type });
+        formData.append('image', { uri: image ? image : localUri, name: 'test.jpg', type: type });
 
         console.log(formData)
 
@@ -105,10 +127,17 @@ export default function ImgPicker() {
             <Camera style={{ height: 300, width: 300 }} type={Camera.Constants.Type.back}
                 ref={camera => cam = camera}>
             </Camera>
-            <Button title="Say Cheese" onPress={snap} />
+            <Button title="Say Cheese" onPress={takeAndUploadPhotoAsync} />
 
-            <Button title="Take a picture" onPress={takeAndUploadPhotoAsync} />
+            <Button title="Get a picker from Backend" onPress={getImage} />
             {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            {newImg && <Image style={{ height: 200, width: 200 }} source={{ uri: newImg }} />}
+            <Image
+                style={{height: 200, width: 200}}
+                source={{
+                    uri: "http://127.0.0.1:8000/account/receipt"
+                }}
+            />
         </View>
     );
 }

@@ -34,6 +34,11 @@ const Home = props => {
                             <Text style={styles.visit}>Manage Accounts</Text>
                         </View>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { props.navigation.navigate("Receipts") }}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.visit}>Receipt Manager</Text>
+                        </View>
+                    </TouchableOpacity>
                     {/* <CardFlip style={{ height: 200, width: constants.windowWidth - 50 }} ref={(card) => mainCard = card} >
                         <TouchableOpacity style={{ }} onPress={() => mainCard.flip()}>
                             <Image style={{...styles.adSpaceContainer, borderWidth: 0}} source={require('../../../assets/philz.jpg')} />
