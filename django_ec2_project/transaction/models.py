@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.db.models import DateTimeField
 
@@ -48,8 +50,16 @@ class Account(models.Model):
         return '{} {}'.format(self.accountId, self.credentials.bank)
 
 
+class Receipt(models.Model):
+    # uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='images/')
+    createdAt = models.DateTimeField(auto_now_add=True, auto_created=True)
+
+
 class Transaction(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    receipt = models.ForeignKey(Receipt, default=None, on_delete=models.SET_DEFAULT)
     transactionId = models.TextField()
     amount = models.FloatField()
     date = models.DateField()
@@ -62,6 +72,3 @@ class Transaction(models.Model):
         return '{} {} ${}'.format(self.date, self.name, self.amount)
 
 
-class Hotel(models.Model):
-    name = models.CharField(max_length=50)
-    hotel_Main_Img = models.ImageField(upload_to='images/')

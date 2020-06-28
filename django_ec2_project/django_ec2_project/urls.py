@@ -24,4 +24,5 @@ urlpatterns = [
     path('wells_test/', views.wells_test),
     path('transaction/', include('transaction.urls')),
     path('account/', include('account.urls')),
+    path('receipt/', include('receipt.urls')),
 ]

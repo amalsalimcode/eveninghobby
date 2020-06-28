@@ -42,8 +42,8 @@ client_sandbox = plaid.Client(client_id="5eaf6d01c2fef80013fabb95", secret="48a2
                               public_key=PLAID_PUBLIC_KEY, environment="sandbox",
                               api_version='2019-05-29')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
     'transaction',
-    'account'
+    'receipt',
+    'account',
 ]
 
 MIDDLEWARE = [

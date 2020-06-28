@@ -1,16 +1,17 @@
+import base64
 import json
+from mimetypes import guess_type
 
 import plaid
 from django.core.files.base import ContentFile
 from django.db.models import F
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
-from account.forms import HotelForm
 from account.utils import create_new_cred_plaid, get_client_plaid
 from django_ec2_project.settings import PLAID_PRODUCTS, PLAID_COUNTRY_CODES, DEFAULT_ENV_PLAID
-from transaction.models import Person, Account, Hotel
+from transaction.models import Person, Account
 from transaction.utils import update_plaid_transactions
 from django.core.files.storage import default_storage
 
@@ -97,7 +98,12 @@ def get_access_token(request):
 class Receipt(View):
 
     def get(self, request):
-        return HttpResponse("Not allowed", status=400)
+        print("im here in backend")
+
+        img = Receipt.objects.last().image
+        print(img.url)
+        x = open(img.path, mode='rb').read()
+        return HttpResponse(x, content_type="image/png", status=200)
 
     def post(self, request):
         # x = request.body.split("\r")[0][2:]
@@ -106,24 +112,17 @@ class Receipt(View):
         # f.write(request.body)
         # f.close()
         print("i got a request")
-        x = request.FILES['image']
-        Hotel.objects.create(hotel_Main_Img=x)
-        print("i think i created")
+        if request.FILES.get("image"):
 
-        return HttpResponse(status=200)
-
-
-def hotel_image_view(request):
-    if request.method == 'POST':
-        form = HotelForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return HttpResponse("successfully uploaded")
-    else:
-        form = HotelForm()
-    return render(request, 'hotel_image_form.html', {'form': form})
-
-
-def success(request):
-    return HttpResponse('successfully uploaded')
+            x = request.FILES['image']
+            Receipt.objects.create(image=x)
+            print("i think i created")
+            return HttpResponse(status=200)
+        else:
+            img = Receipt.objects.last().image
+            x = open(img.path, mode='rb').read()
+            image_data = base64.b64encode(x).decode('utf-8')
+            # content_type, encoding = guess_type(img)
+            final_img = "data:image/jpg;base64,%s" %(image_data)
+            # print(image_data)
+            return HttpResponse(json.dumps({'image': final_img}), status=200)
