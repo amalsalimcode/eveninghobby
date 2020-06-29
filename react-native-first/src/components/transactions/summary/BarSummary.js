@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import constants from '../../common/constants';
+import constants, { getFormattedDate } from '../../common/constants';
 import { usePrevious } from '../utils';
 import ChangeDate from './ChangeDate';
 
@@ -59,8 +59,7 @@ const BarSummary = props => {
 
     }, [props.enabledBars, props.enabledAccounts]);
 
-    var dt = new Date(props.fullDate)
-    var dt_str = dt.getMonth() + 1 + "-" + dt.getDate() + "-" + dt.getFullYear()
+    var dt_str = getFormattedDate(new Date(props.fullDate))
 
     return (
         <TouchableOpacity onPress={() => {setShowDatePicker(true)}} style={{ ...styles.square, justifyContent: "center" }}>

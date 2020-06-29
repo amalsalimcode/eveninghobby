@@ -54,6 +54,7 @@ class Receipt(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='images/')
+    amount = models.FloatField(null=True)
     createdAt = models.DateTimeField(auto_now_add=True, auto_created=True)
 
 

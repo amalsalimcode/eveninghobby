@@ -1,5 +1,8 @@
+import base64
 import json
 
+from django.db.models import TextField, Func, F, Value, CharField
+from django.db.models.functions import Cast, ExtractMonth, ExtractDay, ExtractYear, Concat
 from django.http import HttpResponse
 from django.views import View
 
@@ -12,6 +15,23 @@ class RetrieveReceipt(View):
         pass
 
     def post(self, request):
-        Receipt.objects.all()
-        return HttpResponse(json.dumps({'image': "image_resp"}), status=200)
-
+        args = json.loads(request.body)
+        if args.get("uuid"):
+            img = Receipt.objects.get(uuid=args["uuid"]).image
+            x = open(img.path, mode='rb').read()
+            image_data = base64.b64encode(x).decode('utf-8')
+            # content_type, encoding = guess_type(img)
+            final_img = "data:image/jpg;base64,%s" %(image_data)
+            return HttpResponse(json.dumps({'image': final_img}), status=200)
+        else:
+            x = list(Receipt.objects.annotate(uuid_str=Cast('uuid', output_field=TextField()),
+                                              month=Cast(ExtractMonth('createdAt'), CharField()),
+                                              day=Cast(ExtractDay('createdAt'), CharField()),
+                                              year=Cast(ExtractYear('createdAt'), CharField()),
+                                              createdAt_str=Concat(
+                                                  Value(''), 'month', Value('/'), 'day',
+                                                  Value('/'), 'year',
+                                                  output_field=CharField()
+                                              )). \
+                     values('uuid_str', 'name', 'createdAt_str', 'amount').order_by('-createdAt'))
+        return HttpResponse(json.dumps(x), status=200)

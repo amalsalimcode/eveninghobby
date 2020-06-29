@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Transactions from './transactions/Transactions';
 import Rewards from './rewards/Rewards'
 import Receipts from './receipts/Receipts'
+import SingleReceipt from './receipts/SingleReceipt'
 import AuthScreen from './login/AuthScreen';
 import SignIn from './login/SignIn';
 import SignUp from './login/SignUp';
@@ -34,6 +35,7 @@ export default function MainNav() {
                 <Stack.Screen name="ManagePeople" component={ManagePeople} />
                 <Stack.Screen name="RestrictedPerson" component={RestrictedPerson} />
                 <Stack.Screen name="ShareTransactions" component={ShareTransactions} />
+                <Stack.Screen name="SingleReceipt" component={SingleReceipt} />
             </Stack.Navigator>
         </NavigationContainer>
     );
