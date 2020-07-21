@@ -11,7 +11,7 @@ from django.views import View
 
 from account.utils import create_new_cred_plaid, get_client_plaid
 from django_ec2_project.settings import PLAID_PRODUCTS, PLAID_COUNTRY_CODES, DEFAULT_ENV_PLAID
-from transaction.models import Person, Account
+from transaction.models import Person, Account, Receipt
 from transaction.utils import update_plaid_transactions
 from django.core.files.storage import default_storage
 
@@ -95,7 +95,7 @@ def get_access_token(request):
     return HttpResponse(exchange_response)
 
 
-class Receipt(View):
+class ReceiptUpload(View):
 
     def get(self, request):
         print("im here in backend")
@@ -113,9 +113,8 @@ class Receipt(View):
         # f.close()
         print("i got a request")
         if request.FILES.get("image"):
-
             x = request.FILES['image']
-            Receipt.objects.create(image=x)
+            Receipt.objects.create(image=x, amount=0)
             print("i think i created")
             return HttpResponse(status=200)
         else:

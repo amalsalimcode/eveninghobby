@@ -6,7 +6,7 @@
  */
 let initial_data = {
     people: {
-        "amal.salim@gmail.com": {
+        "amal@gmail.com": {
             "avatarFileName": "avatar-green",
             "color": "green",
             "name": "Amal Salim",

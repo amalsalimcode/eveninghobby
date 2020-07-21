@@ -47,6 +47,8 @@ const BarDetails = props => {
         }
     }
 
+    console.log("im in bar details")
+
     return (
         <>
             <View style={{ height: windowHeight - 340 }}>

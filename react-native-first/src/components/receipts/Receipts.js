@@ -3,6 +3,9 @@ import { View, StyleSheet, Text, Button, ActivityIndicator } from "react-native"
 import constants, { uuidv4, getFormattedDate } from '../common/constants'
 import SingleDataTemplate from "../transactions/details/SingleDataTemplate";
 import ReceiptsBottomToolbar from "./ReceiptsBottomToolbar";
+import { ScrollView } from "react-native-gesture-handler";
+import GradientBackground from "../common/GradientBackground";
+import { theme } from "../common/styles";
 
 const Receipts = props => {
 
@@ -56,20 +59,22 @@ const Receipts = props => {
 
     if (!allReceipts) {
         return (
-            <>
+            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <View style={{ justifyContent: "center", alignContent: "center" }}>
                     <ActivityIndicator />
                 </View>
-            </>
+            </ GradientBackground>
         )
     } else {
         return (
-            <>
-                <View style={{ flex: 1, justifyContent: "center" }}>
+            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+                <View style={{ height: 75 }} />
+                <ScrollView contentContainerStyle={{ justifyContent: "center" }}>
                     {getReceiptsStructured()}
-                </View>
-                <ReceiptsBottomToolbar />
-            </>
+                    <View style={{ height: 100 }} />
+                </ScrollView>
+                <ReceiptsBottomToolbar {...props} />
+            </ GradientBackground>
         );
     }
 }

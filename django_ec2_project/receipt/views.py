@@ -32,6 +32,17 @@ class RetrieveReceipt(View):
                                                   Value(''), 'month', Value('/'), 'day',
                                                   Value('/'), 'year',
                                                   output_field=CharField()
-                                              )). \
+                                              )).\
                      values('uuid_str', 'name', 'createdAt_str', 'amount').order_by('-createdAt'))
         return HttpResponse(json.dumps(x), status=200)
+
+
+class UploadReceipt(View):
+
+    def get(self, request):
+        return HttpResponse('Not Allowed', status=400)
+
+    def post(self, request):
+        x = request.FILES['image']
+        Receipt.objects.create(image=x, amount=0)
+        return HttpResponse(status=200)

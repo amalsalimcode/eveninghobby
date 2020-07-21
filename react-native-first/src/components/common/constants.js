@@ -18,7 +18,7 @@ export function getFormattedDate(dt, skipYear) {
   var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"]
 
-  var dt_str = dt.getDate() + " " + monthNames[dt.getMonth() + 1]
+  var dt_str = dt.getDate() + " " + monthNames[dt.getMonth()]
   if (!skipYear) {
     dt_str += " " + dt.getFullYear()
   }

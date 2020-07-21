@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path
 
-from receipt.views import RetrieveReceipt
+from receipt.views import RetrieveReceipt, UploadReceipt
 
 admin.autodiscover()
 
 urlpatterns = [
     path('', RetrieveReceipt.as_view()),
+    path('upload', UploadReceipt.as_view())
 ]

@@ -46,8 +46,9 @@ const Rewards = props => {
 
                 <View style={{ marginVertical: 10 }}></View>
 
-                <SingleDataTemplate borderLeftColor="white" containerStyle={styles.newAccountContainer} enableExpand={false}>
-                    <Text >Click here to add new Credit Card</Text>
+                <View style={{height: 10}}/>
+                <SingleDataTemplate onClick={() => {}} containerStyle={styles.newAccountContainer} enableExpand={false} >
+                    <Text style={{ color: "white" }}>Click here to add new Credit Card</Text>
                 </SingleDataTemplate>
 
             </View>
@@ -62,10 +63,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     newAccountContainer: {
-        borderRightWidth: 4,
-        borderRightColor: "white",
         alignItems: "center",
-        // borderRadius: 20
+        backgroundColor: theme.primary,
+        borderRadius: 10
 
     }
 });

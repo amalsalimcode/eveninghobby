@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, ActivityIndicator, Image } from "react-native";
 import constants from "../common/constants";
+import GradientBackground from "../common/GradientBackground";
+import { theme } from "../common/styles";
 
 const SingleReceipt = props => {
 
@@ -8,7 +10,7 @@ const SingleReceipt = props => {
 
     useEffect(() => {
         var request_body = JSON.stringify({
-            "uuid": props.route.params["uuid"] 
+            "uuid": props.route.params["uuid"]
             // "uuid": "test_val"
         })
 
@@ -20,7 +22,7 @@ const SingleReceipt = props => {
             },
             body: request_body
         }).then((response) => response.json())
-        .then((json) => { setNewImg(json["image"]) })
+            .then((json) => { setNewImg(json["image"]) })
     }, []);
 
     if (!newImg) {
@@ -34,9 +36,11 @@ const SingleReceipt = props => {
         )
     } else {
         return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Image style={{height: constants.windowHeight, width: constants.windowWidth, resizeMode: "contain"}} source={{ uri: newImg }} />
-            </View>
+            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Image style={{ height: constants.windowHeight, width: constants.windowWidth, resizeMode: "contain" }} source={{ uri: newImg }} />
+                </View>
+            </ GradientBackground>
         );
     }
 }

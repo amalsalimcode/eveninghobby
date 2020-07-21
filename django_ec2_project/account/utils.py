@@ -1,7 +1,7 @@
 import json
 import xmltodict
 
-from transaction.models import BankCred, Transaction, Account, PersonGroup, Person
+from transaction.models import BankCred, Transaction, Account, PersonGroup, Person, Receipt
 from django_ec2_project.settings import client_dev, client_sandbox, DEFAULT_ENV_PLAID
 
 from ofxtools.Client import OFXClient
@@ -66,7 +66,7 @@ def create_update_amex_cred(start_dt):
     for stmt in stmt_lst:
         dt_post = stmt["DTPOSTED"]
         dt_frmt = datetime.strptime(dt_post[0:8:1], "%Y%m%d")
-        Transaction.objects.get_or_create(account=account, transactionId=stmt['FITID'], name=stmt['NAME'],
+        Transaction.objects.get_or_create(account=account, transactionId=stmt['FITID'], name=stmt['NAME'], receipt=Receipt.objects.last(),
                                           amount=stmt['TRNAMT'], date=dt_frmt, extra_data=json.dumps(dict(stmt)))
 
 

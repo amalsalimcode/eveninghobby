@@ -2,7 +2,7 @@ import json
 import xmltodict
 
 from account.utils import get_client_plaid
-from transaction.models import BankCred, Transaction, Account
+from transaction.models import BankCred, Transaction, Account, Receipt
 
 from ofxtools.Client import StmtRq, OFXClient
 import ofxtools
@@ -33,7 +33,7 @@ def update_plaid_transactions(cred: BankCred, st_dt: datetime = None):
         s = single_trans
         acct_id = s["account_id"]
         Transaction.objects.get_or_create(account=accounts[acct_id], transactionId=s["transaction_id"],
-                                          amount=s["amount"], name=s["name"], date=s["date"],
+                                          amount=s["amount"], name=s["name"], date=s["date"], receipt=Receipt.objects.last(),
                                           extra_data=json.dumps(s))
 
     # datetime on when trans. were retrieved is updated

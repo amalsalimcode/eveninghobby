@@ -13,8 +13,6 @@ import BarDetails from './details/BarDetails';
 import GradientBackground from '../common/GradientBackground';
 import { theme } from '../common/styles';
 import TransactionsBottomToolbar from './TransactionsBottomToolbar';
-import ManageAccounts from './details/managePeople/ManagePeople';
-import AddAccount from './details/managePeople/SemiCircleTemplate';
 
 const Transactions = props => {
 

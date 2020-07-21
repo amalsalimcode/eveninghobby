@@ -7,6 +7,8 @@ import FadeInView from '../../common/FadeInView';
 
 const BarData = props => {
 
+    console.log("im in bar data")
+
     function dataLayout() {
 
         var barIdx = 0;

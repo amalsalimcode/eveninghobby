@@ -13,11 +13,52 @@ import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { theme } from '../common/styles';
 import constants, { uuidv4, getFormattedDate } from '../common/constants'
+import { MaterialIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 const ReceiptsBottomToolbar = props => {
 
     useEffect(() => {
     }, []);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+        if (result.cancelled) {
+            return
+        }
+
+
+        let localUri = result.uri
+        let filename = localUri.split('/').pop();
+
+        // Infer the type of the image
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+
+        // Upload the image using the fetch and FormData APIs
+        let formData = new FormData();
+        // Assume "photo" is the name of the form field the server expects
+        formData.append('image', { uri: localUri, name: 'test.jpg', type: type });
+
+        console.log(formData)
+
+        return await fetch('http://127.0.0.1:8000/receipt/upload', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
+
+
+    };
 
     let iter = 0
     return (
@@ -29,31 +70,23 @@ const ReceiptsBottomToolbar = props => {
 
                     <TouchableOpacity onPress={() => { iter > 0 ? iter -= 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
                         <View style={{ alignItems: "center" }}>
-                            <AntDesign name="swapleft" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Prev Person</Text>
+                            <AntDesign name="search1" size={24} color="black" />
+                            <Text style={{ fontSize: 8 }}>Search</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { props.navigation.navigate('RestrictedPerson') }} style={{ width: 60 }}>
+                    <TouchableOpacity onPress={() => { props.navigation.navigate('AddReceipt') }} style={{ width: 60 }}>
                         <View style={{ alignItems: "center" }}>
-                            <Feather name="plus" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Add Restricted</Text>
-                            <Text style={{ fontSize: 8 }}>Person</Text>
+                            <Feather name="camera" size={24} color="black" />
+                            <Text style={{ fontSize: 8 }}>Add Receipt</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { props.navigation.navigate('ShareTransactions') }} style={{ width: 60 }}>
+                    <TouchableOpacity onPress={() => { pickImage() }} style={{ width: 60 }}>
                         <View style={{ alignItems: "center" }}>
-                            <Entypo name="share" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Share Your</Text>
-                            <Text style={{ fontSize: 8 }}>Transactions</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { iter < props.maxScrollCount - 1 ? iter += 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <AntDesign name="swapright" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Next Person</Text>
+                            <MaterialIcons name="photo-album" size={24} color="black" />
+                            <Text style={{ fontSize: 8 }}>Upload from</Text>
+                            <Text style={{ fontSize: 8 }}>Album</Text>
                         </View>
                     </TouchableOpacity>
 

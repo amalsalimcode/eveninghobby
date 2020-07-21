@@ -65,9 +65,12 @@ const Person = props => {
                 <ScrollView contentContainerStyle={{ marginTop: 20 }}>
                     {retrieveAccounts()}
                     {props.allowAddAccount ?
-                        <SingleDataTemplate onClick={() => { props.navigation.navigate("AddAccount") }} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
-                            <Text style={{ color: "white" }}>Click here to add account</Text>
-                        </SingleDataTemplate>
+                        <>
+                            <SingleDataTemplate onClick={() => { props.navigation.navigate("AddAccount") }} containerStyle={styles.newAccountContainer} enableExpand={false} key={uuidv4()}>
+                                <Text style={{ color: "white" }}>Click here to add account</Text>
+                            </SingleDataTemplate>
+                            <View style={{ height: 300 }} />
+                        </>
                         : <></>
                     }
                     <View style={{ height: 50 }} />
