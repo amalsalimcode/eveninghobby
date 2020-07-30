@@ -1,9 +1,14 @@
 import base64
+import io
 import json
+import sys
+from io import StringIO
 from mimetypes import guess_type
 
 import plaid
+from PIL import Image
 from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import F
 from django.http import HttpResponse, FileResponse
 from django.shortcuts import render, redirect
@@ -113,8 +118,12 @@ class ReceiptUpload(View):
         # f.close()
         print("i got a request")
         if request.FILES.get("image"):
-            x = request.FILES['image']
-            Receipt.objects.create(image=x, amount=0)
+            output = io.BytesIO()
+            image = Image.open(request.FILES['image'])
+            image.save(output, format='JPEG', quality=100).thumbnail((50, 50), Image.ANTIALIAS).seek(0)
+            thumb_file = InMemoryUploadedFile(output, 'ImageField', "test.jpg",
+                                              'image/jpeg', sys.getsizeof(output), None)
+            Receipt.objects.create(image=thumb_file, amount=0)
             print("i think i created")
             return HttpResponse(status=200)
         else:
@@ -122,6 +131,6 @@ class ReceiptUpload(View):
             x = open(img.path, mode='rb').read()
             image_data = base64.b64encode(x).decode('utf-8')
             # content_type, encoding = guess_type(img)
-            final_img = "data:image/jpg;base64,%s" %(image_data)
+            final_img = "data:image/jpg;base64,%s" % (image_data)
             # print(image_data)
             return HttpResponse(json.dumps({'image': final_img}), status=200)

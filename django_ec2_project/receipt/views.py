@@ -1,6 +1,7 @@
 import base64
 import json
 
+from PIL import Image
 from django.db.models import TextField, Func, F, Value, CharField
 from django.db.models.functions import Cast, ExtractMonth, ExtractDay, ExtractYear, Concat
 from django.http import HttpResponse
@@ -33,7 +34,11 @@ class RetrieveReceipt(View):
                                                   Value('/'), 'year',
                                                   output_field=CharField()
                                               )).\
-                     values('uuid_str', 'name', 'createdAt_str', 'amount').order_by('-createdAt'))
+                     values('uuid_str', 'name', 'createdAt_str', 'amount', 'image').order_by('-createdAt'))
+
+            for receipt in x:
+                image_data = base64.b64encode(open(receipt['image'], mode='rb').read()).decode('utf-8')
+                receipt['image_fill'] = "data:image/jpg;base64,%s" %(image_data)
         return HttpResponse(json.dumps(x), status=200)
 
 
@@ -42,6 +47,7 @@ class UploadReceipt(View):
     def get(self, request):
         return HttpResponse('Not Allowed', status=400)
 
+    # this code is not called
     def post(self, request):
         x = request.FILES['image']
         Receipt.objects.create(image=x, amount=0)

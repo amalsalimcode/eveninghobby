@@ -3,6 +3,10 @@ import uuid
 from django.db import models
 from django.db.models import DateTimeField
 
+from smartfields import fields
+from smartfields.dependencies import FileDependency
+from smartfields.processors import ImageProcessor
+
 from django_ec2_project.settings import DEFAULT_ENV_PLAID
 
 
