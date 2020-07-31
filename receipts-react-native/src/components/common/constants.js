@@ -4,7 +4,7 @@ let constants = {
   diffDays: 7,
   windowWidth: Dimensions.get('window').width,
   windowHeight: Dimensions.get('window').height,
-  ngrokHost: "http://37023b45e0aa.ngrok.io/"
+  ngrokHost: "https://73702b9799fd.ngrok.io/"
 }
 
 export function uuidv4() {

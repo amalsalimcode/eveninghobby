@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, ActivityIndicator, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { connect } from "react-redux";
 
 const SingleReceipt = props => {
 
@@ -9,8 +10,33 @@ const SingleReceipt = props => {
     useEffect(() => {
     }, []);
 
+    function longPressed() {
+        console.log("long perssed", props.isSelected)
+        if (borderWidth == 0.7) {
+            setBorderWidth(2)
+            props.incSelectCount()
+        } else {
+            setBorderWidth(0.7)
+            props.decSelectCount()
+        }
+    }
+
+    function shortPressed() {
+        if (props.isSelected) {
+            if (borderWidth == 0.7) {
+                setBorderWidth(2)
+                props.incSelectCount()
+            } else {
+                setBorderWidth(0.7)
+                props.decSelectCount()
+            }
+        } else {
+            props.navigation.navigate('ReceiptView', { 'uuid': props.value["uuid_str"] })
+        }
+    }
+
     return (
-        <TouchableOpacity style={{...styles.square, borderWidth: borderWidth}} onPress={() => { props.navigation.navigate('ReceiptView', { 'uuid': props.value["uuid_str"] }) }} onLongPress={() =>setBorderWidth(2)}>
+        <TouchableOpacity style={{ ...styles.square, borderWidth: borderWidth }} onPress={shortPressed} onLongPress={longPressed}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 10 }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Image style={{ borderRadius: 2, height: 45, width: 30, marginLeft: 5, marginVertical: 1, resizeMode: "contain" }} source={{ uri: props.value["image_fill"] }} />
@@ -31,4 +57,19 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SingleReceipt 
+
+function mapStateToProps(state) {
+    return {
+        isSelected: state.ReceiptSelectorReducer.isSelected
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        incSelectCount: () => dispatch({ type: "INC_RECEIPT_COUNT" }),
+        decSelectCount: () => dispatch({ type: "DEC_RECEIPT_COUNT" })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleReceipt)
+

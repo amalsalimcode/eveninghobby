@@ -8,9 +8,9 @@ import { connect } from 'react-redux'
 import React, { useEffect, useRef } from 'react';
 import { Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { theme } from '../common/styles';
 import constants, { uuidv4, getFormattedDate } from '../common/constants'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -56,48 +56,62 @@ const ReceiptsBottomToolbar = props => {
                 'content-type': 'multipart/form-data',
             },
         });
-
-
     };
 
     let iter = 0
-    return (
-        <>
-            <View style={{ height: 55, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5 }} >
-                <View style={{ height: 10 }} />
-
-                <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-
-                    <TouchableOpacity onPress={() => { iter > 0 ? iter -= 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <AntDesign name="search1" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Search</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { props.navigation.navigate('AddReceipt') }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <Feather name="camera" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Capture</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { pickImage() }} style={{ width: 60 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <MaterialIcons name="photo-album" size={24} color="black" />
-                            <Text style={{ fontSize: 8 }}>Upload</Text>
-                        </View>
-                    </TouchableOpacity>
-
+    if (props.isSelected) {
+        return (
+            <>
+                <View style={{ height: 55, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5 }} >
+                    <View style={{ height: 10 }} />
+                    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                        <TouchableOpacity onPress={() => { props.navigation.navigate('AddReceipt') }} style={{ width: 60 }}>
+                            <View style={{ alignItems: "center" }}>
+                                <MaterialCommunityIcons name="trash-can-outline" size={24} color="black" />
+                                <Text style={{ fontSize: 8 }}>Delete</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            {/* <View style={{ height: 10, backgroundColor: theme.subtlePrimary }} /> */}
-        </>
-    )
+            </>
+        )
+    } else {
+        return (
+            <>
+                <View style={{ height: 55, width: constants.windowWidth, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5, position: "absolute", bottom: 0 }} >
+                    <View style={{ height: 10 }} />
+                    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                        <TouchableOpacity onPress={() => { iter > 0 ? iter -= 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
+                            <View style={{ alignItems: "center" }}>
+                                <AntDesign name="search1" size={24} color="black" />
+                                <Text style={{ fontSize: 8 }}>Search</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { props.navigation.navigate('AddReceipt') }} style={{ width: 60 }}>
+                            <View style={{ alignItems: "center" }}>
+                                <Feather name="camera" size={24} color="black" />
+                                <Text style={{ fontSize: 8 }}>Capture</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { pickImage() }} style={{ width: 60 }}>
+                            <View style={{ alignItems: "center" }}>
+                                <MaterialIcons name="photo-album" size={24} color="black" />
+                                <Text style={{ fontSize: 8 }}>Upload</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+            </>
+        )
+    }
 }
 
 function mapStateToProps(state) {
     return {
+        isSelected: state.ReceiptSelectorReducer.isSelected
     }
 }
 

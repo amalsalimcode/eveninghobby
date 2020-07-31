@@ -7,6 +7,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import GradientBackground from "../common/GradientBackground";
 import { theme } from "../common/styles";
 import SingleReceipt from "./SingleReceipt";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Receipts = props => {
 
@@ -51,7 +52,7 @@ const Receipts = props => {
 
             /* insert the receipt */
             receiptsStructured.push(
-                <SingleReceipt {...props} value={allReceipts[idx]} key={uuidv4()}/>
+                <SingleReceipt {...props} value={allReceipts[idx]} key={uuidv4()} />
 
             )
         }
@@ -69,10 +70,14 @@ const Receipts = props => {
     } else {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <View style={{ height: 20 }} />
-                <ScrollView contentContainerStyle={{ justifyContent: "center" }}>
-                    {getReceiptsStructured()}
-                </ScrollView>
+                <SafeAreaView contentContainerStyle={{ justifyContent: "center" }}>
+                    <ScrollView>
+                        {getReceiptsStructured()}
+                        {getReceiptsStructured()}
+                        {getReceiptsStructured()}
+                        <View style={{height: 100}} />
+                    </ScrollView>
+                </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />
             </ GradientBackground>
         );

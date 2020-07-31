@@ -9,9 +9,11 @@ import SwipeReducer from './SwipeReducer'
 import ScreenReducer from './ScreenReducer'
 import PersonReducer from './PersonReducer'
 import EnabledAccountsReducer from './EnabledAccountsReducer'
+import ReceiptSelectorReducer from './ReceiptSelectorReducer'
 
 const rootReducer = combineReducers({
     StmtGraphReducer,
+    ReceiptSelectorReducer,
     PersonalInformationReducer,
     TransactionsReducer,
     AccountsReducer,
