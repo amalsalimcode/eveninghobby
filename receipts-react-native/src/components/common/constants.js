@@ -1,10 +1,14 @@
 import { Dimensions } from "react-native";
+import * as Device from 'expo-device';
+
+
 
 let constants = {
   diffDays: 7,
   windowWidth: Dimensions.get('window').width,
   windowHeight: Dimensions.get('window').height,
-  ngrokHost: "https://73702b9799fd.ngrok.io/"
+  ngrokHost: "http://6f2993cac0f8.ngrok.io/",
+  model: Device.modelName
 }
 
 export function uuidv4() {

@@ -15,6 +15,8 @@ import { theme } from '../common/styles';
 import constants, { uuidv4, getFormattedDate } from '../common/constants'
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { NativeModules } from 'react-native';
+
 
 const ReceiptsBottomToolbar = props => {
 
@@ -29,7 +31,6 @@ const ReceiptsBottomToolbar = props => {
             quality: 1,
         });
 
-        console.log(result);
         if (result.cancelled) {
             return
         }
@@ -47,8 +48,6 @@ const ReceiptsBottomToolbar = props => {
         // Assume "photo" is the name of the form field the server expects
         formData.append('image', { uri: localUri, name: 'test.jpg', type: type });
 
-        console.log(formData)
-
         return await fetch('http://127.0.0.1:8000/receipt/upload', {
             method: 'POST',
             body: formData,
@@ -58,14 +57,18 @@ const ReceiptsBottomToolbar = props => {
         });
     };
 
+    var conditions = ["iPhone 11", "iPhone X"]
+    var hasNotch = conditions.some(el => constants.model.includes(el));
+    var toolbarHeight = hasNotch ? 70 : 55
+
     let iter = 0
     if (props.isSelected) {
         return (
             <>
-                <View style={{ height: 55, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5 }} >
+                <View style={{ height: toolbarHeight, width: constants.windowWidth, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5, position: "absolute", bottom: 0 }} >
                     <View style={{ height: 10 }} />
                     <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                        <TouchableOpacity onPress={() => { props.navigation.navigate('AddReceipt') }} style={{ width: 60 }}>
+                        <TouchableOpacity onPress={() => { props.navigation.navigate('DeleteReceipt') }} style={{ width: 60 }}>
                             <View style={{ alignItems: "center" }}>
                                 <MaterialCommunityIcons name="trash-can-outline" size={24} color="black" />
                                 <Text style={{ fontSize: 8 }}>Delete</Text>
@@ -78,7 +81,7 @@ const ReceiptsBottomToolbar = props => {
     } else {
         return (
             <>
-                <View style={{ height: 55, width: constants.windowWidth, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5, position: "absolute", bottom: 0 }} >
+                <View style={{ height: toolbarHeight, width: constants.windowWidth, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5, position: "absolute", bottom: 0 }} >
                     <View style={{ height: 10 }} />
                     <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                         <TouchableOpacity onPress={() => { iter > 0 ? iter -= 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
@@ -101,7 +104,6 @@ const ReceiptsBottomToolbar = props => {
                                 <Text style={{ fontSize: 8 }}>Upload</Text>
                             </View>
                         </TouchableOpacity>
-
                     </View>
                 </View>
             </>
@@ -117,7 +119,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurWeek: (direction) => dispatch({ type: "ADD_SUB_CUR_WEEK", direction: direction })
+        changeCurWeek: (direction) => dispatch({ type: "ADD_SUB_CUR_WEEK", direction: direction }),
+        deleteReceiptSelected: () => dispatch({ type: "DELETE_RECEIPT_SELECTED" })
     }
 }
 

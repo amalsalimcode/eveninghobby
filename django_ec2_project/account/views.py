@@ -2,23 +2,19 @@ import base64
 import io
 import json
 import sys
-from io import StringIO
-from mimetypes import guess_type
 
 import plaid
 from PIL import Image
-from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import F
-from django.http import HttpResponse, FileResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render
 from django.views import View
 
 from account.utils import create_new_cred_plaid, get_client_plaid
 from django_ec2_project.settings import PLAID_PRODUCTS, PLAID_COUNTRY_CODES, DEFAULT_ENV_PLAID
 from transaction.models import Person, Account, Receipt
 from transaction.utils import update_plaid_transactions
-from django.core.files.storage import default_storage
 
 
 class AccountInfo(View):
@@ -99,38 +95,3 @@ def get_access_token(request):
 
     return HttpResponse(exchange_response)
 
-
-class ReceiptUpload(View):
-
-    def get(self, request):
-        print("im here in backend")
-
-        img = Receipt.objects.last().image
-        print(img.url)
-        x = open(img.path, mode='rb').read()
-        return HttpResponse(x, content_type="image/png", status=200)
-
-    def post(self, request):
-        # x = request.body.split("\r")[0][2:]
-        # print("here is the body", request.body)
-        # f = open("demofile2.jpg", "w")
-        # f.write(request.body)
-        # f.close()
-        print("i got a request")
-        if request.FILES.get("image"):
-            output = io.BytesIO()
-            image = Image.open(request.FILES['image'])
-            image.save(output, format='JPEG', quality=100).thumbnail((50, 50), Image.ANTIALIAS).seek(0)
-            thumb_file = InMemoryUploadedFile(output, 'ImageField', "test.jpg",
-                                              'image/jpeg', sys.getsizeof(output), None)
-            Receipt.objects.create(image=thumb_file, amount=0)
-            print("i think i created")
-            return HttpResponse(status=200)
-        else:
-            img = Receipt.objects.last().image
-            x = open(img.path, mode='rb').read()
-            image_data = base64.b64encode(x).decode('utf-8')
-            # content_type, encoding = guess_type(img)
-            final_img = "data:image/jpg;base64,%s" % (image_data)
-            # print(image_data)
-            return HttpResponse(json.dumps({'image': final_img}), status=200)

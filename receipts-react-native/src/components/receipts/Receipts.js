@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Button, ActivityIndicator, Image } from "react-native";
 import constants, { uuidv4, getFormattedDate } from '../common/constants'
-import SingleDataTemplate from "../transactions/details/SingleDataTemplate";
 import ReceiptsBottomToolbar from "./ReceiptsBottomToolbar";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity, FlatList } from "react-native-gesture-handler";
 import GradientBackground from "../common/GradientBackground";
 import { theme } from "../common/styles";
 import SingleReceipt from "./SingleReceipt";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { connect } from "react-redux";
+
 
 const Receipts = props => {
 
-    const [allReceipts, setAllReceipts] = useState(null);
+    console.log("I'm in receipts")
 
     useEffect(() => {
         var request_body = JSON.stringify({
@@ -26,60 +27,46 @@ const Receipts = props => {
             },
             body: request_body
         }).then((response) => response.json())
-            .then((json) => { setAllReceipts(json) })
+            .then((json) => { props.setReceipt(json) })
     }, []);
 
-    const getReceiptsStructured = () => {
-
-        let idx = 0
-        let receiptsStructured = []
-
-        var cur_dt = ''
-        for (idx = 0; idx < allReceipts.length; idx++) {
-            let uuid = allReceipts[idx]["uuid_str"]
-
-            /* first insert the date */
-            if (cur_dt != allReceipts[idx]["createdAt_str"]) {
-                cur_dt = allReceipts[idx]["createdAt_str"]
-                receiptsStructured.push(
-                    <View style={{ marginHorizontal: 10, opacity: 0.5, marginTop: 15, marginLeft: 15 }} key={uuidv4()}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.visit}>{getFormattedDate(new Date(allReceipts[idx]["createdAt_str"]), false)}</Text>
-                        </View>
-                    </View>
-                )
-            }
-
-            /* insert the receipt */
-            receiptsStructured.push(
-                <SingleReceipt {...props} value={allReceipts[idx]} key={uuidv4()} />
-
-            )
+    const renderItem = ({ item, index }) => {
+        if (props.deletedItems[item["uuid_str"]]) {
+            return <></>
         }
-        return receiptsStructured
+        var tmpIndex = index - 1
+        while (tmpIndex >= 0 && props.deletedItems[props.allReceipts[tmpIndex]["uuid_str"]]) {
+            tmpIndex = tmpIndex - 1
+        }
+
+        let prev_dt = ''
+        if (tmpIndex >= 0) {
+            prev_dt = props.allReceipts[tmpIndex]["createdAt_str"]
+        }
+        return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
     }
 
-    if (!allReceipts) {
+    if (!props.allReceipts) {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <View style={{ justifyContent: "center", alignContent: "center" }}>
                     <ActivityIndicator />
                 </View>
+                <ReceiptsBottomToolbar {...props} />
             </ GradientBackground>
         )
     } else {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <SafeAreaView contentContainerStyle={{ justifyContent: "center" }}>
-                    <ScrollView>
-                        {getReceiptsStructured()}
-                        {getReceiptsStructured()}
-                        {getReceiptsStructured()}
-                        <View style={{height: 100}} />
-                    </ScrollView>
+                <SafeAreaView style={{height: constants.windowHeight - 55}}>
+                    <FlatList
+                        bounces={false}
+                        data={props.allReceipts}
+                        renderItem={renderItem}
+                        keyExtractor={item => item["uuid_str"]} />
                 </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />
-            </ GradientBackground>
+            </ GradientBackground >
         );
     }
 }
@@ -110,4 +97,19 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Receipts
+
+function mapStateToProps(state) {
+    return {
+        allReceipts: state.AllReceiptsReducer.allReceipts,
+        toggleUpdate: state.AllReceiptsReducer.toggleUpdate,
+        deletedItems: state.ReceiptSelectorReducer.deletedItems
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setReceipt: (receipts) => dispatch({ type: "SET_RECEIPTS", receipts: receipts })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Receipts)

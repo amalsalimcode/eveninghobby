@@ -39,7 +39,7 @@ const ShareTransactions = props => {
                         autoCorrect={false}
                         autoCapitalize='none'
                         autoFocus={true}
-                        onBlur={() => { console.log(value) }}
+                        onBlur={() => { }} //log(value)
                     />
                 </View>
             </View>

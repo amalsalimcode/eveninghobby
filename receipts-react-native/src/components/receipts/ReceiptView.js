@@ -34,7 +34,6 @@ const ReceiptView = props => {
             </>
         )
     } else {
-        console.log(newImg)
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

@@ -17,8 +17,6 @@ const UploadReceipt = props => {
             quality: 1,
         });
 
-        console.log(result);
-
         if (!result.cancelled) {
             setImage(result.uri);
         }
@@ -35,8 +33,6 @@ const UploadReceipt = props => {
         let formData = new FormData();
         // Assume "photo" is the name of the form field the server expects
         formData.append('image', { uri: image ? image : localUri, name: 'test.jpg', type: type });
-
-        console.log(formData)
 
         return await fetch('http://127.0.0.1:8000/account/receipt', {
             method: 'POST',

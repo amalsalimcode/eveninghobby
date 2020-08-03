@@ -18,6 +18,7 @@ import ManagePeople from './transactions/details/managePeople/ManagePeople';
 import AddAccount from './transactions/details/managePeople/AddAccount';
 import RestrictedPerson from './transactions/details/managePeople/RestrictedPerson';
 import ShareTransactions from './transactions/details/managePeople/ShareTransactions';
+import DeleteReceipt from './receipts/DeleteReceipt';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ export default function MainNav() {
                 <Stack.Screen name="Transactions" component={Transactions} />
                 <Stack.Screen name="Rewards" component={Rewards} />
                 <Stack.Screen name="AddAccount" component={AddAccount} />
+                <Stack.Screen name="DeleteReceipt" component={DeleteReceipt} />
                 <Stack.Screen name="Search" component={Search} />
                 <Stack.Screen name="ManagePeople" component={ManagePeople} />
                 <Stack.Screen name="RestrictedPerson" component={RestrictedPerson} />

@@ -7,6 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import SingleDataTemplate from "../transactions/details/SingleDataTemplate";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
+import { connect } from "react-redux";
 
 const AddReceipt = props => {
 
@@ -33,16 +34,14 @@ const AddReceipt = props => {
         // Assume "photo" is the name of the form field the server expects
         formData.append('image', { uri: localUri, name: 'test.jpg', type: type });
 
-        console.log(formData)
-
-        return await fetch(constants.ngrokHost + 'account/receipt', {
+        return await fetch(constants.ngrokHost + 'receipt/upload', {
             method: 'POST',
             body: formData,
             headers: {
                 'content-type': 'multipart/form-data',
             },
-        });
-
+        }).then((response) => response.json())
+        .then((json) => { props.addSingleReceipt(json) })
     }
 
     let cam = null
@@ -68,7 +67,18 @@ const AddReceipt = props => {
     }
 }
 
-export default AddReceipt
+function mapStateToProps(state) {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addSingleReceipt: (receipt) => dispatch({ type: "ADD_SINGLE_RECEIPT", receipt: receipt})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddReceipt)
 
 var styles = StyleSheet.create({
     newAccountContainer: {

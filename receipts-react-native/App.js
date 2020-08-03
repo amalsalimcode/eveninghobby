@@ -4,9 +4,8 @@ import React from 'react'
 import Screen from './src/components/Screen'
 
 
+
 export default function App() {
-
-
 
   return (
     <>

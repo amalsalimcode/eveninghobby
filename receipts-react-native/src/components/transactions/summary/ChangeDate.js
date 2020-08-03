@@ -32,7 +32,6 @@ const ChangeDate = props => {
         var newDt = getStartOfWeek(date)
         props.setVisible(false)
         props.setWeek(newDt)
-        console.log("here is start of the week", newDt)
     }
 
     const getDatePicker = () => {

@@ -10,6 +10,7 @@ import ScreenReducer from './ScreenReducer'
 import PersonReducer from './PersonReducer'
 import EnabledAccountsReducer from './EnabledAccountsReducer'
 import ReceiptSelectorReducer from './ReceiptSelectorReducer'
+import AllReceiptsReducer from './AllReceiptsReducer'
 
 const rootReducer = combineReducers({
     StmtGraphReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
     SwipeReducer,
     ScreenReducer,
     PersonReducer,
-    EnabledAccountsReducer
+    EnabledAccountsReducer,
+    AllReceiptsReducer
 });
 
 export default rootReducer;
