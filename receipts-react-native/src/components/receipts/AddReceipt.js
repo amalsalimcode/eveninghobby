@@ -12,9 +12,20 @@ import { connect } from "react-redux";
 const AddReceipt = props => {
 
     const [newImg, setNewImg] = useState(null);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [isCameraReady, setIsCameraReady] = useState(false);
+
 
     useEffect(() => {
-    }, [])
+        (async () => {
+            const { status } = await Camera.requestPermissionsAsync();
+            setHasPermission(status === "granted");
+        })();
+    }, []);
+
+    const onCameraReady = () => {
+        setIsCameraReady(true);
+    };
 
     async function takeAndUploadPhotoAsync() {
         let photo = await cam.takePictureAsync()
@@ -23,6 +34,7 @@ const AddReceipt = props => {
 
         // ImagePicker saves the taken photo to disk and returns a local URI to it
         let localUri = photo["uri"];
+        console.log(localUri)
         let filename = localUri.split('/').pop();
 
         // Infer the type of the image
@@ -46,12 +58,20 @@ const AddReceipt = props => {
 
     let cam = null
 
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text style={styles.text}>No access to camera</Text>;
+    }
+
     if (!newImg) {
         return (
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Camera style={{ height: constants.windowHeight - 200, width: constants.windowWidth }} type={Camera.Constants.Type.back}
-                    ref={camera => cam = camera}>
-                </Camera>
+                <Camera style={{ height: constants.windowHeight - 200, width: constants.windowWidth }} 
+                        type={Camera.Constants.Type.back} flashMode={Camera.Constants.FlashMode.off}
+                        onCameraReady={onCameraReady} onMountError={(error) => {console.log("camera error", error)}}
+                        ref={camera => cam = camera}/>
 
                 <TouchableOpacity onPress={takeAndUploadPhotoAsync} >
                     <Image style={{ marginTop: 30, height: 70, width: 70 }} source={require('../../../assets/circle.png')} />
