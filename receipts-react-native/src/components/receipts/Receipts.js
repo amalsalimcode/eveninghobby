@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 
 const Receipts = props => {
 
-    console.log("I'm in receipts")
+    // console.log("I'm in receipts")
 
     useEffect(() => {
         var request_body = JSON.stringify({

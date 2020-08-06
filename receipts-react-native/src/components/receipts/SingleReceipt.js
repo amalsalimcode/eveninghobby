@@ -6,7 +6,7 @@ import constants, { getFormattedDate } from '../common/constants'
 
 const SingleReceipt = props => {
 
-    console.log("Im in single receipt")
+    // console.log("Im in single receipt")
 
     const [borderWidth, setBorderWidth] = useState(0.7);
 
@@ -49,10 +49,6 @@ const SingleReceipt = props => {
         }
     }
 
-    var uuid = props.value["uuid_str"]
-    // if (props.isDeleted && uuid in props.isDeleted && props.isDeleted[uuid]) {
-    //     return (<>{insertDate()}</>)
-    // }
     return (
         <>
             {insertDate()}

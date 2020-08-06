@@ -29,23 +29,22 @@ const ChangeDate = props => {
     };
 
     const applyDateChange = () => {
-        var newDt = getStartOfWeek(date)
         props.setVisible(false)
-        props.setWeek(newDt)
+        props.setDate(date)
     }
 
     const getDatePicker = () => {
         return (
             <DateTimePicker
                 testID="dateTimePicker"
-                textColor="red"
+                textColor="black"
                 value={date}
                 mode='date'
                 display="spinner"
                 onChange={onChange}
                 style={{}}
                 overlayStyle={{ backgroundColor: theme.subtlePrimary }}
-                maximumDate={new Date()}
+                maximumDate={new Date().setDate(365)}
                 minimumDate={minimumDate}
             />
         )

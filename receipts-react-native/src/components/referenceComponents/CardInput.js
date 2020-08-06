@@ -11,7 +11,7 @@ const CardInput = props => {
     function on_change(data) {
         if (data["valid"]) {
             // data input is now complete
-            console.log(data)
+            // console.log(data)
             setIsValid(true)
         }
     }
@@ -19,7 +19,7 @@ const CardInput = props => {
     function go_next() {
         if (isValid) {
             // props.setCardInput(2)
-            console.log("go next")
+            // console.log("go next")
         }
     }
 

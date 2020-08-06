@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Button, ActivityIndicator, Image } from "react-native";
+import { View, Dimensions, Text, Button, ActivityIndicator, Image } from "react-native";
 import constants from "../common/constants";
 import GradientBackground from "../common/GradientBackground";
 import { theme } from "../common/styles";
+import PinchZoomView from 'react-native-pinch-zoom-view';
+import ImageZoom from "react-native-image-pan-zoom";
+import TopToolbar from "./TopToolbar";
+
 
 const ReceiptView = props => {
 
@@ -11,7 +15,6 @@ const ReceiptView = props => {
     useEffect(() => {
         var request_body = JSON.stringify({
             "uuid": props.route.params["uuid"]
-            // "uuid": "test_val"
         })
 
         fetch(constants.ngrokHost + 'receipt/', {
@@ -23,6 +26,7 @@ const ReceiptView = props => {
             body: request_body
         }).then((response) => response.json())
             .then((json) => { setNewImg(json["image"]) })
+
     }, []);
 
     if (!newImg) {
@@ -35,11 +39,20 @@ const ReceiptView = props => {
         )
     } else {
         return (
-            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <Image style={{ height: constants.windowHeight, width: constants.windowWidth, resizeMode: "contain" }} source={{ uri: newImg }} />
-                </View>
-            </ GradientBackground>
+            <>
+                <TopToolbar {...props} />
+                < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
+                        <ImageZoom cropWidth={Dimensions.get('window').width}
+                            cropHeight={Dimensions.get('window').height}
+                            imageWidth={Dimensions.get('window').width}
+                            imageHeight={500}>
+                            <Image style={{ width: Dimensions.get('window').width, height: 500 }}
+                                source={{ uri: newImg }} />
+                        </ImageZoom>
+                    </View>
+                </ GradientBackground>
+            </>
         );
     }
 }

@@ -56,10 +56,12 @@ class Account(models.Model):
 
 class Receipt(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
-    name = models.CharField(max_length=50)
+    store = models.CharField(max_length=50, default=None, null=True)
+    memo = models.CharField(max_length=200, default=None, null=True)
     image = models.ImageField(upload_to='images/')
     amount = models.FloatField(null=True)
     createdAt = models.DateTimeField(auto_now_add=True, auto_created=True)
+    purchasedAt = models.DateTimeField(default=None)
 
 
 class Transaction(models.Model):

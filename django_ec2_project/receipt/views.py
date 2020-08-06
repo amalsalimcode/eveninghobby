@@ -1,4 +1,5 @@
 import base64
+import datetime
 import io
 import json
 import sys
@@ -59,7 +60,13 @@ class UploadReceipt(View):
             output.seek(0)
             thumb_file = InMemoryUploadedFile(output, 'ImageField', "test.jpg",
                                               'image/jpeg', sys.getsizeof(output), None)
-            r = Receipt.objects.create(image=thumb_file, amount=0)
+
+            args = request.POST
+
+            dt = json.loads(args.get('date'))
+            r = Receipt.objects.create(image=thumb_file, amount=args.get('amount'),
+                                       store=args.get('store'), memo=args.get('memo'),
+                                       purchasedAt=datetime.datetime(dt.year, dt.month, dt.date))
             print("I just created a receipt", r)
             dt = r.createdAt.date()
             new_receipt = {"uuid_str": str(r.uuid), "amount": r.amount, "name": r.name,

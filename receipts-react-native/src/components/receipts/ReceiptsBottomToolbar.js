@@ -12,7 +12,7 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { theme } from '../common/styles';
-import constants, { uuidv4, getFormattedDate } from '../common/constants'
+import constants, { uuidv4, getFormattedDate, hasNotch } from '../common/constants'
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { NativeModules } from 'react-native';
@@ -57,9 +57,7 @@ const ReceiptsBottomToolbar = props => {
         });
     };
 
-    var conditions = ["iPhone 11", "iPhone X"]
-    var hasNotch = conditions.some(el => constants.model.includes(el));
-    var toolbarHeight = hasNotch ? 70 : 55
+    var toolbarHeight = hasNotch() ? 70 : 55
 
     let iter = 0
     if (props.isSelected) {
@@ -91,7 +89,7 @@ const ReceiptsBottomToolbar = props => {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => { props.navigation.navigate('AddReceipt') }} style={{ width: 60 }}>
+                        <TouchableOpacity onPress={() => { props.navigation.navigate('CaptureReceipt') }} style={{ width: 60 }}>
                             <View style={{ alignItems: "center" }}>
                                 <Feather name="camera" size={24} color="black" />
                                 <Text style={{ fontSize: 8 }}>Capture</Text>

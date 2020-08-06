@@ -3,4 +3,5 @@ django_ec2_project/__pycache__
 django_ec2_project/.idea
 transaction/__pycache__
 **/__pycache__
+./images/*
 db.sqlite3

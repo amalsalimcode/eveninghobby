@@ -38,8 +38,6 @@ const Receipts = props => {
 
     async function snap() {
         let photo = await cam.takePictureAsync()
-        console.log("hi amal, i took a photo")
-        console.log(photo)
     }
 
     return (

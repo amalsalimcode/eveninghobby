@@ -7,7 +7,7 @@ import Transactions from './transactions/Transactions';
 import Rewards from './rewards/Rewards'
 import Receipts from './receipts/Receipts'
 import ReceiptView from './receipts/ReceiptView'
-import AddReceipt from './receipts/AddReceipt'
+import CaptureReceipt from './receipts/CaptureReceipt'
 import UploadReceipt from './receipts/UploadReceipt'
 import AuthScreen from './login/AuthScreen';
 import SignIn from './login/SignIn';
@@ -19,6 +19,7 @@ import AddAccount from './transactions/details/managePeople/AddAccount';
 import RestrictedPerson from './transactions/details/managePeople/RestrictedPerson';
 import ShareTransactions from './transactions/details/managePeople/ShareTransactions';
 import DeleteReceipt from './receipts/DeleteReceipt';
+import AddReceipt from './receipts/AddReceipt';
 
 const Stack = createStackNavigator();
 
@@ -40,8 +41,9 @@ export default function MainNav() {
                 <Stack.Screen name="RestrictedPerson" component={RestrictedPerson} />
                 <Stack.Screen name="ShareTransactions" component={ShareTransactions} />
                 <Stack.Screen name="ReceiptView" component={ReceiptView} />
-                <Stack.Screen name="AddReceipt" component={AddReceipt} />
+                <Stack.Screen name="CaptureReceipt" component={CaptureReceipt} />
                 <Stack.Screen name="UploadReceipt" component={UploadReceipt} />
+                <Stack.Screen name="AddReceipt" component={AddReceipt} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -7,8 +7,12 @@ let constants = {
   diffDays: 7,
   windowWidth: Dimensions.get('window').width,
   windowHeight: Dimensions.get('window').height,
-  ngrokHost: "http://6f2993cac0f8.ngrok.io/",
-  model: Device.modelName
+  ngrokHost: "https://405156c0e4c0.ngrok.io/",
+  model: Device.modelName,
+}
+
+export function getTopToolbarHeight() {
+  return hasNotch() ? 100 : constants.windowHeight * 0.1
 }
 
 export function uuidv4() {
@@ -16,6 +20,12 @@ export function uuidv4() {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
+}
+
+export function hasNotch() {
+  var conditions = ["iPhone 11", "iPhone X"]
+  var hasNotch = conditions.some(el => constants.model.includes(el));
+  return hasNotch
 }
 
 export function getFormattedDate(dt, skipYear) {
