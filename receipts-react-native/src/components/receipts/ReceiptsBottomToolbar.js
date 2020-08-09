@@ -15,6 +15,7 @@ import { theme } from '../common/styles';
 import constants, { uuidv4, getFormattedDate, hasNotch } from '../common/constants'
 import { MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+
 import { NativeModules } from 'react-native';
 
 
@@ -26,8 +27,6 @@ const ReceiptsBottomToolbar = props => {
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
             quality: 1,
         });
 
@@ -35,26 +34,8 @@ const ReceiptsBottomToolbar = props => {
             return
         }
 
+        props.navigation.navigate("AddReceipt", {img: result.uri})
 
-        let localUri = result.uri
-        let filename = localUri.split('/').pop();
-
-        // Infer the type of the image
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
-
-        // Upload the image using the fetch and FormData APIs
-        let formData = new FormData();
-        // Assume "photo" is the name of the form field the server expects
-        formData.append('image', { uri: localUri, name: 'test.jpg', type: type });
-
-        return await fetch('http://127.0.0.1:8000/receipt/upload', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-        });
     };
 
     var toolbarHeight = hasNotch() ? 70 : 55

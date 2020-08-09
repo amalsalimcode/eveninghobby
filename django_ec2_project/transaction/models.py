@@ -61,7 +61,10 @@ class Receipt(models.Model):
     image = models.ImageField(upload_to='images/')
     amount = models.FloatField(null=True)
     createdAt = models.DateTimeField(auto_now_add=True, auto_created=True)
-    purchasedAt = models.DateTimeField(default=None)
+    purchasedAt = models.DateTimeField(default=None, null=True)
+
+    def __str__(self):
+        return '{} {}'.format(self.store, self.amount)
 
 
 class Transaction(models.Model):

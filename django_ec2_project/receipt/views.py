@@ -6,8 +6,8 @@ import sys
 
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.db.models import TextField, Func, F, Value, CharField
-from django.db.models.functions import Cast, ExtractMonth, ExtractDay, ExtractYear, Concat
+from django.db.models import TextField, Func, F, Value, CharField, DateField
+from django.db.models.functions import Cast, ExtractMonth, ExtractDay, ExtractYear, Concat, TruncDate
 from django.http import HttpResponse
 from django.views import View
 
@@ -26,23 +26,30 @@ class RetrieveReceipt(View):
             x = open(img.path, mode='rb').read()
             image_data = base64.b64encode(x).decode('utf-8')
             # content_type, encoding = guess_type(img)
-            final_img = "data:image/jpg;base64,%s" %(image_data)
+            final_img = "data:image/jpg;base64,%s" % (image_data)
             return HttpResponse(json.dumps({'image': final_img}), status=200)
         else:
+            batch = 20
+            batch_count_min = args.get("initLen")
+            batch_count_max = batch_count_min + batch
+
+            if batch_count_min >= Receipt.objects.all().count():
+                return HttpResponse(status=400)
             x = list(Receipt.objects.annotate(uuid_str=Cast('uuid', output_field=TextField()),
                                               month=Cast(ExtractMonth('createdAt'), CharField()),
                                               day=Cast(ExtractDay('createdAt'), CharField()),
                                               year=Cast(ExtractYear('createdAt'), CharField()),
-                                              createdAt_str=Concat(
+                                              purchasedAt_str=Concat(
                                                   Value(''), 'month', Value('/'), 'day',
                                                   Value('/'), 'year',
                                                   output_field=CharField()
                                               )).\
-                     values('uuid_str', 'name', 'createdAt_str', 'amount', 'image').order_by('-createdAt'))
+                     values('uuid_str', 'store', 'purchasedAt_str', 'amount', 'image').
+                     order_by('-purchasedAt'))[batch_count_min:batch_count_max]
 
             for receipt in x:
                 image_data = base64.b64encode(open(receipt['image'], mode='rb').read()).decode('utf-8')
-                receipt['image_fill'] = "data:image/jpg;base64,%s" %(image_data)
+                receipt['image_fill'] = "data:image/jpg;base64,%s" % (image_data)
         return HttpResponse(json.dumps(x), status=200)
 
 
@@ -60,18 +67,28 @@ class UploadReceipt(View):
             output.seek(0)
             thumb_file = InMemoryUploadedFile(output, 'ImageField', "test.jpg",
                                               'image/jpeg', sys.getsizeof(output), None)
+            arg = request.POST
 
-            args = request.POST
+            amount = arg.get('amount')
+            if len(amount) > 1:
+                amount_parsed = float(amount[1: len(amount)])
+            else:
+                amount_parsed = float(amount)
 
-            dt = json.loads(args.get('date'))
-            r = Receipt.objects.create(image=thumb_file, amount=args.get('amount'),
-                                       store=args.get('store'), memo=args.get('memo'),
-                                       purchasedAt=datetime.datetime(dt.year, dt.month, dt.date))
+            dt = json.loads(arg.get('purchaseDate'))
+            print("here is the date receipved", dt)
+            dt_datetime = datetime.datetime(dt['year'], dt['month'] + 1, dt['date'],
+                                            dt['hour'], dt['minute'])
+
+            r = Receipt.objects.create(image=thumb_file, amount=amount_parsed,
+                                       store=arg.get('store'), memo=arg.get('memo'),
+                                       purchasedAt=dt_datetime)
             print("I just created a receipt", r)
-            dt = r.createdAt.date()
-            new_receipt = {"uuid_str": str(r.uuid), "amount": r.amount, "name": r.name,
-                           "createdAt_str": str(str(dt.month) + "/" + str(dt.day) + "/" + str(dt.year)),
+            dt = r.purchasedAt.date()
+            new_receipt = {"uuid_str": str(r.uuid), "amount": r.amount, "store": r.store, "memo": r.memo,
+                           "purchasedAt_str": str(str(dt.month) + "/" + str(dt.day) + "/" + str(dt.year)),
                            "image_fill": img_to_response(r.image)}
+            print("new date for receipt", r.purchasedAt)
             return HttpResponse(status=200, content=json.dumps(new_receipt))
         else:
             return HttpResponse(status=400)

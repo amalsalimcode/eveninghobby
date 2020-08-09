@@ -36,7 +36,6 @@ export default function MainNav() {
                 <Stack.Screen name="Rewards" component={Rewards} />
                 <Stack.Screen name="AddAccount" component={AddAccount} />
                 <Stack.Screen name="DeleteReceipt" component={DeleteReceipt} />
-                <Stack.Screen name="Search" component={Search} />
                 <Stack.Screen name="ManagePeople" component={ManagePeople} />
                 <Stack.Screen name="RestrictedPerson" component={RestrictedPerson} />
                 <Stack.Screen name="ShareTransactions" component={ShareTransactions} />
@@ -44,6 +43,7 @@ export default function MainNav() {
                 <Stack.Screen name="CaptureReceipt" component={CaptureReceipt} />
                 <Stack.Screen name="UploadReceipt" component={UploadReceipt} />
                 <Stack.Screen name="AddReceipt" component={AddReceipt} />
+                <Stack.Screen name="Search" component={Search} />
             </Stack.Navigator>
         </NavigationContainer>
     );

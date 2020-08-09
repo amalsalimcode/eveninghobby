@@ -9,14 +9,17 @@ import SingleReceipt from "./SingleReceipt";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 
+let batchCount = -1
+let allDataReceived = false
 
 const Receipts = props => {
 
-    // console.log("I'm in receipts")
+    const getNewReceiptBatch = () => {
 
-    useEffect(() => {
+        batchCount = batchCount + 1
+
         var request_body = JSON.stringify({
-            "test": "testVal"
+            "initLen": props.allReceipts.length
         })
 
         fetch(constants.ngrokHost + 'receipt/', {
@@ -26,9 +29,28 @@ const Receipts = props => {
                 'Content-Type': 'application/json'
             },
             body: request_body
-        }).then((response) => response.json())
-            .then((json) => { props.setReceipt(json) })
+        }).then((response) => {
+            if (response.status == 200) {
+                return response.json()
+            } else {
+                return "done"
+            }
+        }).then((json) => {
+            if (json == "done") {
+                allDataReceived = true
+            } else {
+                console.log("receipted response");
+                props.setReceipt(json)
+            }
+        })
+    }
+
+    useEffect(() => {
+        console.log("Main Receipts called")
+        getNewReceiptBatch()
     }, []);
+
+    console.log("im in receipts")
 
     const renderItem = ({ item, index }) => {
         if (props.deletedItems[item["uuid_str"]]) {
@@ -41,9 +63,17 @@ const Receipts = props => {
 
         let prev_dt = ''
         if (tmpIndex >= 0) {
-            prev_dt = props.allReceipts[tmpIndex]["createdAt_str"]
+            prev_dt = props.allReceipts[tmpIndex]["purchasedAt_str"]
         }
+
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
+    }
+
+    const endReached = () => {
+        console.log("the end has reached", batchCount)
+        if (!allDataReceived) {
+            getNewReceiptBatch()
+        }
     }
 
     if (!props.allReceipts) {
@@ -58,11 +88,19 @@ const Receipts = props => {
     } else {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <SafeAreaView style={{height: constants.windowHeight - 55}}>
+                <SafeAreaView style={{ height: constants.windowHeight - 55 }}>
                     <FlatList
+                        onScrollBeginDrag={()=>{console.log("im being dragged®")}}
                         bounces={false}
                         data={props.allReceipts}
                         renderItem={renderItem}
+                        removeClippedSubviews={true}
+                        updateCellsBatchingPeriod={100}
+                        maxToRenderPerBatch={40}
+                        initialNumToRender={20}
+                        windowSize={21}
+                        onEndReached={endReached}
+                        onEndReachedThreshold={5}
                         keyExtractor={item => item["uuid_str"]} />
                 </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />

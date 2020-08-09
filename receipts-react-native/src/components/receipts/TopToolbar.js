@@ -44,7 +44,7 @@ const TopToolbar = props => {
                 <TouchableOpacity style={{ borderWidth: 0 }} onPress={() => { props.navigation.goBack() }}>
                     <AntDesign name="arrowleft" size={iconSize} color="black" style={{ marginLeft: 10, marginBottom: 0 }} />
                 </TouchableOpacity>
-                {/* {getDelete()} */}
+                {getDelete()}
                 {getDone()}
             </View>
         </View>
