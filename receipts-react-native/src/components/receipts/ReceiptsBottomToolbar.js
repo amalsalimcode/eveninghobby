@@ -34,7 +34,7 @@ const ReceiptsBottomToolbar = props => {
             return
         }
 
-        props.navigation.navigate("AddReceipt", {img: result.uri})
+        props.navigation.navigate("AddReceipt", {img: result.uri, height: result.height, width: result.width})
 
     };
 

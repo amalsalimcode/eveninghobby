@@ -22,8 +22,9 @@ const AddReceipt = props => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
 
-    const [imgDimension, setImgDimension] = useState({})
-    Image.getSize(props.route.params["img"], (width, height) => { setImgDimension({"height": height, "width": width}) });
+    const photo = props.route.params
+    const [imgDimension, setImgDimension] = useState({"height": photo["height"], "width": photo["width"]})
+    // Image.getSize(props.route.params["img"], (width, height) => { setImgDimension({"height": height, "width": width}) });
     const imageWidth = imgDimension["width"]
     let imageHeight = imgDimension["height"] * constants.windowWidth / imgDimension["width"]  
     if (imageHeight > constants.windowHeight * 0.6) {
@@ -38,7 +39,7 @@ const AddReceipt = props => {
 
     async function sendPictureBackend() {
         // ImagePicker saves the taken photo to disk and returns a local URI to it
-        let localUri = props.route.params["img"]
+        let localUri = photo["uri"]
         let filename = localUri.split('/').pop();
 
         // Infer the type of the image
@@ -106,7 +107,7 @@ const AddReceipt = props => {
                         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                             <TopToolbar {...props} done={sendPictureBackend} />
                             <View style={{ backgroundColor: "black" }}>
-                                {getImage(props.route.params["img"])}
+                                {getImage(photo["uri"])}
                             </View>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

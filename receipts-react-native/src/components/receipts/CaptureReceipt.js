@@ -37,8 +37,10 @@ const CaptureReceipt = props => {
         capturedImage = photo["uri"]
         // capturedImage = "http://personal.psu.edu/xqz5228/jpg.jpg"
 
-
-        props.navigation.navigate("AddReceipt", {img: capturedImage})
+        props.navigation.navigate("AddReceipt", {
+            uri: photo["uri"], height: photo["height"],
+            width: photo["width"]
+        })
 
     }
 
@@ -60,7 +62,7 @@ const CaptureReceipt = props => {
 
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <TopToolbar {...props}/>
+                <TopToolbar {...props} />
                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                     <Camera style={{ height: cameraHeight, width: constants.windowWidth }}
                         type={Camera.Constants.Type.back} flashMode={Camera.Constants.FlashMode.off}
@@ -68,7 +70,7 @@ const CaptureReceipt = props => {
                         ref={camera => cam = camera} />
 
                     <TouchableOpacity onPress={takeAndUploadPhotoAsync} containerStyle={{ height: iconSpace, justifyContent: "center" }} >
-                        <Image resizeMode="stretch" style={{height: captureIconSize, width: captureIconSize}} source={require('../../../assets/circle.png')} />
+                        <Image resizeMode="stretch" style={{ height: captureIconSize, width: captureIconSize }} source={require('../../../assets/circle.png')} />
                     </TouchableOpacity>
                 </View>
             </ GradientBackground>
