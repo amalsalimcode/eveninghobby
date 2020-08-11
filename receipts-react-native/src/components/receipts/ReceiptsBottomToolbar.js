@@ -10,7 +10,7 @@ import { Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Entypo } from '@expo/vector-icons';
 import { theme } from '../common/styles';
 import constants, { uuidv4, getFormattedDate, hasNotch } from '../common/constants'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -79,7 +79,7 @@ const ReceiptsBottomToolbar = props => {
 
                         <TouchableOpacity onPress={() => { pickImage() }} style={{ width: 60 }}>
                             <View style={{ alignItems: "center" }}>
-                                <MaterialIcons name="photo-album" size={24} color="black" />
+                                <Entypo name="images" size={24} color="black" />
                                 <Text style={{ fontSize: 8 }}>Upload</Text>
                             </View>
                         </TouchableOpacity>

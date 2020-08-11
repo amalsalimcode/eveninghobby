@@ -9,19 +9,17 @@ import SingleReceipt from "./SingleReceipt";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 
-let batchCount = -1
 let allDataReceived = false
 
 const Receipts = props => {
 
     const getNewReceiptBatch = () => {
 
-        batchCount = batchCount + 1
+        props.incReceiptCountBatch()
 
         var request_body = JSON.stringify({
-            "initLen": props.allReceipts.length
+            "initLen": props.totalCount
         })
-
         fetch(constants.ngrokHost + 'receipt/', {
             method: 'POST',
             headers: {
@@ -39,18 +37,15 @@ const Receipts = props => {
             if (json == "done") {
                 allDataReceived = true
             } else {
-                console.log("receipted response");
                 props.setReceipt(json)
             }
         })
     }
 
     useEffect(() => {
-        console.log("Main Receipts called")
         getNewReceiptBatch()
     }, []);
 
-    console.log("im in receipts")
 
     const renderItem = ({ item, index }) => {
         if (props.deletedItems[item["uuid_str"]]) {
@@ -70,7 +65,6 @@ const Receipts = props => {
     }
 
     const endReached = () => {
-        console.log("the end has reached", batchCount)
         if (!allDataReceived) {
             getNewReceiptBatch()
         }
@@ -95,7 +89,7 @@ const Receipts = props => {
                         data={props.allReceipts}
                         renderItem={renderItem}
                         removeClippedSubviews={true}
-                        updateCellsBatchingPeriod={100}
+                        updateCellsBatchingPeriod={30}
                         maxToRenderPerBatch={40}
                         initialNumToRender={20}
                         windowSize={21}
@@ -140,13 +134,15 @@ function mapStateToProps(state) {
     return {
         allReceipts: state.AllReceiptsReducer.allReceipts,
         toggleUpdate: state.AllReceiptsReducer.toggleUpdate,
-        deletedItems: state.ReceiptSelectorReducer.deletedItems
+        deletedItems: state.ReceiptSelectorReducer.deletedItems,
+        totalCount: state.AllReceiptsReducer.totalCount
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        setReceipt: (receipts) => dispatch({ type: "SET_RECEIPTS", receipts: receipts })
+        setReceipt: (receipts) => dispatch({ type: "SET_RECEIPTS", receipts: receipts }),
+        incReceiptCountBatch: (receipts) => dispatch({ type: "INC_RECEIPT_COUNT_BATCH", receipts: receipts })
     }
 }
 

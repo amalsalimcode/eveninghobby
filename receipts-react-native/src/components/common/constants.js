@@ -7,8 +7,16 @@ let constants = {
   diffDays: 7,
   windowWidth: Dimensions.get('window').width,
   windowHeight: Dimensions.get('window').height,
-  ngrokHost: "http://2ad31251b745.ngrok.io/",
+  ngrokHost: "http://aeb7fbd5a742.ngrok.io/",
+  // ngrokHost: "http://127.0.0.1:8000/",
   model: Device.modelName,
+
+  textInput: {
+    height: 35,
+    borderColor: "#000000",
+    borderBottomWidth: 1,
+  },
+
 }
 
 export function getTopToolbarHeight() {
@@ -16,7 +24,7 @@ export function getTopToolbarHeight() {
 }
 
 export function getBottomToolbarHeight() {
-  return hasNotch() ? 70 : 55 
+  return hasNotch() ? 70 : 55
 }
 
 export function uuidv4() {

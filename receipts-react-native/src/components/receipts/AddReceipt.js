@@ -85,7 +85,7 @@ const AddReceipt = props => {
         }
     }
 
-    const textInputStyle = { ...styles.textInput, marginBottom: formHeight / 10 }
+    const textInputStyle = { ...constants.textInput, marginBottom: formHeight / 10 }
     if (!imgDimension["height"]) {
         return (
             <>
@@ -170,11 +170,7 @@ var styles = StyleSheet.create({
         fontSize: 36,
         marginBottom: 48
     },
-    textInput: {
-        height: 35,
-        borderColor: "#000000",
-        borderBottomWidth: 1,
-    },
+
     btnContainer: {
         backgroundColor: "white",
         marginTop: 12

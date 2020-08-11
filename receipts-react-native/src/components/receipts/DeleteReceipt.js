@@ -13,6 +13,7 @@ const DeleteReceipt = props => {
     function deletePhoto() {
         deletePhotoAsync()
         props.deleteReceiptSelected()
+        props.decreaseReceiptCount()
         props.navigation.navigate("Receipts")
     }
 
@@ -49,7 +50,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        deleteReceiptSelected: () => dispatch({ type: "DELETE_RECEIPT_SELECTED" })
+        deleteReceiptSelected: () => dispatch({ type: "DELETE_RECEIPT_SELECTED" }),
+        decreaseReceiptCount: () => dispatch({type: "DEC_RECEIPT_COUNT"})
     }
 }
 

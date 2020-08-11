@@ -10,7 +10,7 @@ import { Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import { theme } from '../common/styles';
 import constants, { uuidv4, getFormattedDate, hasNotch } from '../common/constants'
 import { MaterialIcons } from '@expo/vector-icons';
@@ -29,22 +29,22 @@ const ReceiptViewBottomToolbar = props => {
 
     return (
         <>
-            <View style={{ height: toolbarHeight, width: constants.windowWidth, position: "absolute", bottom: 0 }} >
+            <View style={{ height: toolbarHeight, width: constants.windowWidth, borderWidth: 0.5 }} >
                 <View style={{ flexDirection: "row" }}>
-                    <View style={{ width: constants.windowWidth / 2, borderTopWidth: 5, borderColor: "red", alignItems: "center" }}>
-                        <TouchableOpacity onPress={() => { iter > 0 ? iter -= 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
-                            <View style={{ alignItems: "center", marginTop: 5 }}>
-                                <AntDesign name="search1" size={24} color="black" />
-                                <Text style={{ fontSize: 8 }}>Search</Text>
+                    <View style={{ height: toolbarHeight, width: constants.windowWidth / 2, alignItems: "center" }}>
+                        <TouchableOpacity onPress={() => { if (iter != 0) {iter = 0; props.scroller.scrollTo({ x: -constants.windowWidth }) }} } style={{ width: 60 }}>
+                            <View style={{ alignItems: "center", marginTop: 10 }}>
+                                <Entypo name="image" size={24} color="black" />
+                                <Text style={{ fontSize: 8 }}>Image</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ width: constants.windowWidth / 2, borderTopWidth: 5, borderColor: "blue", alignItems: "center" }}>
-                        <TouchableOpacity onPress={() => { pickImage() }} style={{ width: 60 }}>
-                            <View style={{ alignItems: "center", marginTop: 5 }}>
-                                <MaterialIcons name="photo-album" size={24} color="black" />
-                                <Text style={{ fontSize: 8 }}>Upload</Text>
+                    <View style={{ height: toolbarHeight, width: constants.windowWidth / 2, alignItems: "center" }}>
+                        <TouchableOpacity onPress={() => { if (iter != 1) {iter = 1; props.scroller.scrollTo({ x: constants.windowWidth }) }} } style={{ width: 60 }}>
+                            <View style={{ alignItems: "center", marginTop: 8 }}>
+                                <Entypo name="menu" size={24} color="black" />
+                                <Text style={{ fontSize: 8 }}>Details</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
