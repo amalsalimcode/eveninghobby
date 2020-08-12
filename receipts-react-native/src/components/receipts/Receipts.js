@@ -1,51 +1,65 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Button, ActivityIndicator, Image } from "react-native";
-import constants, { uuidv4, getFormattedDate } from '../common/constants'
+import { View, ActivityIndicator } from "react-native";
+import constants from '../common/constants'
 import ReceiptsBottomToolbar from "./ReceiptsBottomToolbar";
-import { ScrollView, TouchableOpacity, FlatList } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import GradientBackground from "../common/GradientBackground";
 import { theme } from "../common/styles";
 import SingleReceipt from "./SingleReceipt";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
+import { getNewReceiptBatch } from "./Backend"
+import { db, success, error } from './Db'
+
 
 let allDataReceived = false
 
+// success function
+function useForceUpdate() {
+    const [value, setValue] = useState(0);
+    console.log("forceUpdate called!!!!!!")
+    return [() => setValue(value + 1), value];
+}
+
 const Receipts = props => {
 
-    const getNewReceiptBatch = () => {
+    const [forceUpdate, forceUpdateId] = useForceUpdate()
 
-        props.incReceiptCountBatch()
+    // const addReceipt = (v: {amount: float; memo: String; store: String, purchasedAt: Date, imageUri: String}) => {
+    const addReceipt = (amount, memo, store, purchasedAt, imageUri) => {
 
-        var request_body = JSON.stringify({
-            "initLen": props.totalCount
-        })
-        fetch(constants.ngrokHost + 'receipt/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+        db.transaction(
+            tx => {
+                tx.executeSql("insert into receipt (amount, store, memo, uri, purchasedAt) values (?, ?, ?, ?, ?)", [23.4, "testStore", "testMemo", "testURI", "2020/12/12"], success, error);
             },
-            body: request_body
-        }).then((response) => {
-            if (response.status == 200) {
-                return response.json()
-            } else {
-                return "done"
-            }
-        }).then((json) => {
-            if (json == "done") {
-                allDataReceived = true
-            } else {
-                props.setReceipt(json)
-            }
-        })
+            null,
+            forceUpdate
+        );
+    }
+
+    const ReadReceipt = () => {
+        db.transaction(
+            tx => {
+                tx.executeSql("select * from receipt", [], (_, { rows }) =>console.log(rows["_array"]));
+            },
+            null,
+            forceUpdate
+        );
     }
 
     useEffect(() => {
-        getNewReceiptBatch()
-    }, []);
+        allDataReceived = getNewReceiptBatch(props.incReceiptCountBatch, props.totalCount, props.setReceipt)
 
+        db.transaction(tx => {
+            tx.executeSql("DROP TABLE IF EXISTS receipt")
+            tx.executeSql(
+                "create table if not exists receipt (id integer primary key not null, amount FLOAT, store TEXT, memo TEXT, uri TEXT, purchasedAt DATE);"
+            );
+        });
+
+        addReceipt()
+
+    }, []);
 
     const renderItem = ({ item, index }) => {
         if (props.deletedItems[item["uuid_str"]]) {
@@ -55,18 +69,16 @@ const Receipts = props => {
         while (tmpIndex >= 0 && props.deletedItems[props.allReceipts[tmpIndex]["uuid_str"]]) {
             tmpIndex = tmpIndex - 1
         }
-
         let prev_dt = ''
         if (tmpIndex >= 0) {
             prev_dt = props.allReceipts[tmpIndex]["purchasedAt_str"]
         }
-
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
     }
 
     const endReached = () => {
         if (!allDataReceived) {
-            getNewReceiptBatch()
+            allDataReceived = getNewReceiptBatch(props.incReceiptCountBatch, props.totalCount, props.setReceipt)
         }
     }
 
@@ -84,7 +96,7 @@ const Receipts = props => {
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <SafeAreaView style={{ height: constants.windowHeight - 55 }}>
                     <FlatList
-                        onScrollBeginDrag={()=>{console.log("im being dragged®")}}
+                        onScrollBeginDrag={() => { console.log("im being dragged®") }}
                         bounces={false}
                         data={props.allReceipts}
                         renderItem={renderItem}
@@ -103,37 +115,9 @@ const Receipts = props => {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    visit: {
-        fontWeight: '300',
-        fontSize: 16,
-        color: "black",
-        marginBottom: 3
-    },
-    textContainer: {
-        borderBottomWidth: 2,
-        marginBottom: 10,
-        width: constants.windowWidth - 50,
-    },
-    square: {
-        alignSelf: "center",
-        borderColor: "#3e424b",
-        width: "95%",
-        marginBottom: 8,
-        borderWidth: 0.7,
-    },
-});
-
-
 function mapStateToProps(state) {
     return {
         allReceipts: state.AllReceiptsReducer.allReceipts,
-        toggleUpdate: state.AllReceiptsReducer.toggleUpdate,
         deletedItems: state.ReceiptSelectorReducer.deletedItems,
         totalCount: state.AllReceiptsReducer.totalCount
     }

@@ -20,9 +20,11 @@
     "expo": "^38.0.9",
     "expo-camera": "~8.3.1",
     "expo-device": "~2.2.1",
+    "expo-file-system": "~9.0.1",
     "expo-image-picker": "~8.3.0",
     "expo-linear-gradient": "~8.2.1",
     "expo-permissions": "~9.0.1",
+    "expo-sqlite": "~8.2.1",
     "libphonenumber-js": "^1.7.50",
     "lottie-react-native": "~2.6.1",
     "react": "16.11.0",
@@ -59,7 +61,8 @@
     "react-navigation": "^4.3.8",
     "react-navigation-stack": "^2.3.13",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
