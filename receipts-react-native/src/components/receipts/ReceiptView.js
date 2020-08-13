@@ -3,10 +3,8 @@ import { View, Dimensions, Text, Button, ActivityIndicator, Image } from "react-
 import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDate } from "../common/constants";
 import GradientBackground from "../common/GradientBackground";
 import { theme } from "../common/styles";
-import PinchZoomView from 'react-native-pinch-zoom-view';
 import ImageZoom from "react-native-image-pan-zoom";
 import TopToolbar from "./TopToolbar";
-import ReceiptsBottomToolbar from "./ReceiptsBottomToolbar";
 import ReceiptViewBottomToolbar from "./ReceiptViewBottomToolbar";
 import { ScrollView, TouchableWithoutFeedback, TextInput } from "react-native-gesture-handler";
 import { TextInputMask } from "react-native-masked-text";
@@ -14,7 +12,7 @@ import { TextInputMask } from "react-native-masked-text";
 
 const ReceiptView = props => {
 
-    const [img, setNewImg] = useState(props.route.params["img"])
+    const [img, setNewImg] = useState(constants.rootDir + "/" + props.route.params["fileName"])
     const [viewScroller, setViewScroller] = useState(null)
     const [imgDimension, setImgDimension] = useState({})
 
@@ -28,13 +26,15 @@ const ReceiptView = props => {
     const availableHeight = constants.windowHeight - getBottomToolbarHeight() - getTopToolbarHeight()
 
     let imageHeight = availableHeight
-    if (imgDimension["height"] < constants.windowHeight) {
+    if (imgDimension["height"] < availableHeight) {
         imageHeight = imgDimension["height"] * constants.windowWidth / imgDimension["width"]
     }
 
-    let imageWidth = imgDimension["width"]
+    let imageWidth = 0
     if (imgDimension["width"] < constants.windowWidth) {
         imageWidth = constants.windowWidth + 10
+    } else {
+        imageWidth = constants.windowWidth
     }
 
     const setImgDimensionFunc = (width, height) => {
@@ -43,27 +43,17 @@ const ReceiptView = props => {
         }
     }
 
+    const setResponseValue = (data) => {
+        "image" in data ? setNewImg(data["image"]) : {}
+        setAmount(data["amount"])
+        setStore(data["store"])
+        setMemo(data["memo"])
+        setPurchasedAt(data["purchasedAt"])
+    }
+
     useEffect(() => {
-
-        var request_body = JSON.stringify({
-            "uuid": props.route.params["uuid"]
-        })
-
-        fetch(constants.ngrokHost + 'receipt/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: request_body
-        }).then((response) => response.json())
-            .then((json) => {
-                setNewImg(json["image"])
-                setAmount(json["amount"])
-                setStore(json["store"])
-                setMemo(json["memo"])
-                setPurchasedAt(json["purchasedAt"])
-            })
+        // getSingleReceipt(props.route.params["id"], setResponseValue)
+        setResponseValue(props.route.params["value"])
     }, []);
 
     const getImage = () => {

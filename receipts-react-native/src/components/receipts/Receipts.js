@@ -9,77 +9,31 @@ import SingleReceipt from "./SingleReceipt";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { getNewReceiptBatch } from "./Backend"
-import { db, success, error } from './Db'
+import { createTable, ReadReceipt } from "./Db";
+import { createImgDir } from "./FileSystem";
 
-
-let allDataReceived = false
-
-// success function
-function useForceUpdate() {
-    const [value, setValue] = useState(0);
-    console.log("forceUpdate called!!!!!!")
-    return [() => setValue(value + 1), value];
-}
 
 const Receipts = props => {
 
-    const [forceUpdate, forceUpdateId] = useForceUpdate()
-
-    // const addReceipt = (v: {amount: float; memo: String; store: String, purchasedAt: Date, imageUri: String}) => {
-    const addReceipt = (amount, memo, store, purchasedAt, imageUri) => {
-
-        db.transaction(
-            tx => {
-                tx.executeSql("insert into receipt (amount, store, memo, uri, purchasedAt) values (?, ?, ?, ?, ?)", [23.4, "testStore", "testMemo", "testURI", "2020/12/12"], success, error);
-            },
-            null,
-            forceUpdate
-        );
-    }
-
-    const ReadReceipt = () => {
-        db.transaction(
-            tx => {
-                tx.executeSql("select * from receipt", [], (_, { rows }) =>console.log(rows["_array"]));
-            },
-            null,
-            forceUpdate
-        );
-    }
-
     useEffect(() => {
-        allDataReceived = getNewReceiptBatch(props.incReceiptCountBatch, props.totalCount, props.setReceipt)
-
-        db.transaction(tx => {
-            tx.executeSql("DROP TABLE IF EXISTS receipt")
-            tx.executeSql(
-                "create table if not exists receipt (id integer primary key not null, amount FLOAT, store TEXT, memo TEXT, uri TEXT, purchasedAt DATE);"
-            );
-        });
-
-        addReceipt()
-
+        createImgDir()
+        createTable()
+        ReadReceipt(props.setReceipt)
     }, []);
 
     const renderItem = ({ item, index }) => {
-        if (props.deletedItems[item["uuid_str"]]) {
+        if (props.deletedItems[item["id"]]) {
             return <></>
         }
         var tmpIndex = index - 1
-        while (tmpIndex >= 0 && props.deletedItems[props.allReceipts[tmpIndex]["uuid_str"]]) {
+        while (tmpIndex >= 0 && props.deletedItems[props.allReceipts[tmpIndex]["id"]]) {
             tmpIndex = tmpIndex - 1
         }
         let prev_dt = ''
         if (tmpIndex >= 0) {
-            prev_dt = props.allReceipts[tmpIndex]["purchasedAt_str"]
+            prev_dt = props.allReceipts[tmpIndex]["purchasedAt"]
         }
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
-    }
-
-    const endReached = () => {
-        if (!allDataReceived) {
-            allDataReceived = getNewReceiptBatch(props.incReceiptCountBatch, props.totalCount, props.setReceipt)
-        }
     }
 
     if (!props.allReceipts) {
@@ -96,18 +50,10 @@ const Receipts = props => {
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <SafeAreaView style={{ height: constants.windowHeight - 55 }}>
                     <FlatList
-                        onScrollBeginDrag={() => { console.log("im being dragged®") }}
                         bounces={false}
                         data={props.allReceipts}
                         renderItem={renderItem}
-                        removeClippedSubviews={true}
-                        updateCellsBatchingPeriod={30}
-                        maxToRenderPerBatch={40}
-                        initialNumToRender={20}
-                        windowSize={21}
-                        onEndReached={endReached}
-                        onEndReachedThreshold={5}
-                        keyExtractor={item => item["uuid_str"]} />
+                        keyExtractor={(item) => {return item["fileName"]}} />
                 </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />
             </ GradientBackground >

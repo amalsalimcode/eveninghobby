@@ -1,15 +1,17 @@
 import { Dimensions } from "react-native";
 import * as Device from 'expo-device';
-
+import * as FileSystem from 'expo-file-system';
 
 
 let constants = {
   diffDays: 7,
   windowWidth: Dimensions.get('window').width,
   windowHeight: Dimensions.get('window').height,
-  ngrokHost: "http://aeb7fbd5a742.ngrok.io/",
+  ngrokHost: "http://161502d548d0.ngrok.io/",
   // ngrokHost: "http://127.0.0.1:8000/",
   model: Device.modelName,
+  rootDir: FileSystem.documentDirectory + "images",
+  disableBackend: true,
 
   textInput: {
     height: 35,

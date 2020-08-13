@@ -14,7 +14,6 @@ import TopToolbar from "./TopToolbar";
 import * as FileSystem from 'expo-file-system';
 
 
-const dest = "file:///Users/bismillah/Library/Developer/CoreSimulator/Devices/5394FEAD-276B-4B7B-AB70-C08CD429AF17/data/Containers/Data/Application/8EC94FAC-5445-4F37-B9C5-9E93F2AFDACD/Library/Caches/ExponentExperienceData/%2540amalsalim%252Freact-native-first/testDir3/img"
 
 const CaptureReceipt = props => {
 
@@ -38,16 +37,12 @@ const CaptureReceipt = props => {
 
     async function takeAndUploadPhotoAsync() {
         let photo = await cam.takePictureAsync()
-        capturedImage = photo["uri"]
+
         // capturedImage = "http://personal.psu.edu/xqz5228/jpg.jpg"
 
-        console.log("here is the file directory", FileSystem.documentDirectory)
-
-        // FileSystem.makeDirectoryAsync(dest, {"intermediates": true})
-        FileSystem.copyAsync({"from": photo["uri"], "to": dest})
-
         props.navigation.navigate("AddReceipt", {
-            uri: photo["uri"], height: photo["height"],
+            uri: photo["uri"],
+            height: photo["height"],
             width: photo["width"]
         })
 
