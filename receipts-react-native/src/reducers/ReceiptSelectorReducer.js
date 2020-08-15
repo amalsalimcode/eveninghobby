@@ -27,4 +27,4 @@ const ReceiptSelectorReducer = (state=initial_data, action) => {
     return state
 }
 
-export default ReceiptSelectorReducer
+export default ReceiptSelectorReduceec
