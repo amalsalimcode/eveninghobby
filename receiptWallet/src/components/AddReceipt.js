@@ -1,0 +1,149 @@
+import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, KeyboardAvoidingView, Keyboard, Picker } from "react-native"
+import { TextInput, TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler"
+
+import ImageZoom from 'react-native-image-pan-zoom'
+
+import TopToolbar from "./TopToolbar"
+import { addReceiptDb, ReadCategoryTypes } from "./common/Db"
+import { saveImgToDir } from "./common/FileSystem"
+import ChangeDate from "./common/ChangeDate"
+import { sendPictureBackend } from "./common/Backend"
+import { theme, commonStyles } from './common/styles'
+import { TextInputMask } from 'react-native-masked-text'
+import GradientBackground from "./common/GradientBackground"
+import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
+import SelectCategory from "./common/SetCategory";
+
+
+const AddReceipt = props => {
+
+    const [amount, setAmount] = useState(0.00);
+    const [store, setStore] = useState('');
+    const [memo, setMemo] = useState('');
+
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const [showCategoryPicker, setShowCategoryPicker] = useState(false);
+    const [category, setCategory] = useState('Category');
+
+    const photo = props.route.params
+    const imageWidth = photo["width"]
+    let imageHeight = photo["height"] * constants.windowWidth / photo["width"]
+    if (imageHeight > constants.windowHeight * 0.6) {
+        imageHeight = constants.windowHeight * 0.6
+    }
+
+    const formHeight = constants.windowHeight - imageHeight - getTopToolbarHeight() - 50 // 50 is form Margin
+
+    useEffect(() => {
+    }, []);
+
+    const savePicture = () => {
+        let receiptDetails = {
+            amount: amount, memo: memo, store: store, uuid: uuidv4(), category: category,
+            purchasedAt: selectedDate.getMonth() + 1 + "/" + selectedDate.getDate() + "/" + selectedDate.getFullYear(),
+            fileName: photo["uri"].split('/').pop()
+        }
+        sendPictureBackend(selectedDate, amount, memo, store, photo, props.addSingleReceipt).then(() => {
+            addReceiptDb(receiptDetails)
+        }).then(() => {
+            saveImgToDir(photo["uri"]).then(() => {
+                props.addSingleReceipt(receiptDetails)
+            })
+        })
+    }
+
+    const getImage = (imgUri) => {
+        if (Platform.OS == 'ios') {
+            return (<ScrollView minimumZoomScale={1} maximumZoomScale={5}>
+                <Image resizeMode="contain" style={{ width: constants.windowWidth, height: imageHeight }}
+                    source={{ uri: imgUri }} />
+            </ScrollView>)
+        } else {
+            return (<ImageZoom cropWidth={constants.windowWidth} cropHeight={imageHeight}
+                imageWidth={imageWidth} imageHeight={imageHeight}>
+                <Image resizeMode="contain" style={{ width: imageWidth, height: imageHeight }}
+                    source={{ uri: imgUri }} />
+            </ImageZoom>)
+        }
+    }
+
+    const textInputStyle = { ...commonStyles.textInput }
+
+    const getColor = (value) => {
+        if (value == "Category") {
+            return ("rgb(150, 150, 150)")
+        }
+        else {
+            return ("black")
+        }
+    }
+
+    return (
+        < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{ flex: 1 }}>
+
+                <View style={{ justifyContent: "flex-end", flex: 1, paddingBottom: 0 }}>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <TopToolbar {...props} done={savePicture} />
+                        <View style={{ backgroundColor: "black" }}>
+                            {getImage(photo["uri"])}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View style={{ marginHorizontal: "3%", marginVertical: 25, height: formHeight, justifyContent: "space-around" }}>
+                            <View style={{ flexDirection: "row" }}>
+
+                                <View style={{ ...textInputStyle, width: "35%", justifyContent: "center" }}>
+                                    <TouchableWithoutFeedback onPress={() => { setShowDatePicker(true) }}>
+                                        <Text> {getFormattedDate(selectedDate)} </Text>
+                                    </TouchableWithoutFeedback>
+                                </View>
+
+                                <View style={{ marginHorizontal: "2%" }} />
+
+                                <View style={{ ...textInputStyle, justifyContent: "center", width: 80 }}>
+                                    <TextInputMask type={'money'} options={{ precision: 2, separator: '.', delimiter: '.', unit: '$', suffixUnit: '' }}
+                                        value={amount} onChangeText={(text) => { setAmount(text) }} />
+                                </View>
+
+                                <View style={{ marginHorizontal: "2%" }} />
+
+                                <View style={{ ...textInputStyle, width: "35%", justifyContent: "center" }}>
+                                    <TouchableWithoutFeedback onPress={() => { setShowCategoryPicker(true) }}>
+                                        <Text style={{ color: getColor(category) }}>{category}</Text>
+                                    </TouchableWithoutFeedback>
+                                </View>
+
+                            </View>
+                            <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} />
+                            <TextInput placeholder="Memo" style={textInputStyle} maxlength={200} onChangeText={setMemo} value={memo} />
+                            <View style={{ height: 10 }} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+
+            </KeyboardAvoidingView>
+            <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={setSelectedDate} />
+            {/* <SelectCategory visible={showCategoryPicker} setVisible={setShowCategoryPicker} setValue={setCategory} /> */}
+        </GradientBackground>
+    )
+}
+
+function mapStateToProps(state) {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addSingleReceipt: (receipt) => dispatch({ type: "ADD_SINGLE_RECEIPT", receipt: receipt })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddReceipt)
