@@ -1,16 +1,17 @@
 import { connect } from 'react-redux'
 import React, { useState } from 'react';
-import { View, Platform, Text } from 'react-native';
+import { View, Platform, Picker, Text } from 'react-native';
 
 import { Overlay } from 'react-native-elements';
-import { Picker } from '@react-native-community/picker';
 
 import { theme, commonStyles } from './styles';
 import { ReadCategoryTypes } from './Db';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 const SelectCategory = props => {
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState('Category')
+    const [visible, setVisible] = useState(false)
     const [categories, setCategories] = useState([])
 
     if (!categories.length) {
@@ -20,32 +21,50 @@ const SelectCategory = props => {
     const onChange = (value, index) => {
         setValue(value)
         props.setValue(value)
-        props.setVisible(false)
+        if (Platform.OS == 'ios') {
+            setVisible(false)
+        }
     };
+
+
+    const getColor = (value) => {
+        if (value == "Category") {
+            return ("rgb(150, 150, 150)")
+        }
+        else {
+            return ("black")
+        }
+    }
 
     if (Platform.OS == 'ios') {
         return (
-            <Overlay onBackdropPress={() => { props.setVisible(false) }} overlayStyle={commonStyles.overlayStyle} isVisible={props.visible} height={220}>
-                <View style={{ height: 220 }}>
-                    <Picker selectedValue={value} onValueChange={(val, ind) => { onChange(val, ind) }}>
-                        {categories.map((item, index) => {
-                            return (<Picker.Item label={item} value={item} key={index} />)
-                        })}
-                    </Picker>
-                </View>
-            </Overlay >
+            <View style={{ ...commonStyles.textInput, width: "35%", justifyContent: "center" }}>
+                <TouchableWithoutFeedback onPress={() => { setVisible(true) }}>
+                    <Text style={{ color: getColor(value) }}>{value}</Text>
+                </TouchableWithoutFeedback>
+                <Overlay onBackdropPress={() => { setVisible(false) }} overlayStyle={commonStyles.overlayStyle} isVisible={visible} height={220}>
+                    <View style={{ height: 220 }}>
+                        <Picker selectedValue={value} onValueChange={(val, ind) => { onChange(val, ind) }}>
+                            {categories.map((item, index) => {
+                                return (<Picker.Item label={item} value={item} key={index} />)
+                            })}
+                        </Picker>
+                    </View>
+                </Overlay >
+
+            </View>
         );
     } else {
         return (
-            <Picker selectedValue={value} onValueChange={(val, ind) => { onChange(val, ind) }}>
-                {categories.map((item, index) => {
-                    return (<Picker.Item label={item} value={item} key={index} />)
-                })}
-            </Picker>
+            <View style={{ ...commonStyles.textInput, width: "37%", justifyContent: "center" }}>
+                <Picker selectedValue={value} onValueChange={(val, ind) => { onChange(val, ind) }}>
+                    {categories.map((item, index) => {
+                        return (<Picker.Item label={item} value={item} key={index} />)
+                    })}
+                </Picker>
+            </View>
         )
-
     }
-
 };
 
 

@@ -1,20 +1,20 @@
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, KeyboardAvoidingView, Keyboard, Picker } from "react-native"
+import { View, Text, Image, KeyboardAvoidingView, Keyboard, Platform } from "react-native"
 import { TextInput, TouchableWithoutFeedback, ScrollView } from "react-native-gesture-handler"
 
 import ImageZoom from 'react-native-image-pan-zoom'
 
 import TopToolbar from "./TopToolbar"
-import { addReceiptDb, ReadCategoryTypes } from "./common/Db"
-import { saveImgToDir } from "./common/FileSystem"
+import { addReceiptDb } from "./common/Db"
 import ChangeDate from "./common/ChangeDate"
+import SelectCategory from "./common/SetCategory"
+import { saveImgToDir } from "./common/FileSystem"
 import { sendPictureBackend } from "./common/Backend"
 import { theme, commonStyles } from './common/styles'
 import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
-import SelectCategory from "./common/SetCategory";
 
 
 const AddReceipt = props => {
@@ -32,6 +32,7 @@ const AddReceipt = props => {
     const photo = props.route.params
     const imageWidth = photo["width"]
     let imageHeight = photo["height"] * constants.windowWidth / photo["width"]
+    console.log("this is the imageHeight", imageHeight, constants.windowHeight)
     if (imageHeight > constants.windowHeight * 0.6) {
         imageHeight = constants.windowHeight * 0.6
     }
@@ -73,15 +74,6 @@ const AddReceipt = props => {
 
     const textInputStyle = { ...commonStyles.textInput }
 
-    const getColor = (value) => {
-        if (value == "Category") {
-            return ("rgb(150, 150, 150)")
-        }
-        else {
-            return ("black")
-        }
-    }
-
     return (
         < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
             <KeyboardAvoidingView
@@ -107,18 +99,13 @@ const AddReceipt = props => {
 
                                 <View style={{ marginHorizontal: "2%" }} />
 
-                                <View style={{ ...textInputStyle, justifyContent: "center", width: 80 }}>
+                                <View style={{ ...textInputStyle, justifyContent: "center", width: "20%" }}>
                                     <TextInputMask type={'money'} options={{ precision: 2, separator: '.', delimiter: '.', unit: '$', suffixUnit: '' }}
                                         value={amount} onChangeText={(text) => { setAmount(text) }} />
                                 </View>
 
                                 <View style={{ marginHorizontal: "2%" }} />
-
-                                <View style={{ ...textInputStyle, width: "35%", justifyContent: "center" }}>
-                                    <TouchableWithoutFeedback onPress={() => { setShowCategoryPicker(true) }}>
-                                        <Text style={{ color: getColor(category) }}>{category}</Text>
-                                    </TouchableWithoutFeedback>
-                                </View>
+                                <SelectCategory setValue={setCategory} />
 
                             </View>
                             <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} />
@@ -130,7 +117,6 @@ const AddReceipt = props => {
 
             </KeyboardAvoidingView>
             <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={setSelectedDate} />
-            {/* <SelectCategory visible={showCategoryPicker} setVisible={setShowCategoryPicker} setValue={setCategory} /> */}
         </GradientBackground>
     )
 }

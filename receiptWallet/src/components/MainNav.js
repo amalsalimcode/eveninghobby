@@ -10,6 +10,7 @@ import CaptureReceipt from './CaptureReceipt'
 import UploadReceipt from './UploadReceipt'
 import Search from './Search';
 import AddReceipt from './AddReceipt';
+import SelectorOverlay from './SelectorOverlay';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export default function MainNav() {
                 <Stack.Screen name="UploadReceipt" component={UploadReceipt} />
                 <Stack.Screen name="AddReceipt" component={AddReceipt} />
                 <Stack.Screen name="Search" component={Search} />
+                <Stack.Screen name="SelectorOverlay" component={SelectorOverlay} />
             </Stack.Navigator>
         </NavigationContainer>
     );

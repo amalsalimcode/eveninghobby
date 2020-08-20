@@ -28,8 +28,7 @@ const CaptureReceipt = props => {
     };
 
     async function takeAndUploadPhotoAsync() {
-        // let photo = await cam.takePictureAsync()
-        let photo = "http://personal.psu.edu/xqz5228/jpg.jpg"
+        let photo = await cam.takePictureAsync()
 
         props.navigation.navigate("AddReceipt", {
             uri: photo["uri"],

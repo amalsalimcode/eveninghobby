@@ -59,7 +59,7 @@ const ReceiptsBottomToolbar = props => {
                 <View style={{ height: toolbarHeight, width: constants.windowWidth, paddingLeft: 10, backgroundColor: theme.subtlePrimary, borderTopWidth: 0.5, position: "absolute", bottom: 0 }} >
                     <View style={{ height: 10 }} />
                     <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                        <TouchableOpacity onPress={() => { iter > 0 ? iter -= 1 : {}; props.scroller.scrollTo({ x: constants.windowWidth * iter }) }} style={{ width: 60 }}>
+                        <TouchableOpacity onPress={() => { props.navigation.navigate('SelectorOverlay')  }} style={{ width: 60 }}>
                             <View style={{ alignItems: "center" }}>
                                 <AntDesign name="search1" size={24} color="black" />
                                 <Text style={{ fontSize: 8 }}>Search</Text>
