@@ -19,6 +19,8 @@ export const createTable = () => {
         // tx.executeSql("DROP TABLE IF EXISTS receipt")
         // tx.executeSql("DROP TABLE IF EXISTS category")
         tx.executeSql("CREATE TABLE IF NOT EXISTS category (type VARCHAR(100) PRIMARY KEY NOT NULL);", null, success, error);
+        tx.executeSql("CREATE TABLE IF NOT EXISTS label (type VARCHAR(100) PRIMARY KEY NOT NULL);", null, success, error);
+        tx.executeSql("INSERT OR IGNORE INTO label (type) values (?), (?), (?)", ["Taxes 2020", "Utah Road Trip"], null, success, error);
         tx.executeSql("INSERT OR IGNORE INTO category (type) values (?), (?), (?)", ["groceries", "dining", "gas"], null, success, error);
         tx.executeSql("CREATE TABLE IF NOT EXISTS receipt (id integer PRIMARY KEY NOT NULL, amount FLOAT, store VARCHAR(200), memo TEXT, fileName VARCHAR(100), purchasedAt DATE, isdeleted BOOLEAN DEFAULT FALSE, uuid VARCHAR(100), category VARCHAR(100) DEFAULT NULL, FOREIGN KEY (category) REFERENCES category(type));", null, success, error);
     },
@@ -51,6 +53,26 @@ export const ReadCategoryTypes = (setResult) => {
     db.transaction(
         tx => {
             tx.executeSql("SELECT type FROM category", [], (error, { rows }) => { setCategoryTypesResult(rows["_array"], setResult) });
+        },
+        null,
+        null
+    );
+}
+
+export const ReadLabelTypes = (setResult) => {
+    db.transaction(
+        tx => {
+            tx.executeSql("SELECT type FROM label", [], (error, { rows }) => { setCategoryTypesResult(rows["_array"], setResult) });
+        },
+        null,
+        null
+    );
+}
+
+export const AddNewLabelTypes = (arg) => {
+    db.transaction(
+        tx => {
+            tx.executeSql("SELECT type FROM label", [], (error, { rows }) => { setCategoryTypesResult(rows["_array"], setResult) });
         },
         null,
         null

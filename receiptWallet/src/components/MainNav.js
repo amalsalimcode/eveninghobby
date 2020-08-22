@@ -10,7 +10,7 @@ import CaptureReceipt from './CaptureReceipt'
 import UploadReceipt from './UploadReceipt'
 import Search from './Search';
 import AddReceipt from './AddReceipt';
-import SelectorOverlay from './SelectorOverlay';
+import SelectorOverlay from './SetLabel';
 
 const Stack = createStackNavigator();
 

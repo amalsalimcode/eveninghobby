@@ -15,6 +15,7 @@ import { theme, commonStyles } from './common/styles'
 import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
+import SelectorOverlay from "./SetLabel";
 
 
 const AddReceipt = props => {
@@ -75,49 +76,51 @@ const AddReceipt = props => {
     const textInputStyle = { ...commonStyles.textInput }
 
     return (
-        < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{ flex: 1 }}>
+        <>
+            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}>
 
-                <View style={{ justifyContent: "flex-end", flex: 1, paddingBottom: 0 }}>
-                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                        <TopToolbar {...props} done={savePicture} />
-                        <View style={{ backgroundColor: "black" }}>
-                            {getImage(photo["uri"])}
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                        <View style={{ marginHorizontal: "3%", marginVertical: 25, height: formHeight, justifyContent: "space-around" }}>
-                            <View style={{ flexDirection: "row" }}>
-
-                                <View style={{ ...textInputStyle, width: "35%", justifyContent: "center" }}>
-                                    <TouchableWithoutFeedback onPress={() => { setShowDatePicker(true) }}>
-                                        <Text> {getFormattedDate(selectedDate)} </Text>
-                                    </TouchableWithoutFeedback>
-                                </View>
-
-                                <View style={{ marginHorizontal: "2%" }} />
-
-                                <View style={{ ...textInputStyle, justifyContent: "center", width: "20%" }}>
-                                    <TextInputMask type={'money'} options={{ precision: 2, separator: '.', delimiter: '.', unit: '$', suffixUnit: '' }}
-                                        value={amount} onChangeText={(text) => { setAmount(text) }} />
-                                </View>
-
-                                <View style={{ marginHorizontal: "2%" }} />
-                                <SelectCategory setValue={setCategory} />
-
+                    <View style={{ justifyContent: "flex-end", flex: 1, paddingBottom: 0 }}>
+                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                            <TopToolbar {...props} done={savePicture} />
+                            <View style={{ backgroundColor: "black" }}>
+                                {getImage(photo["uri"])}
                             </View>
-                            <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} />
-                            <TextInput placeholder="Memo" style={textInputStyle} maxlength={200} onChangeText={setMemo} value={memo} />
-                            <View style={{ height: 10 }} />
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                            <View style={{ marginHorizontal: "3%", marginVertical: 25, height: formHeight, justifyContent: "space-around" }}>
+                                <View style={{ flexDirection: "row" }}>
 
-            </KeyboardAvoidingView>
-            <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={setSelectedDate} />
-        </GradientBackground>
+                                    <View style={{ ...textInputStyle, width: "35%", justifyContent: "center" }}>
+                                        <TouchableWithoutFeedback onPress={() => { setShowDatePicker(true) }}>
+                                            <Text> {getFormattedDate(selectedDate)} </Text>
+                                        </TouchableWithoutFeedback>
+                                    </View>
+
+                                    <View style={{ marginHorizontal: "2%" }} />
+
+                                    <View style={{ ...textInputStyle, justifyContent: "center", width: "20%" }}>
+                                        <TextInputMask type={'money'} options={{ precision: 2, separator: '.', delimiter: '.', unit: '$', suffixUnit: '' }}
+                                            value={amount} onChangeText={(text) => { setAmount(text) }} />
+                                    </View>
+
+                                    <View style={{ marginHorizontal: "2%" }} />
+                                    <SelectCategory setValue={setCategory} />
+
+                                </View>
+                                <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} />
+                                <TextInput placeholder="Memo" style={textInputStyle} maxlength={200} onChangeText={setMemo} value={memo} />
+                                <View style={{ height: 10 }} />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </KeyboardAvoidingView>
+                <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={setSelectedDate} />
+                <SelectorOverlay />
+            </GradientBackground>
+        </>
     )
 }
 
