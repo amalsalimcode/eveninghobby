@@ -4,11 +4,11 @@ import { View, StyleSheet, Text } from "react-native";
 import { TouchableHighlight, TextInput } from "react-native-gesture-handler";
 import constants from './common/constants'
 import { commonStyles } from "./common/styles";
+import { AddNewLabelType } from "./common/Db";
 
 
-const NewEntry = props => {
+const NewLabel = props => {
 
-    const [borderWidth, setBorderWidth] = useState(0.7);
     const [input, setInput] = useState('');
 
     useEffect(() => {
@@ -21,15 +21,14 @@ const NewEntry = props => {
         var result = props.setNewLabel(arg)
         if (result) {
             setInput('')
+            AddNewLabelType(arg)
         }
-
-
     }
 
     return (
-        <View style={{ ...styles.square, borderWidth: borderWidth }} >
+        <View style={styles.square} >
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 0 }}>
-                <TextInput placeholder="New Category" style={{ ...commonStyles.textInput, width: 170 }} maxLength={30} onChangeText={setInput} value={input} />
+                <TextInput placeholder="New Label" style={{ ...commonStyles.textInput, width: 170 }} maxLength={30} onChangeText={setInput} value={input} />
                 <TouchableHighlight style={{ ...styles.openButton  }} onPress={() => { setNewInput(input) }}>
                     <Text style={styles.textStyle}>Add</Text>
                 </TouchableHighlight>
@@ -45,6 +44,7 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         padding: 10,
         width: constants.windowWidth * 0.65,
+        borderWidth: 0.7
     },
     textStyle: {
         color: "white",
@@ -71,4 +71,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewEntry)
+export default connect(mapStateToProps, mapDispatchToProps)(NewLabel)

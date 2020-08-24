@@ -8,37 +8,50 @@ import {
     View,
     Keyboard
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import constants from "./common/constants";
-import SingleEntry from "./SingleEntry";
-import NewEntry from "./NewEntry";
+import SingleEntry from "./SingleLabel";
+import NewEntry from "./NewLabel";
+import { commonStyles } from './common/styles';
 import { ReadLabelTypes } from './common/Db';
+import { ImageZoomProps } from "react-native-image-pan-zoom";
 
-const SetLabel = () => {
-    const [modalVisible, setModalVisible] = useState(true);
+const SetLabel = props => {
+    const [modalVisible, setModalVisible] = useState(false);
     const [keyboardOffset, setKeyboardOffset] = useState(0);
-    const [label, setLabel] = useState([])
+    const [selectedLabel, setSelectedLabel] = useState({})
+    const [value, setValue] = useState('Label')
+    const [dbResult, setDbResult] = useState([])
 
-    function setDbResponse(result) {
+
+    function generateLabelViews() {
         let x = []
-        console.log("here is the dbresponse", result)
-        for (index = 0; index < result.length; index++) {
-            x.push(<SingleEntry key={index} title={result[index]} />)
+        console.log("here is the dbresponse", dbResult)
+        for (index = 0; index < dbResult.length; index++) {
+            let entryPressed = props.selectedTrueLabel.includes(dbResult[index]) ? true : false
+            console.log("this is the checkbox value", dbResult[index], entryPressed)
+            x.push(<SingleEntry key={index} title={dbResult[index]} toggleCheckbox={toggleCheckbox} value={entryPressed}/>)
         }
-        setLabel(x)
+        return x
     }
 
-    if (!label.length) {
-        ReadLabelTypes(setDbResponse)
+    function toggleCheckbox(title, value) {
+        selectedLabel[title] = value
+        setSelectedLabel(selectedLabel)
+        console.log("here are selected labels", selectedLabel)
     }
+
+    if (!dbResult.length) {
+        ReadLabelTypes(setDbResult)
+    } 
 
     function setNewLabel(arg) {
-        if (label.includes(arg)) {
+        if (dbResult.includes(arg)) {
             return false
         }
-        let x = label
-        x.push(<SingleEntry key={x.length+1} title={arg}/>)
-        setLabel(x)
+        console.log("trying to add new label", arg, dbResult)
+        dbResult.push(arg)
+        setDbResult(dbResult)
         return true
     }
 
@@ -54,32 +67,65 @@ const SetLabel = () => {
 
     const _keyboardDidShow = (e) => {
         setKeyboardOffset(e.endCoordinates.height / 2)
-        console.log("Keyboard Shown", e.endCoordinates.height / 2);
     };
 
     const _keyboardDidHide = () => {
         setKeyboardOffset(0)
-        console.log("keyboard hidden")
     };
 
+    const getColor = (value) => {
+        if (value == "Label") {
+            return ("rgb(150, 150, 150)")
+        }
+        else {
+            return ("black")
+        }
+    }
+
+    const donePressed = () => {
+        var labelsSetTrue = [] 
+        setModalVisible(!modalVisible)
+        for (var key in selectedLabel) {
+            if (selectedLabel[key]) {
+                labelsSetTrue.push(key)
+            }
+        }
+        if (labelsSetTrue.length == 1) {
+            setValue(labelsSetTrue[0])
+        } else if (labelsSetTrue.length == 0) {
+            setValue ("Label")
+        } else {
+            setValue(labelsSetTrue.length + " Labels Chosen")
+        }
+        console.log("here are final labels", labelsSetTrue)
+        props.setSelectedTrueLabel(labelsSetTrue)
+    }
+
     return (
-        <View>
-            <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { Alert.alert("Modal has been closed."); }}>
-                <View style={{ marginTop: constants.windowHeight / 2 - 200 - keyboardOffset }}>
-                    <View style={styles.modalView}>
-                        <View style={{ height: 250, marginTop: 20 }}>
-                            <ScrollView contentContainerStyle={{ padding: 10 }}>
-                                {label}
-                                <NewEntry setNewLabel={setNewLabel}/>
-                            </ScrollView>
+        <>
+            <View style={{ ...commonStyles.textInput, width: "35%", justifyContent: "center" }}>
+                <TouchableWithoutFeedback onPress={() => { setModalVisible(true) }}>
+                    <Text style={{ color: getColor(value) }}>{value}</Text>
+                </TouchableWithoutFeedback>
+            </View>
+            <View>
+                <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { Alert.alert("Modal has been closed."); }}>
+                    <View style={{ marginTop: constants.windowHeight / 2 - 200 - keyboardOffset }}>
+                        <View style={styles.modalView}>
+                            <View style={{ height: 250, marginTop: 20 }}>
+                                <ScrollView contentContainerStyle={{ padding: 10 }}>
+                                    {generateLabelViews()}
+                                    <NewEntry setNewLabel={setNewLabel} />
+                                </ScrollView>
+                            </View>
+                            <TouchableHighlight style={{ ...styles.openButton, marginVertical: 20 }} onPress={donePressed}>
+                                <Text style={styles.textStyle}>Done</Text>
+                            </TouchableHighlight>
                         </View>
-                        <TouchableHighlight style={{ ...styles.openButton, marginVertical: 20 }} onPress={() => { setModalVisible(!modalVisible); }}>
-                            <Text style={styles.textStyle}>Done</Text>
-                        </TouchableHighlight>
                     </View>
-                </View>
-            </Modal >
-        </View >
+                </Modal >
+            </View >
+        </>
     );
 };
 

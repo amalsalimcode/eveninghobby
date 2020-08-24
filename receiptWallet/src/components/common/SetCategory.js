@@ -4,7 +4,7 @@ import { View, Platform, Picker, Text } from 'react-native';
 
 import { Overlay } from 'react-native-elements';
 
-import { theme, commonStyles } from './styles';
+import { commonStyles } from './styles';
 import { ReadCategoryTypes } from './Db';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -51,7 +51,6 @@ const SelectCategory = props => {
                         </Picker>
                     </View>
                 </Overlay >
-
             </View>
         );
     } else {

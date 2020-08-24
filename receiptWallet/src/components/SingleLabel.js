@@ -7,17 +7,23 @@ import CheckBox from 'react-native-check-box'
 
 
 
-const SingleEntry = props => {
+const SingleLabel = props => {
 
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(props.value);
 
     useEffect(() => {
     }, []);
 
+    const checkBoxPressed = () => {
+        props.toggleCheckbox(props.title, !isChecked)
+        setIsChecked(!isChecked)
+
+    }
+
     return (
-        <TouchableOpacity style={styles.square} onPress={() => { setIsChecked(!isChecked) }} onLongPress={() => { }}>
+        <TouchableOpacity style={styles.square} onPress={checkBoxPressed} onLongPress={() => { }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 15 }}> 
-                <CheckBox style={{ flex: 1 }} onClick={() => { setIsChecked(!isChecked) }} isChecked={isChecked} leftText={props.title}/>
+                <CheckBox style={{ flex: 1 }} onClick={checkBoxPressed} isChecked={isChecked} leftText={props.title}/>
             </View >
         </TouchableOpacity>
     );
@@ -45,4 +51,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleEntry)
+export default connect(mapStateToProps, mapDispatchToProps)(SingleLabel)

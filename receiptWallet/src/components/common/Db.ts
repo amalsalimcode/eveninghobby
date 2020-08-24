@@ -23,20 +23,24 @@ export const createTable = () => {
         tx.executeSql("INSERT OR IGNORE INTO label (type) values (?), (?), (?)", ["Taxes 2020", "Utah Road Trip"], null, success, error);
         tx.executeSql("INSERT OR IGNORE INTO category (type) values (?), (?), (?)", ["groceries", "dining", "gas"], null, success, error);
         tx.executeSql("CREATE TABLE IF NOT EXISTS receipt (id integer PRIMARY KEY NOT NULL, amount FLOAT, store VARCHAR(200), memo TEXT, fileName VARCHAR(100), purchasedAt DATE, isdeleted BOOLEAN DEFAULT FALSE, uuid VARCHAR(100), category VARCHAR(100) DEFAULT NULL, FOREIGN KEY (category) REFERENCES category(type));", null, success, error);
+        tx.executeSql("CREATE TABLE IF NOT EXISTS ReceiptLabelRelation (id integer PRIMARY KEY NOT NULL, receiptid INTEGER DEFAULT NULL, label VARCHAR(100) DEFAULT NULL, FOREIGN KEY (receiptid) REFERENCES receipt(id), FOREIGN KEY (label) REFERENCES label(type));", null, success, error)
     },
         null,
         () => { });
 }
 
-export const addReceiptDb = (v: { amount: number; memo: String; store: String, purchasedAt: String, fileName: String, uuid: String, category: String }) => {
-
-    db.transaction(
-        tx => {
-            tx.executeSql("insert into receipt (amount, store, memo, fileName, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, ?, ?, ?, ?)", [v.amount, v.store, v.memo, v.fileName, v.purchasedAt, false, v.uuid, v.category], success, error);
-        },
-        null,
-        () => { }
-    );
+export function addReceiptDb(v: { amount: number; memo: String; store: String, purchasedAt: String, fileName: String, uuid: String, category: String }) {
+    const db = SQLite.openDatabase("db.db");
+    return new Promise((resolve, reject) => {
+        db.transaction(
+            tx => {
+                tx.executeSql("insert into receipt (amount, store, memo, fileName, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, ?, ?, ?, ?)", [v.amount, v.store, v.memo, v.fileName, v.purchasedAt, false, v.uuid, v.category],
+                    (_, result) => { resolve(result["insertId"]) }, null);
+            },
+            null,
+            () => { }
+        );
+    })
 }
 
 export const ReadReceipt = (setResult) => {
@@ -69,11 +73,10 @@ export const ReadLabelTypes = (setResult) => {
     );
 }
 
-export const AddNewLabelTypes = (arg) => {
+export const AddNewLabelType = (arg) => {
     db.transaction(
         tx => {
-            tx.executeSql("SELECT type FROM label", [], (error, { rows }) => { setCategoryTypesResult(rows["_array"], setResult) });
-        },
+            tx.executeSql("insert into label (type) values (?)", [arg], success, error);},
         null,
         null
     );
@@ -88,17 +91,28 @@ const setCategoryTypesResult = (output, setResult) => {
 }
 
 export const deleteReceiptDb = (uuid) => {
-
-    var argCount = ""
-    uuid.forEach((_, index) => { index != uuid.length - 1 ? argCount += "?, " : argCount += "?" });
+    var arg = ""
+    uuid.forEach((_, index) => { index != uuid.length - 1 ? arg += "?, " : arg += "?" });
     db.transaction(
         tx => {
-            tx.executeSql("UPDATE receipt SET isdeleted = TRUE where uuid in (" + argCount + ")", uuid, success, error);
+            tx.executeSql("UPDATE receipt SET isdeleted = TRUE where uuid in (" + arg + ")", uuid, success, error);
         },
         null,
         null
     );
-
     return
+}
 
+export const addReceiptLabelRelationDb = (receiptId: number, label: Array<string>) => {
+    var arg = ""
+    label.forEach((value, index) => { index != label.length - 1 ? arg += "(" + receiptId + "," + "\"" + value + "\"" + "), " : 
+                                                                  arg += "(" + receiptId + "," + "\"" + value + "\"" + ");"  });
+    console.log("args are created .... ", arg)
+    db.transaction(
+        tx => {
+            tx.executeSql("INSERT INTO receiptlabelrelation ('receiptid', 'label') VALUES " + arg, success, error);
+        },
+        null,
+        null
+    );
 }

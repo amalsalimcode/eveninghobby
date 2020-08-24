@@ -2,6 +2,7 @@ import { Dimensions } from "react-native";
 import * as Device from 'expo-device';
 import * as FileSystem from 'expo-file-system';
 
+console.log("here is the location of your filesystem", FileSystem.documentDirectory)
 
 let constants = {
   diffDays: 7,

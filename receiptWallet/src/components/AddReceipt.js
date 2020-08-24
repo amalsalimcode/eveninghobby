@@ -6,7 +6,7 @@ import { TextInput, TouchableWithoutFeedback, ScrollView } from "react-native-ge
 import ImageZoom from 'react-native-image-pan-zoom'
 
 import TopToolbar from "./TopToolbar"
-import { addReceiptDb } from "./common/Db"
+import { addReceiptDb, addReceiptLabelRelationDb } from "./common/Db"
 import ChangeDate from "./common/ChangeDate"
 import SelectCategory from "./common/SetCategory"
 import { saveImgToDir } from "./common/FileSystem"
@@ -15,7 +15,9 @@ import { theme, commonStyles } from './common/styles'
 import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
-import SelectorOverlay from "./SetLabel";
+import SetLabel from "./SetLabel";
+
+import * as SQLite from 'expo-sqlite'; 1
 
 
 const AddReceipt = props => {
@@ -26,9 +28,11 @@ const AddReceipt = props => {
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
-
-    const [showCategoryPicker, setShowCategoryPicker] = useState(false);
     const [category, setCategory] = useState('Category');
+    const [label, setLabel] = useState([]);
+
+    console.log("here are set labels", label)
+
 
     const photo = props.route.params
     const imageWidth = photo["width"]
@@ -43,18 +47,25 @@ const AddReceipt = props => {
     useEffect(() => {
     }, []);
 
-    const savePicture = () => {
+
+    async function savePicture() {
         let receiptDetails = {
             amount: amount, memo: memo, store: store, uuid: uuidv4(), category: category,
             purchasedAt: selectedDate.getMonth() + 1 + "/" + selectedDate.getDate() + "/" + selectedDate.getFullYear(),
             fileName: photo["uri"].split('/').pop()
         }
-        sendPictureBackend(selectedDate, amount, memo, store, photo, props.addSingleReceipt).then(() => {
-            addReceiptDb(receiptDetails)
-        }).then(() => {
-            saveImgToDir(photo["uri"]).then(() => {
-                props.addSingleReceipt(receiptDetails)
-            })
+
+        let receiptId = await addReceiptDb(receiptDetails)
+        console.log("guess what!", receiptId)
+
+        if (label.length) {
+            console.log("going to add labelreceipt", label)
+            addReceiptLabelRelationDb(receiptId, label)
+        }
+
+        sendPictureBackend(selectedDate, amount, memo, store, photo, props.addSingleReceipt)
+        saveImgToDir(photo["uri"]).then(() => {
+            props.addSingleReceipt(receiptDetails)
         })
     }
 
@@ -80,6 +91,7 @@ const AddReceipt = props => {
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    enabled={true}
                     style={{ flex: 1 }}>
 
                     <View style={{ justifyContent: "flex-end", flex: 1, paddingBottom: 0 }}>
@@ -110,7 +122,17 @@ const AddReceipt = props => {
                                     <SelectCategory setValue={setCategory} />
 
                                 </View>
-                                <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} />
+
+                                <View style={{ flexDirection: "row" }}>
+                                    <View style={{ ...textInputStyle, width: "59%", justifyContent: "center" }}>
+                                        <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} onFocus={() => { console.log("store name in focus") }} onBlur={() => { console.log("store name blurred") }} />
+                                    </View>
+
+                                    <View style={{ marginHorizontal: "2%" }} />
+
+                                    <SetLabel selectedTrueLabel={label} setSelectedTrueLabel={setLabel} />
+
+                                </View>
                                 <TextInput placeholder="Memo" style={textInputStyle} maxlength={200} onChangeText={setMemo} value={memo} />
                                 <View style={{ height: 10 }} />
                             </View>
@@ -118,7 +140,6 @@ const AddReceipt = props => {
                     </View>
                 </KeyboardAvoidingView>
                 <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={setSelectedDate} />
-                <SelectorOverlay />
             </GradientBackground>
         </>
     )
