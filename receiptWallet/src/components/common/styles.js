@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import constants from './constants';
 
 export const COLORS = {
     "Wells Fargo": {
@@ -57,6 +58,14 @@ export const commonStyles = StyleSheet.create({
         height: 50,
         fontSize: 16,
     },
+    singleEntryoutline: {
+        alignSelf: "center",
+        borderColor: "#3e424b",
+        marginBottom: 8,
+        padding: 10,
+        width: constants.windowWidth * 0.65,
+        borderWidth: 0.7
+    },
     authScreen: {
         flex: 1,
         backgroundColor: "black",
@@ -80,14 +89,17 @@ export const commonStyles = StyleSheet.create({
         alignSelf: "center",
         alignItems: "center",
         borderColor: "#3e424b",
-        width: "90%",
         shadowOpacity: 0.1,
         shadowColor: "black",
         shadowRadius: 40,
-        marginBottom: 8,
         shadowOffset: { height: 2, width: 2 },
         backgroundColor: theme.primary,
         borderRadius: 40,
         height: 30
+    },
+    buttonText: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
     }
 });

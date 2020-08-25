@@ -26,49 +26,15 @@ const NewLabel = props => {
     }
 
     return (
-        <View style={styles.square} >
+        <View style={commonStyles.singleEntryoutline} >
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 0 }}>
-                <TextInput placeholder="New Label" style={{ ...commonStyles.textInput, width: 170 }} maxLength={30} onChangeText={setInput} value={input} />
-                <TouchableHighlight style={{ ...styles.openButton  }} onPress={() => { setNewInput(input) }}>
-                    <Text style={styles.textStyle}>Add</Text>
+                <TextInput placeholder="New Label" style={{ ...commonStyles.textInput, width: 170, height: 30 }} maxLength={30} onChangeText={setInput} value={input} />
+                <TouchableHighlight style={{ ...commonStyles.button, width: 60, paddingTop: 1 }} onPress={() => { setNewInput(input) }}>
+                    <Text style={commonStyles.buttonText}>Add</Text>
                 </TouchableHighlight>
             </View >
         </View>
     );
 }
 
-const styles = StyleSheet.create({
-    square: {
-        alignSelf: "center",
-        borderColor: "#3e424b",
-        marginBottom: 8,
-        padding: 10,
-        width: constants.windowWidth * 0.65,
-        borderWidth: 0.7
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    openButton: {
-        backgroundColor: "grey",
-        borderRadius: 20,
-        padding: 5,
-        elevation: 2,
-        width: 60
-    },
-});
-
-
-function mapStateToProps(state) {
-    return {
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewLabel)
+export default NewLabel

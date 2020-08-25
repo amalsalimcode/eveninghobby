@@ -4,6 +4,7 @@ import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import constants from './common/constants'
 import CheckBox from 'react-native-check-box'
+import { commonStyles } from "./common/styles";
 
 
 
@@ -21,25 +22,13 @@ const SingleLabel = props => {
     }
 
     return (
-        <TouchableOpacity style={styles.square} onPress={checkBoxPressed} onLongPress={() => { }}>
+        <TouchableOpacity style={commonStyles.singleEntryoutline} onPress={checkBoxPressed} onLongPress={() => { }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 15 }}> 
                 <CheckBox style={{ flex: 1 }} onClick={checkBoxPressed} isChecked={isChecked} leftText={props.title}/>
             </View >
         </TouchableOpacity>
     );
 }
-
-const styles = StyleSheet.create({
-    square: {
-        alignSelf: "center",
-        borderColor: "#3e424b",
-        marginBottom: 8,
-        padding: 10,
-        width: constants.windowWidth * 0.65,
-        borderWidth: 0.7
-    },
-});
-
 
 function mapStateToProps(state) {
     return {

@@ -8,7 +8,7 @@ import ImageZoom from 'react-native-image-pan-zoom'
 import TopToolbar from "./TopToolbar"
 import { addReceiptDb, addReceiptLabelRelationDb } from "./common/Db"
 import ChangeDate from "./common/ChangeDate"
-import SelectCategory from "./common/SetCategory"
+import SelectCategory from "./SetCategory"
 import { saveImgToDir } from "./common/FileSystem"
 import { sendPictureBackend } from "./common/Backend"
 import { theme, commonStyles } from './common/styles'
@@ -16,8 +16,6 @@ import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
 import SetLabel from "./SetLabel";
-
-import * as SQLite from 'expo-sqlite'; 1
 
 
 const AddReceipt = props => {
@@ -31,13 +29,9 @@ const AddReceipt = props => {
     const [category, setCategory] = useState('Category');
     const [label, setLabel] = useState([]);
 
-    console.log("here are set labels", label)
-
-
     const photo = props.route.params
     const imageWidth = photo["width"]
     let imageHeight = photo["height"] * constants.windowWidth / photo["width"]
-    console.log("this is the imageHeight", imageHeight, constants.windowHeight)
     if (imageHeight > constants.windowHeight * 0.6) {
         imageHeight = constants.windowHeight * 0.6
     }
@@ -56,10 +50,8 @@ const AddReceipt = props => {
         }
 
         let receiptId = await addReceiptDb(receiptDetails)
-        console.log("guess what!", receiptId)
 
         if (label.length) {
-            console.log("going to add labelreceipt", label)
             addReceiptLabelRelationDb(receiptId, label)
         }
 

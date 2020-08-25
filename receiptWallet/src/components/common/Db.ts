@@ -30,7 +30,6 @@ export const createTable = () => {
 }
 
 export function addReceiptDb(v: { amount: number; memo: String; store: String, purchasedAt: String, fileName: String, uuid: String, category: String }) {
-    const db = SQLite.openDatabase("db.db");
     return new Promise((resolve, reject) => {
         db.transaction(
             tx => {
@@ -73,15 +72,39 @@ export const ReadLabelTypes = (setResult) => {
     );
 }
 
+export function ReadLabelTypesAsync() {
+    return new Promise((resolve, _) => {
+        db.transaction(
+            tx => {
+                tx.executeSql("SELECT type FROM label", [], (_, { rows }) => {
+                    let x = getLabelTypesResult(rows["_array"])
+                    console.log("here is the filtered result", x)
+                    resolve(x)
+                }, null);
+            },
+            null,
+            () => { }
+        );
+    })
+}
+
 export const AddNewLabelType = (arg) => {
     db.transaction(
         tx => {
-            tx.executeSql("insert into label (type) values (?)", [arg], success, error);},
+            tx.executeSql("insert into label (type) values (?)", [arg], success, error);
+        },
         null,
         null
     );
 }
 
+const getLabelTypesResult = (output) => {
+    let values = []
+    for (var key in output) {
+        values.push(output[key]["type"])
+    }
+    return values 
+}
 const setCategoryTypesResult = (output, setResult) => {
     let values = []
     for (var key in output) {
@@ -105,9 +128,10 @@ export const deleteReceiptDb = (uuid) => {
 
 export const addReceiptLabelRelationDb = (receiptId: number, label: Array<string>) => {
     var arg = ""
-    label.forEach((value, index) => { index != label.length - 1 ? arg += "(" + receiptId + "," + "\"" + value + "\"" + "), " : 
-                                                                  arg += "(" + receiptId + "," + "\"" + value + "\"" + ");"  });
-    console.log("args are created .... ", arg)
+    label.forEach((value, index) => {
+        index != label.length - 1 ? arg += "(" + receiptId + "," + "\"" + value + "\"" + "), " :
+        arg += "(" + receiptId + "," + "\"" + value + "\"" + ");"
+    });
     db.transaction(
         tx => {
             tx.executeSql("INSERT INTO receiptlabelrelation ('receiptid', 'label') VALUES " + arg, success, error);

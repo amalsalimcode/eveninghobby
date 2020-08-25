@@ -1,11 +1,10 @@
-import { connect } from 'react-redux'
 import React, { useState } from 'react';
 import { View, Platform, Picker, Text } from 'react-native';
 
 import { Overlay } from 'react-native-elements';
 
-import { commonStyles } from './styles';
-import { ReadCategoryTypes } from './Db';
+import { commonStyles } from './common/styles';
+import { ReadCategoryTypes } from './common/Db';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
@@ -25,7 +24,6 @@ const SelectCategory = props => {
             setVisible(false)
         }
     };
-
 
     const getColor = (value) => {
         if (value == "Category") {

@@ -126,7 +126,7 @@ const ReceiptView = props => {
 
                             <TouchableOpacity style={{...commonStyles.button, width: "30%", marginTop: "10%"}} onPress={()=>{}}>
                                 <View style={{ marginHorizontal: 10 }}>
-                                    <Text style={{ color: "white" }}>Update</Text>
+                                    <Text style={commonStyles.buttonText}>Update</Text>
                                 </View>
                             </TouchableOpacity>
 
