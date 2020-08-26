@@ -64,7 +64,8 @@ export const commonStyles = StyleSheet.create({
         marginBottom: 8,
         padding: 10,
         width: constants.windowWidth * 0.65,
-        borderWidth: 0.7
+        borderWidth: 0.7,
+        marginHorizontal: 5,
     },
     authScreen: {
         flex: 1,

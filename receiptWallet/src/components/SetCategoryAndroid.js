@@ -4,18 +4,19 @@ import {
     Modal,
     StyleSheet,
     Text,
-    TouchableHighlight,
     View,
     Keyboard
 } from "react-native";
-import { ScrollView, TouchableWithoutFeedback, FlatList } from "react-native-gesture-handler";
+import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from "react-native-gesture-handler";
 import constants from "./common/constants";
-import SingleLabel from "./SingleLabel";
 import NewEntry from "./NewLabel";
 import { commonStyles } from './common/styles';
-import { ReadLabelTypesAsync } from './common/Db';
-import { AddNewLabelType } from "./common/Db";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ReadCategoryTypesAsync, AddNewCategoryType } from './common/Db';
+import SingleCategoryAndroid from "./SingleCategoryAndroid";
+import NewCategoryAndroid from "./NewCategoryAndroid";
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const getModalOffset = (resultLength) => {
     let height = constants.windowHeight / 2 - (resultLength * 60 + 20)
@@ -34,45 +35,36 @@ const getModalHeight = (resultLength) => {
     return resultHeight
 }
 
-const SetLabel = props => {
+const SetCategoryAndroid = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [keyboardOffset, setKeyboardOffset] = useState(0);
-    const [selectedLabel, setSelectedLabel] = useState({})
-    const [value, setValue] = useState('Label')
+    const [value, setValue] = useState('Category')
     const [dbResult, setDbResult] = useState([])
 
     const [modalHeight, setModalHeight] = useState(200)
     const [modalOffset, setModalOffset] = useState(200)
 
-    function toggleCheckbox(title, value) {
-        /* handler single label press */
-        selectedLabel[title] = value
-        setSelectedLabel(selectedLabel)
-    }
-
-    function handleNewLabel(arg) {
-        /* user has entered a new label */
-
-        // check if it already exists. if so deny it
-        if (dbResult.includes(arg)) {
-            return false
+    function generateCategoryViews() {
+        /* the view for each Label is generated */
+        let x = []
+        for (let index = 0; index < dbResult.length; index++) {
+            x.push(<SingleCategoryAndroid key={index} title={dbResult[index]} handlePress={categorySelected} />)
         }
-
-        // add new entry to frontend
-        dbResult.splice(dbResult.length - 2, 0, arg);
-        setDbResult(dbResult)
-        setModalHeight(getModalHeight(dbResult.length))
-        setModalOffset(getModalOffset(dbResult.length))
-
-        AddNewLabelType(arg)
-
-        return true
+        return x
     }
 
-    async function getLabelResponse() {
-        /* gets data from db and sets modal position */
-        let x = await ReadLabelTypesAsync()
-        x.push("newentrydeadbeef")
+    function handleNewCategory(arg) {
+        /* check if it already exists. if so don't add to db */
+        if (!dbResult.includes(arg)) {
+            dbResult.push(arg)
+            setDbResult(dbResult)
+        }
+        categorySelected(arg)
+        AddNewCategoryType(arg)
+    }
+
+    async function getCategoryResponse() {
+        let x = await ReadCategoryTypesAsync()
         setDbResult(x)
         setModalHeight(getModalHeight(x.length))
         setModalOffset(getModalOffset(x.length))
@@ -80,8 +72,10 @@ const SetLabel = props => {
 
     useEffect(() => {
         if (!dbResult.length) {
-            getLabelResponse()
+            getCategoryResponse()
         }
+
+        // loadFont()
 
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
@@ -101,7 +95,7 @@ const SetLabel = props => {
     };
 
     const getColor = (value) => {
-        if (value == "Label") {
+        if (value == "Category") {
             return ("rgb(150, 150, 150)")
         }
         else {
@@ -109,37 +103,15 @@ const SetLabel = props => {
         }
     }
 
-    const donePressed = () => {
-        var labelsSetTrue = []
+    const categorySelected = (arg) => {
         setModalVisible(!modalVisible)
-        for (var key in selectedLabel) {
-            if (selectedLabel[key]) {
-                labelsSetTrue.push(key)
-            }
-        }
-        if (labelsSetTrue.length == 1) {
-            setValue(labelsSetTrue[0])
-        } else if (labelsSetTrue.length == 0) {
-            setValue("Label")
-        } else {
-            setValue(labelsSetTrue.length + " Labels Chosen")
-        }
-        console.log("here are final labels", labelsSetTrue)
-        props.setSelectedTrueLabel(labelsSetTrue)
-    }
-
-    const renderItem = ({ item, index }) => {
-        if (item == "newentrydeadbeef") {
-            return (<NewEntry setNewLabel={handleNewLabel} />)
-        } else {
-            let entryPressed = props.selectedTrueLabel.includes(item) ? true : false
-            return (<SingleLabel title={item} toggleCheckbox={toggleCheckbox} value={entryPressed} />)
-        }
+        setValue(arg)
+        props.onSubmit(arg)
     }
 
     return (
         <>
-            <View style={{ ...commonStyles.textInput, width: "35%", justifyContent: "center" }}>
+            <View style={{ ...commonStyles.textInput, width: "37%", justifyContent: "center" }}>
                 <TouchableWithoutFeedback onPress={() => { setModalVisible(true) }}>
                     <Text style={{ color: getColor(value) }}>{value}</Text>
                 </TouchableWithoutFeedback>
@@ -149,15 +121,11 @@ const SetLabel = props => {
                     <View style={{ marginTop: modalOffset - keyboardOffset }}>
                         <View style={styles.modalView}>
                             <View style={{ height: modalHeight, marginTop: 20 }}>
-                                <FlatList
-                                    bounces={false}
-                                    data={dbResult}
-                                    renderItem={renderItem}
-                                    keyExtractor={(item) => { return item }} />
+                                <ScrollView contentContainerStyle={{ padding: 10 }}>
+                                    {generateCategoryViews()}
+                                    <NewCategoryAndroid onSubmit={handleNewCategory} />
+                                </ScrollView>
                             </View>
-                            <TouchableHighlight style={{ ...commonStyles.button, marginVertical: 20, width: 100 }} onPress={donePressed}>
-                                <Text style={commonStyles.buttonText}>Done</Text>
-                            </TouchableHighlight>
                         </View>
                     </View>
                 </Modal >
@@ -183,4 +151,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SetLabel;
+export default SetCategoryAndroid;

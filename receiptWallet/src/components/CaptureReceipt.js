@@ -9,6 +9,7 @@ import constants, { hasNotch } from "./common/constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import GradientBackground from "./common/GradientBackground";
 
+let url = "https://images.squarespace-cdn.com/content/v1/5a5906400abd0406785519dd/1547305849352-CYT6FWXR75U7ZUBL5NAK/ke17ZwdGBToddI8pDm48kKAwwdAfKsTlKsCcElEApLR7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UegTYNQkRo-Jk4EWsyBNhwKrKLo5CceA1-Tdpfgyxoog5ck0MD3_q0rY3jFJjjoLbQ/IB+alex.jpg?format=2500w"
 
 const CaptureReceipt = props => {
 
@@ -32,8 +33,11 @@ const CaptureReceipt = props => {
 
         props.navigation.navigate("AddReceipt", {
             uri: photo["uri"],
+            // uri: url,
             height: photo["height"],
+            // height: 500,
             width: photo["width"]
+            // width: 500
         })
 
     }

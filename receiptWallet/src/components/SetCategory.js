@@ -6,6 +6,7 @@ import { Overlay } from 'react-native-elements';
 import { commonStyles } from './common/styles';
 import { ReadCategoryTypes } from './common/Db';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import SetCategoryAndroid from './SetCategoryAndroid';
 
 
 const SelectCategory = props => {
@@ -14,8 +15,14 @@ const SelectCategory = props => {
     const [categories, setCategories] = useState([])
 
     if (!categories.length) {
-        ReadCategoryTypes(setCategories)
+        ReadCategoryTypes(setdbResult)
     }
+
+    function setdbResult(arg) {
+        arg.push("Add New Category")
+        setCategories(arg)
+    }
+
 
     const onChange = (value, index) => {
         setValue(value)
@@ -34,7 +41,7 @@ const SelectCategory = props => {
         }
     }
 
-    if (Platform.OS == 'ios') {
+    if (Platform.OS == 'ioss') {
         return (
             <View style={{ ...commonStyles.textInput, width: "35%", justifyContent: "center" }}>
                 <TouchableWithoutFeedback onPress={() => { setVisible(true) }}>
@@ -53,13 +60,7 @@ const SelectCategory = props => {
         );
     } else {
         return (
-            <View style={{ ...commonStyles.textInput, width: "37%", justifyContent: "center" }}>
-                <Picker selectedValue={value} onValueChange={(val, ind) => { onChange(val, ind) }}>
-                    {categories.map((item, index) => {
-                        return (<Picker.Item label={item} value={item} key={index} />)
-                    })}
-                </Picker>
-            </View>
+            <SetCategoryAndroid onSubmit={onChange}/>
         )
     }
 };

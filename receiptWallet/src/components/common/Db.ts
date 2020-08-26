@@ -78,7 +78,21 @@ export function ReadLabelTypesAsync() {
             tx => {
                 tx.executeSql("SELECT type FROM label", [], (_, { rows }) => {
                     let x = getLabelTypesResult(rows["_array"])
-                    console.log("here is the filtered result", x)
+                    resolve(x)
+                }, null);
+            },
+            null,
+            () => { }
+        );
+    })
+}
+
+export function ReadCategoryTypesAsync() {
+    return new Promise((resolve, _) => {
+        db.transaction(
+            tx => {
+                tx.executeSql("SELECT type FROM category", [], (_, { rows }) => {
+                    let x = getLabelTypesResult(rows["_array"])
                     resolve(x)
                 }, null);
             },
@@ -98,12 +112,22 @@ export const AddNewLabelType = (arg) => {
     );
 }
 
+export const AddNewCategoryType = (arg) => {
+    db.transaction(
+        tx => {
+            tx.executeSql("insert into category (type) values (?)", [arg], success, error);
+        },
+        null,
+        null
+    );
+}
+
 const getLabelTypesResult = (output) => {
     let values = []
     for (var key in output) {
         values.push(output[key]["type"])
     }
-    return values 
+    return values
 }
 const setCategoryTypesResult = (output, setResult) => {
     let values = []
@@ -130,7 +154,7 @@ export const addReceiptLabelRelationDb = (receiptId: number, label: Array<string
     var arg = ""
     label.forEach((value, index) => {
         index != label.length - 1 ? arg += "(" + receiptId + "," + "\"" + value + "\"" + "), " :
-        arg += "(" + receiptId + "," + "\"" + value + "\"" + ");"
+            arg += "(" + receiptId + "," + "\"" + value + "\"" + ");"
     });
     db.transaction(
         tx => {

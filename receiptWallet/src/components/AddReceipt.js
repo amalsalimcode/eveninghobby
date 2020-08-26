@@ -49,6 +49,8 @@ const AddReceipt = props => {
             fileName: photo["uri"].split('/').pop()
         }
 
+        console.log("here are receipt details", receiptDetails)
+
         let receiptId = await addReceiptDb(receiptDetails)
 
         if (label.length) {

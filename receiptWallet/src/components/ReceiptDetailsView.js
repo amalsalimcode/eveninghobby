@@ -14,7 +14,7 @@ import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDat
 import ChangeDate from "./common/ChangeDate";
 
 
-const ReceiptView = props => {
+const ReceiptDetailsView = props => {
 
     const [img, setNewImg] = useState(constants.rootDir + "/" + props.route.params["fileName"])
     const [viewScroller, setViewScroller] = useState(null)
@@ -141,4 +141,4 @@ const ReceiptView = props => {
     }
 }
 
-export default ReceiptView
+export default ReceiptDetailsView

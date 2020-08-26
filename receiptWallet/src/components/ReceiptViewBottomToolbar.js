@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { Entypo } from '@expo/vector-icons';
 import constants, { hasNotch } from './common/constants'
+import { theme } from './common/styles';
 
 
 const ReceiptViewBottomToolbar = props => {
@@ -19,7 +20,7 @@ const ReceiptViewBottomToolbar = props => {
 
     return (
         <>
-            <View style={{ height: toolbarHeight, width: constants.windowWidth, borderWidth: 0.5 }} >
+            <View style={{ height: toolbarHeight, width: constants.windowWidth, borderWidth: 0.5, backgroundColor: theme.subtlePrimary }} >
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ height: toolbarHeight, width: constants.windowWidth / 2, alignItems: "center" }}>
                         <TouchableOpacity onPress={() => { if (iter != 0) {iter = 0; props.scroller.scrollTo({ x: -constants.windowWidth }) }} } style={{ width: 60 }}>
