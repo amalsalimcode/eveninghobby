@@ -10,8 +10,9 @@ import TopToolbar from "./TopToolbar";
 import { theme, commonStyles } from "./common/styles";
 import GradientBackground from "./common/GradientBackground";
 import ReceiptViewBottomToolbar from "./ReceiptViewBottomToolbar";
-import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDate } from "./common/constants";
+import constants, { getTopToolbarHeight, getBottomToolbarHeight } from "./common/constants";
 import ChangeDate from "./common/ChangeDate";
+import ReceiptDetailsView from "./ReceiptDetailsView";
 
 
 const ReceiptView = props => {
@@ -98,44 +99,9 @@ const ReceiptView = props => {
                     <View style={{ flex: 1, height: availableHeight, justifyContent: "center", width: constants.windowWidth, backgroundColor: "black" }}>
                         {getImage()}
                     </View>
-
-                    <View style={{ flex: 1, height: availableHeight, width: constants.windowWidth }}>
-
-                        < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                            <View style={{ alignItems: "center", marginTop: "10%" }}>
-                                <View style={{ ...textInputStyle, width: "40%", justifyContent: "center", alignItems: "center" }}>
-                                    <TouchableWithoutFeedback onPress={() => { setShowDatePicker(true) }}>
-                                        <Text> {getFormattedDate(selectedDate)} </Text>
-                                    </TouchableWithoutFeedback>
-                                </View>
-                            </View>
-
-                            <View style={{ marginTop: "5%", flexDirection: "row", justifyContent: "center" }}>
-                                <View style={{ ...textInputStyle, width: "40%", justifyContent: "center", alignItems: "center", marginRight: "10%" }}>
-                                    <TextInput placeholder="Store Name" maxLength={50} onChangeText={setStore} value={store} />
-                                </View>
-                                <View style={{ ...textInputStyle, justifyContent: "center", alignItems: "center", width: 80 }}>
-                                    <TextInputMask type={'money'} options={{ precision: 2, separator: '.', delimiter: ',', unit: '$', suffixUnit: '' }}
-                                        style={{}} value={amount} onChangeText={(text) => { setAmount(text) }} />
-                                </View>
-                            </View>
-
-                            <View style={{ borderWidth: 1, marginTop: "10%", marginHorizontal: "5%" }}>
-                                <TextInput multiline textAlignVertical="top" placeholder="  Memo" style={{ ...constants.textInput, height: 75 }} maxlength={200} onChangeText={setMemo} value={memo} numberOfLines={2} />
-                            </View>
-
-                            <TouchableOpacity style={{ ...commonStyles.button, width: "30%", marginTop: "10%" }} onPress={() => { }}>
-                                <View style={{ marginHorizontal: 10 }}>
-                                    <Text style={commonStyles.buttonText}>Update</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </ GradientBackground>
-
-                    </View>
-
+                    <ReceiptDetailsView data={props.route.params["value"]} />
                 </ScrollView>
                 <ReceiptViewBottomToolbar scroller={viewScroller} />
-                <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={setSelectedDate} date={selectedDate} />
             </>
         );
     }

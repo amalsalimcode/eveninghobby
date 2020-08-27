@@ -102,5 +102,33 @@ export const commonStyles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
-    }
+    },
+
+
+    conversationContainer:{
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        marginTop: 10,
+        borderWidth: 1
+    },
+    actionButtonsContainer:{
+        flex:1,
+        flexDirection: 'row',
+        paddingTop: 10,
+        flexWrap: 'wrap',
+      },
+      actionButton:{
+        backgroundColor:"grey",
+        borderRadius:30,
+        padding: 7,
+        marginRight: 10,
+        marginBottom: 10,
+      },
+      actionButtonText:{
+        color:'white',
+        fontSize:12,
+        alignSelf: 'center'
+      },
+
 });

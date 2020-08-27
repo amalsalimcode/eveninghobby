@@ -26,7 +26,7 @@ const AddReceipt = props => {
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [category, setCategory] = useState('Category');
+    const [category, setCategory] = useState('');
     const [label, setLabel] = useState([]);
 
     const photo = props.route.params
