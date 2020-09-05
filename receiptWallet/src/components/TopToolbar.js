@@ -16,7 +16,7 @@ const TopToolbar = props => {
     const getDone = () => {
         if (props.done) {
             return (
-                <TouchableOpacity style={{ borderWidth: 0, padding: 5, marginRight: 5, marginBottom: 5 }} onPress={() => { props.done(); props.navigation.popToTop() }}>
+                <TouchableOpacity style={{ borderWidth: 0, paddingHorizontal: 5, marginRight: 5 }} onPress={() => { props.done(); props.navigation.popToTop() }}>
                     <MaterialIcons name="done" size={iconSize * 1.1} color="black" style={{ marginRight: 0, marginBottom: 0 }} />
                 </TouchableOpacity>
             )
@@ -35,9 +35,9 @@ const TopToolbar = props => {
 
     return (
         <View style={{ height: getTopToolbarHeight(), width: constants.windowWidth, backgroundColor: theme.subtlePrimary, flexDirection: "column-reverse" }} >
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 15 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginTop: 15 }}>
                 <TouchableOpacity style={{ borderWidth: 0 }} onPress={() => { props.navigation.goBack() }}>
-                    <AntDesign name="arrowleft" size={iconSize} color="black" style={{ marginLeft: 10, marginBottom: 0 }} />
+                    <AntDesign name="arrowleft" size={iconSize} color="black" style={{ marginLeft: 10}} />
                 </TouchableOpacity>
                 {getDelete()}
                 {getDone()}

@@ -29,17 +29,30 @@ export const createTable = () => {
         () => { });
 }
 
-export function addReceiptDb(v: { amount: number; memo: String; store: String, purchasedAt: String, fileName: String, uuid: String, category: String }) {
+export function addReceiptDb(v: { amount: number, memo: String, store: String, purchasedAt: String, fileName: String, uuid: String, category: String }) {
+    console.log("here is the purchasedate", v.purchasedAt)
     return new Promise((resolve, reject) => {
         db.transaction(
             tx => {
-                tx.executeSql("insert into receipt (amount, store, memo, fileName, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, ?, ?, ?, ?)", [v.amount, v.store, v.memo, v.fileName, v.purchasedAt, false, v.uuid, v.category],
+                tx.executeSql("insert into receipt (amount, store, memo, fileName, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, DATE(?), ?, ?, ?)", [v.amount, v.store, v.memo, v.fileName, v.purchasedAt, false, v.uuid, v.category],
                     (_, result) => { resolve(result["insertId"]) }, null);
             },
             null,
             () => { }
         );
     })
+}
+
+export const updateReceiptDb = (v: { amount: number, memo: String, store: String, purchasedAt: String, category: String }, receiptId) => {
+    console.log("args", v)
+    console.log("receiptId", receiptId)
+    db.transaction(
+        tx => {
+            tx.executeSql("UPDATE receipt SET amount=?, memo=?, store=?, purchasedAt=?, category=? WHERE id=?", [v.amount, v.memo, v.store, v.purchasedAt, v.category, receiptId], (error, { rows }) => { console.log(rows) });
+        },
+        null,
+        null
+    );
 }
 
 export const ReadReceipt = (setResult) => {
@@ -55,7 +68,7 @@ export const ReadReceipt = (setResult) => {
 export const ReadCategoryTypes = (setResult) => {
     db.transaction(
         tx => {
-            tx.executeSql("SELECT type FROM category", [], (error, { rows }) => { setCategoryTypesResult(rows["_array"], setResult) });
+            tx.executeSql("SELECT type FROM category", [], (error, { rows }) => { filterSetResult(rows["_array"], setResult, "type") });
         },
         null,
         null
@@ -65,7 +78,17 @@ export const ReadCategoryTypes = (setResult) => {
 export const ReadLabelTypes = (setResult) => {
     db.transaction(
         tx => {
-            tx.executeSql("SELECT type FROM label", [], (error, { rows }) => { setCategoryTypesResult(rows["_array"], setResult) });
+            tx.executeSql("SELECT type FROM label", [], (error, { rows }) => { filterSetResult(rows["_array"], setResult, "type") });
+        },
+        null,
+        null
+    );
+}
+
+export const ReadRLRFromReceipt = (setResult, receiptId) => {
+    db.transaction(
+        tx => {
+            tx.executeSql("select label from receiptlabelrelation where receiptid=?", [receiptId], (error, { rows }) => { filterSetResult(rows["_array"], setResult, "label") });
         },
         null,
         null
@@ -129,10 +152,10 @@ const getLabelTypesResult = (output) => {
     }
     return values
 }
-const setCategoryTypesResult = (output, setResult) => {
+const filterSetResult = (output, setResult, column) => {
     let values = []
     for (var key in output) {
-        values.push(output[key]["type"])
+        values.push(output[key][column])
     }
     setResult(values)
 }
@@ -159,6 +182,29 @@ export const addReceiptLabelRelationDb = (receiptId: number, label: Array<string
     db.transaction(
         tx => {
             tx.executeSql("INSERT INTO receiptlabelrelation ('receiptid', 'label') VALUES " + arg, success, error);
+        },
+        null,
+        null
+    );
+}
+
+export const deleteReceiptLabelRelationDb = (label, id) => {
+    var arg = ""
+    label.forEach((_, index) => { index != label.length - 1 ? arg += "?, " : arg += "?" });
+    db.transaction(
+        tx => {
+            tx.executeSql("DELETE from receiptlabelrelation where label in (" + arg + ") AND receiptid = " + id + "", label, success, error);
+        },
+        null,
+        null
+    );
+    return
+}
+
+export const filterReceiptExactDate = (searchVal) => {
+    db.transaction(
+        tx => {
+            tx.executeSql("SELECT * from RECEIPT where store in ?", searchVal, success, error);
         },
         null,
         null

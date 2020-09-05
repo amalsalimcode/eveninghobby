@@ -10,7 +10,7 @@ import CaptureReceipt from './CaptureReceipt'
 import UploadReceipt from './UploadReceipt'
 import Search from './Search';
 import AddReceipt from './AddReceipt';
-import SetLabel from './SetLabel';
+import SetLabelText from './SetLabelText';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +25,7 @@ export default function MainNav() {
                 <Stack.Screen name="UploadReceipt" component={UploadReceipt} />
                 <Stack.Screen name="AddReceipt" component={AddReceipt} />
                 <Stack.Screen name="Search" component={Search} />
-                <Stack.Screen name="SetLabel" component={SetLabel} />
+                <Stack.Screen name="SetLabelText" component={SetLabelText} />
             </Stack.Navigator>
         </NavigationContainer>
     );

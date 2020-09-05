@@ -34,6 +34,7 @@ const Receipts = props => {
         if (tmpIndex >= 0) {
             prev_dt = props.allReceipts[tmpIndex]["purchasedAt"]
         }
+        item["index"] = index
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
     }
 

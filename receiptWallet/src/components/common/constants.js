@@ -2,7 +2,6 @@ import { Dimensions } from "react-native";
 import * as Device from 'expo-device';
 import * as FileSystem from 'expo-file-system';
 
-console.log("here is the location of your filesystem", FileSystem.documentDirectory)
 
 let constants = {
   diffDays: 7,
@@ -16,7 +15,7 @@ let constants = {
 }
 
 export function getTopToolbarHeight() {
-  return hasNotch() ? 100 : constants.windowHeight * 0.1
+  return hasNotch() ? 80 : constants.windowHeight * 0.08
 }
 
 export function getBottomToolbarHeight() {
@@ -36,18 +35,33 @@ export function hasNotch() {
   return hasNotch
 }
 
-export function getFormattedDate(dt, skipYear) {
+export function getFormattedDate(dt) {
 
   var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"]
 
-  var dt_str = dt.getDate() + " " + monthNames[dt.getMonth()]
-  if (!skipYear) {
-    dt_str += " " + dt.getFullYear()
-  }
+  var dt_str = dt.getDate() + " " + monthNames[dt.getMonth()] + " " + dt.getFullYear()
 
   return dt_str
 
+}
+
+export function getFormattedDateAbbrev(dt) {
+
+  var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"]
+
+  return dt.getDate() + " " + monthNames[dt.getMonth()]
+
+}
+
+export const getColor = (value, defaultValue) => {
+  if (value == defaultValue) {
+      return ("rgb(150, 150, 150)")
+  }
+  else {
+      return ("black")
+  }
 }
 
 export default constants

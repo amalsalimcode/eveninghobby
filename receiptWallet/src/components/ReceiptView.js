@@ -4,14 +4,10 @@ import { View, Dimensions, Text, ActivityIndicator, Image } from "react-native";
 import { ScrollView, TouchableWithoutFeedback, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 
 import ImageZoom from "react-native-image-pan-zoom";
-import { TextInputMask } from "react-native-masked-text";
 
 import TopToolbar from "./TopToolbar";
-import { theme, commonStyles } from "./common/styles";
-import GradientBackground from "./common/GradientBackground";
 import ReceiptViewBottomToolbar from "./ReceiptViewBottomToolbar";
 import constants, { getTopToolbarHeight, getBottomToolbarHeight } from "./common/constants";
-import ChangeDate from "./common/ChangeDate";
 import ReceiptDetailsView from "./ReceiptDetailsView";
 
 
@@ -80,8 +76,6 @@ const ReceiptView = props => {
         }
     }
 
-    const textInputStyle = { ...commonStyles.textInput }
-
     if (!imgDimension["height"]) {
         return (
             <>
@@ -95,11 +89,10 @@ const ReceiptView = props => {
             <>
                 <TopToolbar {...props} goBack={props.navigation.goBack} />
                 <ScrollView scrollEnabled={false} horizontal={true} ref={(node) => setViewScroller(node)} >
-
                     <View style={{ flex: 1, height: availableHeight, justifyContent: "center", width: constants.windowWidth, backgroundColor: "black" }}>
                         {getImage()}
                     </View>
-                    <ReceiptDetailsView data={props.route.params["value"]} />
+                    <ReceiptDetailsView data={props.route.params["value"]} {...props} />
                 </ScrollView>
                 <ReceiptViewBottomToolbar scroller={viewScroller} />
             </>

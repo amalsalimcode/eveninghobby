@@ -19,13 +19,14 @@ const ChangeDate = props => {
     var minimumDate = new Date(d.setDate(diff));
 
     const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        
+        const currentDate = selectedDate ? selectedDate : date;
         setDate(currentDate);
 
         // android has its own close button which we can't handle,
         // so when a date is picked, we just set it
         if (Platform.OS != 'ios') {
-            applyDateChange()
+            applyDateChange(currentDate)
         }
     };
 

@@ -7,9 +7,10 @@ import { commonStyles } from './common/styles';
 import { ReadCategoryTypes } from './common/Db';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SetCategoryAndroid from './SetCategoryAndroid';
+import { getColor } from './common/constants';
 
 
-const SelectCategory = props => {
+const SelectCategoryIOS = props => {
     const [value, setValue] = useState('Category')
     const [visible, setVisible] = useState(false)
     const [categories, setCategories] = useState([])
@@ -23,7 +24,6 @@ const SelectCategory = props => {
         setCategories(arg)
     }
 
-
     const onChange = (value, index) => {
         setValue(value)
         props.setValue(value)
@@ -32,20 +32,11 @@ const SelectCategory = props => {
         }
     };
 
-    const getColor = (value) => {
-        if (value == "Category") {
-            return ("rgb(150, 150, 150)")
-        }
-        else {
-            return ("black")
-        }
-    }
-
     if (Platform.OS == 'ioss') {
         return (
             <View style={{ ...commonStyles.textInput, width: "35%", justifyContent: "center" }}>
                 <TouchableWithoutFeedback onPress={() => { setVisible(true) }}>
-                    <Text style={{ color: getColor(value) }}>{value}</Text>
+                    <Text style={{ color: getColor(value, "Category") }}>{value}</Text>
                 </TouchableWithoutFeedback>
                 <Overlay onBackdropPress={() => { setVisible(false) }} overlayStyle={commonStyles.overlayStyle} isVisible={visible} height={220}>
                     <View style={{ height: 220 }}>
@@ -66,4 +57,4 @@ const SelectCategory = props => {
 };
 
 
-export default SelectCategory 
+export default SelectCategoryIOS

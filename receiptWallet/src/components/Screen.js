@@ -9,7 +9,6 @@ const Screen = props => {
       case 0:
         return (<MainNav/>)
       default:
-        console.log("nothing doing")
         return
     }
   }

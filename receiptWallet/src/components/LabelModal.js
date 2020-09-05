@@ -8,14 +8,13 @@ import {
     View,
     Keyboard
 } from "react-native";
-import { ScrollView, TouchableWithoutFeedback, FlatList } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import constants from "./common/constants";
 import SingleLabel from "./SingleLabel";
 import NewEntry from "./NewLabel";
 import { commonStyles } from './common/styles';
-import { ReadLabelTypesAsync } from './common/Db';
+import { ReadLabelTypesAsync, ReadCategoryTypesAsync } from './common/Db';
 import { AddNewLabelType } from "./common/Db";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const getModalOffset = (resultLength) => {
     let height = constants.windowHeight / 2 - (resultLength * 60 + 20)
@@ -25,20 +24,28 @@ const getModalOffset = (resultLength) => {
     return height
 }
 
-const getModalHeight = (resultLength) => {
-    console.log("calculating height", resultLength)
+const getModalHeight = (resultLength, allowNewEntry) => {
     let maxHeight = constants.windowHeight * 0.60
-    let offset = resultLength < 6 ? 60 : 30
-    let allowedHeight = (resultLength * 60 + offset)
+    let allowedHeight = (resultLength * 60)
+    if (allowNewEntry) {
+        let offset = resultLength < 6 ? 60 : 30
+        allowedHeight += offset
+    }
     let resultHeight = allowedHeight > maxHeight ? maxHeight : allowedHeight
     return resultHeight
 }
 
-const SetLabel = props => {
-    const [modalVisible, setModalVisible] = useState(false);
+const getInitialLabel = (arg) => {
+    let result = {}
+    for (let idx = 0; idx < arg.length; idx++) {
+        result[arg[idx]] = true
+    }
+    return result
+}
+
+const LabelModal = props => {
     const [keyboardOffset, setKeyboardOffset] = useState(0);
-    const [selectedLabel, setSelectedLabel] = useState({})
-    const [value, setValue] = useState('Label')
+    const [selectedLabel, setSelectedLabel] = useState({});
     const [dbResult, setDbResult] = useState([])
 
     const [modalHeight, setModalHeight] = useState(200)
@@ -61,7 +68,7 @@ const SetLabel = props => {
         // add new entry to frontend
         dbResult.splice(dbResult.length - 2, 0, arg);
         setDbResult(dbResult)
-        setModalHeight(getModalHeight(dbResult.length))
+        setModalHeight(getModalHeight(dbResult.length, props.allowNewEntry))
         setModalOffset(getModalOffset(dbResult.length))
 
         AddNewLabelType(arg)
@@ -71,11 +78,23 @@ const SetLabel = props => {
 
     async function getLabelResponse() {
         /* gets data from db and sets modal position */
-        let x = await ReadLabelTypesAsync()
-        x.push("newentrydeadbeef")
+        let x = []
+        if (props.type == "category") {
+            x = await ReadCategoryTypesAsync()
+        } else {
+            x = await ReadLabelTypesAsync()
+        }
+        if (props.allowNewEntry) {
+            x.push("newentrydeadbeef")
+        }
         setDbResult(x)
-        setModalHeight(getModalHeight(x.length))
+        setModalHeight(getModalHeight(x.length, props.allowNewEntry))
         setModalOffset(getModalOffset(x.length))
+    }
+
+    // the following can be refactored for better performance
+    if (props.selectedTrueLabel.length > 0 && Object.keys(selectedLabel).length == 0) {
+        setSelectedLabel(getInitialLabel(props.selectedTrueLabel))
     }
 
     useEffect(() => {
@@ -100,69 +119,45 @@ const SetLabel = props => {
         setKeyboardOffset(0)
     };
 
-    const getColor = (value) => {
-        if (value == "Label") {
-            return ("rgb(150, 150, 150)")
-        }
-        else {
-            return ("black")
-        }
-    }
-
-    const donePressed = () => {
+    const handleDone = () => {
         var labelsSetTrue = []
-        setModalVisible(!modalVisible)
+        console.log("these are the selected labels", selectedLabel)
         for (var key in selectedLabel) {
             if (selectedLabel[key]) {
                 labelsSetTrue.push(key)
             }
         }
-        if (labelsSetTrue.length == 1) {
-            setValue(labelsSetTrue[0])
-        } else if (labelsSetTrue.length == 0) {
-            setValue("Label")
-        } else {
-            setValue(labelsSetTrue.length + " Labels Chosen")
-        }
-        console.log("here are final labels", labelsSetTrue)
-        props.setSelectedTrueLabel(labelsSetTrue)
+        props.donePressed(labelsSetTrue)
     }
 
     const renderItem = ({ item, index }) => {
         if (item == "newentrydeadbeef") {
             return (<NewEntry setNewLabel={handleNewLabel} />)
         } else {
-            let entryPressed = props.selectedTrueLabel.includes(item) ? true : false
-            return (<SingleLabel title={item} toggleCheckbox={toggleCheckbox} value={entryPressed} />)
+            let enabled = props.selectedTrueLabel.includes(item) ? true : false
+            return (<SingleLabel title={item} toggleCheckbox={toggleCheckbox} enabled={enabled} />)
         }
     }
 
     return (
-        <>
-            <View style={{ ...commonStyles.textInput, width: "35%", justifyContent: "center" }}>
-                <TouchableWithoutFeedback onPress={() => { setModalVisible(true) }}>
-                    <Text style={{ color: getColor(value) }}>{value}</Text>
-                </TouchableWithoutFeedback>
-            </View>
-            <View>
-                <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => { Alert.alert("Modal has been closed."); }}>
-                    <View style={{ marginTop: modalOffset - keyboardOffset }}>
-                        <View style={styles.modalView}>
-                            <View style={{ height: modalHeight, marginTop: 20 }}>
-                                <FlatList
-                                    bounces={false}
-                                    data={dbResult}
-                                    renderItem={renderItem}
-                                    keyExtractor={(item) => { return item }} />
-                            </View>
-                            <TouchableHighlight style={{ ...commonStyles.button, marginVertical: 20, width: 100 }} onPress={donePressed}>
-                                <Text style={commonStyles.buttonText}>Done</Text>
-                            </TouchableHighlight>
+        <View>
+            <Modal animationType="slide" transparent={true} visible={props.modalVisible} onRequestClose={() => { Alert.alert("Modal has been closed."); }}>
+                <View style={{ marginTop: modalOffset - keyboardOffset }}>
+                    <View style={styles.modalView}>
+                        <View style={{ height: modalHeight, marginTop: 20 }}>
+                            <FlatList
+                                bounces={false}
+                                data={dbResult}
+                                renderItem={renderItem}
+                                keyExtractor={(item) => { return item }} />
                         </View>
+                        <TouchableHighlight style={{ ...commonStyles.button, marginVertical: 20, width: 100 }} onPress={handleDone}>
+                            <Text style={commonStyles.buttonText}>Done</Text>
+                        </TouchableHighlight>
                     </View>
-                </Modal >
-            </View >
-        </>
+                </View>
+            </Modal >
+        </View >
     );
 };
 
@@ -183,4 +178,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SetLabel;
+export default LabelModal;

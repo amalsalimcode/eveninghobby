@@ -8,14 +8,14 @@ import ImageZoom from 'react-native-image-pan-zoom'
 import TopToolbar from "./TopToolbar"
 import { addReceiptDb, addReceiptLabelRelationDb } from "./common/Db"
 import ChangeDate from "./common/ChangeDate"
-import SelectCategory from "./SetCategory"
+import SelectCategoryAndroid from "./SetCategoryAndroid"
 import { saveImgToDir } from "./common/FileSystem"
 import { sendPictureBackend } from "./common/Backend"
 import { theme, commonStyles } from './common/styles'
 import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
-import SetLabel from "./SetLabel";
+import SetLabelText from "./SetLabelText";
 
 
 const AddReceipt = props => {
@@ -41,17 +41,23 @@ const AddReceipt = props => {
     useEffect(() => {
     }, []);
 
+    function checkPrependZero(arg) {
+        console.log("Here is the length", arg)
+        if (arg < 10) {
+            return "0" + arg
+        }
+        return arg
+    }
 
     async function savePicture() {
         let receiptDetails = {
             amount: amount, memo: memo, store: store, uuid: uuidv4(), category: category,
-            purchasedAt: selectedDate.getMonth() + 1 + "/" + selectedDate.getDate() + "/" + selectedDate.getFullYear(),
+            purchasedAt: selectedDate.getFullYear() + "-" + checkPrependZero(selectedDate.getMonth() + 1) + "-" + checkPrependZero(selectedDate.getDate()),
             fileName: photo["uri"].split('/').pop()
         }
 
-        console.log("here are receipt details", receiptDetails)
-
         let receiptId = await addReceiptDb(receiptDetails)
+        receiptDetails.id = receiptId
 
         if (label.length) {
             addReceiptLabelRelationDb(receiptId, label)
@@ -113,18 +119,18 @@ const AddReceipt = props => {
                                     </View>
 
                                     <View style={{ marginHorizontal: "2%" }} />
-                                    <SelectCategory setValue={setCategory} />
+                                    <SelectCategoryAndroid initialValue={"Category"} onSubmit={setCategory} />
 
                                 </View>
 
                                 <View style={{ flexDirection: "row" }}>
                                     <View style={{ ...textInputStyle, width: "59%", justifyContent: "center" }}>
-                                        <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} onFocus={() => { console.log("store name in focus") }} onBlur={() => { console.log("store name blurred") }} />
+                                        <TextInput placeholder="Store Name" style={textInputStyle} maxLength={50} onChangeText={setStore} value={store} />
                                     </View>
 
                                     <View style={{ marginHorizontal: "2%" }} />
 
-                                    <SetLabel selectedTrueLabel={label} setSelectedTrueLabel={setLabel} />
+                                    <SetLabelText selectedTrueLabel={label} setSelectedTrueLabel={setLabel} />
 
                                 </View>
                                 <TextInput placeholder="Memo" style={textInputStyle} maxlength={200} onChangeText={setMemo} value={memo} />

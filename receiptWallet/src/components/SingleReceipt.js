@@ -6,7 +6,6 @@ import constants, { getFormattedDate } from './common/constants'
 
 const SingleReceipt = props => {
 
-    // console.log("Im in single receipt")
     const [borderWidth, setBorderWidth] = useState(0.7);
 
     useEffect(() => {
@@ -32,17 +31,21 @@ const SingleReceipt = props => {
                 props.decSelectCount(props.value["uuid"])
             }
         } else {
-            // props.navigation.navigate('ReceiptView', { 'uuid': props.value["uuid_str"], 'img': props.value["image_fill"] })
             props.navigation.navigate('ReceiptView', { 'fileName': props.value["fileName"], 'value': props.value })
         }
     }
 
     const insertDate = () => {
+        console.log("going to insert date", props.value["purchasedAt"])
         if (props.prev_dt != props.value["purchasedAt"]) {
+            let dt = new Date(props.value["purchasedAt"])
+            // sql doesn't store time. It only stores date.
+            // hence js subtracts one day by if its exact midnight
+            dt.setDate(dt.getDate() + 1);
             return (
                 <View style={{ marginHorizontal: 10, opacity: 0.5, marginTop: 15, marginLeft: 15 }}>
                     <View style={styles.textContainer}>
-                        <Text style={styles.visit}>{getFormattedDate(new Date(props.value["purchasedAt"]), false)}</Text>
+                        <Text style={styles.visit}>{getFormattedDate(dt)}</Text>
                     </View>
                 </View>
             )
@@ -60,11 +63,13 @@ const SingleReceipt = props => {
     return (
         <>
             {insertDate()}
-            <TouchableOpacity style={{ ...styles.square, borderWidth: borderWidth }} onPress={shortPressed} onLongPress={longPressed}>
+            <TouchableOpacity style={{ ...styles.square, borderWidth: borderWidth}} onPress={shortPressed} onLongPress={longPressed}>
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 10 }}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Image style={{ borderRadius: 2, height: 45, width: 30, marginLeft: 5, marginVertical: 1, resizeMode: "contain" }} source={{ uri: constants.rootDir + "/" + props.value["fileName"] }} />
-                        <Text style={{ marginLeft: 10 }}>{props.value["store"]}</Text>
+                        <View>
+                            <Text style={{ marginLeft: 10 }}>{props.value["store"]}</Text>
+                        </View>
                     </View>
                     {getAmount()}
                 </View >

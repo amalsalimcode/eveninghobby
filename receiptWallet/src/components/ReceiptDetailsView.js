@@ -1,25 +1,30 @@
 
+import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { View, Dimensions, Text, ActivityIndicator, Image, KeyboardAvoidingView } from "react-native";
+import { View, Text, KeyboardAvoidingView, StyleSheet } from "react-native";
 import { ScrollView, TouchableWithoutFeedback, TextInput, TouchableOpacity, TouchableHighlight } from "react-native-gesture-handler";
 
-import ImageZoom from "react-native-image-pan-zoom";
 import { TextInputMask } from "react-native-masked-text";
 
 import { theme, commonStyles } from "./common/styles";
 import GradientBackground from "./common/GradientBackground";
-import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDate } from "./common/constants";
+import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDate, getColor } from "./common/constants";
 import ChangeDate from "./common/ChangeDate";
+import { ReadRLRFromReceipt, addReceiptDb, addReceiptLabelRelationDb, updateReceiptDb, deleteReceiptLabelRelationDb } from "./common/Db";
+import SetLabelBox from "./SetLabelBox";
+import SetCategoryAndroid from "./SetCategoryAndroid";
+
+const availableHeight = constants.windowHeight - getBottomToolbarHeight() - getTopToolbarHeight()
 
 
 const SingleEntryView = props => {
     return (
-        <View style={{ flexDirection: "row", width: constants.windowWidth, marginBottom: "5%", borderWidth: 0, height: "3%" }}>
-            <View style={{ width: constants.windowWidth / 2, borderWidth: 0, justifyContent: "flex-end", alignItems: "flex-end", paddingRight: 50 }}>
-                <Text style={{}} adjustsFontSizeToFit={true}>{props.labelName}</Text>
+        <View style={styles.allEntryContainer}>
+            <View style={styles.singleEntryContainer}>
+                <Text adjustsFontSizeToFit={true}>{props.labelName}</Text>
             </View>
             <View style={{ width: constants.windowWidth / 2 }}>
-                <View style={{ height: 20, justifyContent: "center", alignItems: "center", width: 120, borderBottomWidth: 1 }}>
+                <View style={styles.singleEntryValue}>
                     {props.children}
                 </View>
             </View>
@@ -31,8 +36,8 @@ const DateView = props => {
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     return (
-        <View style={{ alignItems: "center", marginTop: "10%", marginBottom: "3%", width: constants.windowWidth }}>
-            <View style={{ ...commonStyles.textInput, width: "40%", justifyContent: "center", alignItems: "center", borderWidth: 1, borderRadius: 100, backgroundColor: "white", marginBottom: "5%" }}>
+        <View style={styles.dateContainer}>
+            <View style={[commonStyles.textInput, styles.dateView]}>
                 <TouchableWithoutFeedback onPress={() => { setShowDatePicker(true) }}>
                     <Text> {getFormattedDate(props.selectedDate)} </Text>
                 </TouchableWithoutFeedback>
@@ -42,45 +47,48 @@ const DateView = props => {
     )
 }
 
-const LabelView = props => {
-
-    function renderActionButtons(actionButtons) {
-        let actionButtonsContent = actionButtons.map((button, i) => {
-            return (
-                <View key={i} style={commonStyles.actionButton}>
-                    <Text style={commonStyles.actionButtonText}>{button}</Text>
-                </View>
-            )
-        })
-        return actionButtonsContent
-    }
-    return (
-        <View style={{ borderWidth: 0, marginHorizontal: "7%", paddingHorizontal: "1%", height: 100, ...commonStyles.conversationContainer }}>
-            <ScrollView>
-                <View style={commonStyles.actionButtonsContainer}>
-                    {renderActionButtons(props.actionButtons)}
-                </View>
-            </ScrollView>
-        </View>
-    )
-
-}
-
 const ReceiptDetailsView = props => {
 
     const [amount, setAmount] = useState(props.data["amount"]);
     const [store, setStore] = useState(props.data["store"]);
     const [memo, setMemo] = useState(props.data["memo"]);
     const [category, setCategory] = useState(props.data["category"]);
-    const [label, setLabel] = useState(props.data["label"]);
+    const [dbLabel, setDbLabel] = useState([]);
+    const [initialDbLabel, setInitialDbLabel] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date(props.data["purchasedAt"]));
 
-    console.log("here is all the data", props.data)
-
-    const availableHeight = constants.windowHeight - getBottomToolbarHeight() - getTopToolbarHeight()
 
     useEffect(() => {
+        console.log("use Effect called!")
+        ReadRLRFromReceipt(dbLabelResponseHandler, props.data["id"])
     }, []);
+
+    const dbLabelResponseHandler = (result) => {
+        setDbLabel(result)
+        setInitialDbLabel(result)
+    }
+
+    async function updateChanges() {
+        let newChanges = {amount: amount, store: store, memo: memo, category: category}
+        newChanges.purchasedAt = selectedDate.getMonth() + 1 + "/" + selectedDate.getDate() + "/" + selectedDate.getFullYear()
+        updateReceiptDb(newChanges, props.data["id"])
+        props.updateSingleReceipt(newChanges, props.data["index"])
+
+        console.log("here is initial", initialDbLabel, "here are latter", dbLabel)
+
+        let addedLabel = dbLabel.filter(x => !initialDbLabel.includes(x));
+        if (addedLabel.length) {
+            addReceiptLabelRelationDb(props.data["id"], addedLabel)
+        }
+
+        let removedLabel = initialDbLabel.filter(x => !dbLabel.includes(x));
+        if (removedLabel.length) {
+            deleteReceiptLabelRelationDb(removedLabel, props.data["id"])
+        }
+
+        props.navigation.goBack()
+
+    }
 
     return (
         <>
@@ -94,7 +102,7 @@ const ReceiptDetailsView = props => {
                             <DateView selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
                             <SingleEntryView labelName="Store:">
-                                <TextInput placeholder="Store name" maxLength={50} onChangeText={setStore} value={store} />
+                                <TextInput textAlignVertical="bottom" textAlign='center' placeholder="Store name" maxLength={50} onChangeText={setStore} value={store} />
                             </SingleEntryView>
 
                             <SingleEntryView labelName="Amount:">
@@ -102,21 +110,28 @@ const ReceiptDetailsView = props => {
                                     style={{}} value={amount} onChangeText={(text) => { setAmount(text) }} />
                             </SingleEntryView>
 
-                            <SingleEntryView labelName="Category">
-                                <TextInput placeholder="Category Name" maxLength={50} onChangeText={setCategory} value={category} />
-                            </SingleEntryView>
-
-                            <View style={{ borderWidth: 1, marginHorizontal: "7%", padding: "1%", borderRadius: 10 }}>
-                                <TextInput multiline={false} numberOfLines={2} textAlignVertical="top" placeholder="Memo" style={{ ...constants.textInput, height: 25 }} maxlength={50} onChangeText={(e) => { if (e.length < 200) { setMemo(e) } }} value={memo} />
+                            <View style={styles.allEntryContainer}>
+                                <View style={styles.singleEntryContainer}>
+                                    <Text adjustsFontSizeToFit={true}>Category</Text>
+                                </View>
+                                <View style={{ width: constants.windowWidth / 2 }}>
+                                    <View>
+                                        <SetCategoryAndroid initialValue={category} longView={true} onSubmit={setCategory} labelStyle={{alignItems: "center", width: 120, justifyContent: "flex-end", height: 25}}/>
+                                    </View>
+                                </View>
                             </View>
 
-                            <LabelView actionButtons={['asdf', 'test', 'another', 'second', 'asdfasd', 'gsdf', 'gsdfasdf', 'asdfasdfasdfasd', 'asdsdfsdfsdfssfa', 'asdfasdf', 'asdfasd', 'asdfsf']} />
+                            <View style={styles.memoView}>
+                                <TextInput multiline={false} placeholder="Memo" style={{ ...constants.textInput, height: 30 }} maxlength={50} onChangeText={(e) => { if (e.length < 200) { setMemo(e) } }} value={memo} />
+                            </View>
 
-                            <TouchableOpacity style={{ ...commonStyles.button, width: "30%", marginTop: "10%" }} onPress={() => { }}>
-                                <View style={{ marginHorizontal: 10 }}>
+                            <SetLabelBox selectedTrueLabel={dbLabel} setSelectedTrueLabel={setDbLabel} />
+
+                            <View style={{ ...commonStyles.button, width: "30%", marginTop: 0.20 * availableHeight, borderWidth: 1, borderColor: "grey" }}>
+                                <TouchableOpacity style={{ width: 0.3 * constants.windowWidth }} onPress={updateChanges}>
                                     <Text style={commonStyles.buttonText}>Update</Text>
-                                </View>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                            </View>
 
                         </View>
                     </View>
@@ -127,4 +142,91 @@ const ReceiptDetailsView = props => {
     );
 }
 
-export default ReceiptDetailsView
+const styles = StyleSheet.create({
+    labelLimitContainer: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        marginHorizontal: "7%",
+        height: 0.15 * availableHeight
+    },
+    labelContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingTop: 10,
+        flexWrap: 'wrap',
+    },
+    singleLabel: {
+        backgroundColor: "grey",
+        borderRadius: 30,
+        padding: 7,
+        marginRight: 10,
+        marginBottom: 10,
+    },
+    singleLabelText: {
+        color: 'white',
+        fontSize: 12,
+        alignSelf: 'center'
+    },
+    dateContainer: {
+        alignItems: "center",
+        marginTop: 0.05 * availableHeight,
+        marginBottom: "6%",
+        width: constants.windowWidth
+    },
+    allEntryContainer: {
+        flexDirection: "row",
+        width: constants.windowWidth,
+        marginBottom: 0.03 * availableHeight,
+        borderWidth: 0,
+        height: 25,
+    },
+    singleEntryContainer: {
+        width: constants.windowWidth / 2,
+        borderWidth: 0,
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        paddingRight: 50
+    },
+    singleEntryValue: {
+        justifyContent: "flex-end",
+        alignItems: "center",
+        width: 120,
+        borderBottomWidth: 1,
+        alignContent: "center",
+        flex: 1,
+    },
+    dateView: {
+        width: "40%",
+        justifyContent: "center",
+        alignItems: "center",
+        borderWidth: 1,
+        borderRadius: 20,
+        backgroundColor: "white"
+    },
+    memoView: {
+        borderWidth: 1,
+        marginHorizontal: "7%",
+        padding: "1%",
+        borderRadius: 10,
+        marginTop: 0.03 * availableHeight,
+        marginBottom: 0.06 * availableHeight,
+        justifyContent: "center",
+        alignContent: "center",
+    }
+})
+
+
+function mapStateToProps(state) {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        updateSingleReceipt: (receiptDetails, index) => dispatch({ type: "UPDATE_SINGLE_RECEIPT", receiptDetails: receiptDetails, index: index })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReceiptDetailsView)

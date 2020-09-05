@@ -12,6 +12,12 @@ const ReceiptSelectorReducer = (state=initial_data, action) => {
             var tmpReceipts = state.allReceipts
             tmpReceipts.unshift(action.receipt)
             return { allReceipts: tmpReceipts, toggleUpdate: state.toggleUpdate * -1 } 
+        case "UPDATE_SINGLE_RECEIPT":
+            var tmpReceipts = state.allReceipts
+            for (var key in action.receiptDetails) {
+                tmpReceipts[action.index][key] = action.receiptDetails[key]
+            }
+            return { allReceipts: tmpReceipts, toggleUpdate: state.toggleUpdate * -1 } 
     }
     return state
 }

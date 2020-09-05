@@ -10,7 +10,7 @@ import { commonStyles } from "./common/styles";
 
 const SingleLabel = props => {
 
-    const [isChecked, setIsChecked] = useState(props.value);
+    const [isChecked, setIsChecked] = useState(props.enabled);
 
     useEffect(() => {
     }, []);

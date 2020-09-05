@@ -8,14 +8,11 @@ import {
     Keyboard
 } from "react-native";
 import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from "react-native-gesture-handler";
-import constants from "./common/constants";
-import NewEntry from "./NewLabel";
+import constants, { getColor } from "./common/constants";
 import { commonStyles } from './common/styles';
 import { ReadCategoryTypesAsync, AddNewCategoryType } from './common/Db';
 import SingleCategoryAndroid from "./SingleCategoryAndroid";
 import NewCategoryAndroid from "./NewCategoryAndroid";
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
 
 
 const getModalOffset = (resultLength) => {
@@ -27,7 +24,6 @@ const getModalOffset = (resultLength) => {
 }
 
 const getModalHeight = (resultLength) => {
-    console.log("calculating height", resultLength)
     let maxHeight = constants.windowHeight * 0.60
     let offset = resultLength < 6 ? 60 : 30
     let allowedHeight = (resultLength * 60 + offset)
@@ -38,7 +34,7 @@ const getModalHeight = (resultLength) => {
 const SetCategoryAndroid = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [keyboardOffset, setKeyboardOffset] = useState(0);
-    const [value, setValue] = useState('Category')
+    const [value, setValue] = useState(props.initialValue)
     const [dbResult, setDbResult] = useState([])
 
     const [modalHeight, setModalHeight] = useState(200)
@@ -75,8 +71,6 @@ const SetCategoryAndroid = props => {
             getCategoryResponse()
         }
 
-        // loadFont()
-
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
@@ -94,15 +88,6 @@ const SetCategoryAndroid = props => {
         setKeyboardOffset(0)
     };
 
-    const getColor = (value) => {
-        if (value == "Category") {
-            return ("rgb(150, 150, 150)")
-        }
-        else {
-            return ("black")
-        }
-    }
-
     const categorySelected = (arg) => {
         setModalVisible(!modalVisible)
         setValue(arg)
@@ -111,9 +96,9 @@ const SetCategoryAndroid = props => {
 
     return (
         <>
-            <View style={{ ...commonStyles.textInput, width: "37%", justifyContent: "center" }}>
+            <View style={{ ...commonStyles.textInput, width: "37%", justifyContent: "center", ...props.labelStyle }}>
                 <TouchableWithoutFeedback onPress={() => { setModalVisible(true) }}>
-                    <Text style={{ color: getColor(value) }}>{value}</Text>
+                    <Text style={{ color: getColor(value, "Category") }}>{value}</Text>
                 </TouchableWithoutFeedback>
             </View>
             <View>

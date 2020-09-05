@@ -1,6 +1,5 @@
-import { connect } from "react-redux";
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text } from "react-native";
 import { commonStyles } from "./common/styles";
 import { Button } from 'native-base';
 
@@ -12,11 +11,9 @@ const SingleCategoryAndroid = props => {
     }, []);
 
     const onPress = () => {
-        console.log("im pressed")
         props.handlePress(props.title)
     }
 
-    console.log("loading title", props.title)
     return (
         <>
             <Button transparent light onPress={onPress}>
