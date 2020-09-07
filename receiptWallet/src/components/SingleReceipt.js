@@ -7,8 +7,12 @@ import constants, { getFormattedDate } from './common/constants'
 const SingleReceipt = props => {
 
     const [borderWidth, setBorderWidth] = useState(0.7);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
+        setImage(
+            <Image style={{ borderRadius: 2, height: 45, width: 30, marginLeft: 5, marginVertical: 1, resizeMode: "contain" }} source={{ uri: constants.rootDir + "/" + props.value["fileName"] }} />
+        )
     }, []);
 
     function longPressed() {
@@ -65,8 +69,8 @@ const SingleReceipt = props => {
             {insertDate()}
             <TouchableOpacity style={{ ...styles.square, borderWidth: borderWidth}} onPress={shortPressed} onLongPress={longPressed}>
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 10 }}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Image style={{ borderRadius: 2, height: 45, width: 30, marginLeft: 5, marginVertical: 1, resizeMode: "contain" }} source={{ uri: constants.rootDir + "/" + props.value["fileName"] }} />
+                    <View style={{ flexDirection: "row", alignItems: "center", height: 45 }}>
+                        {image}
                         <View>
                             <Text style={{ marginLeft: 10 }}>{props.value["store"]}</Text>
                         </View>

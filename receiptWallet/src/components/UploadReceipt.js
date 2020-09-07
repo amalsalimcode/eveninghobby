@@ -6,6 +6,7 @@ import {uploadNewReceipt} from './common/Backend'
 
 const UploadReceipt = props => {
 
+
     useEffect(() => {
     }, []);
 

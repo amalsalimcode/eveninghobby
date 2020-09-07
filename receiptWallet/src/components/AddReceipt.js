@@ -14,7 +14,7 @@ import { sendPictureBackend } from "./common/Backend"
 import { theme, commonStyles } from './common/styles'
 import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
-import constants, { getTopToolbarHeight, getFormattedDate, uuidv4 } from "./common/constants"
+import constants, { getTopToolbarHeight, getFormattedDate, uuidv4, checkPrependZero, getSQLformattedDate } from "./common/constants"
 import SetLabelText from "./SetLabelText";
 
 
@@ -41,18 +41,11 @@ const AddReceipt = props => {
     useEffect(() => {
     }, []);
 
-    function checkPrependZero(arg) {
-        console.log("Here is the length", arg)
-        if (arg < 10) {
-            return "0" + arg
-        }
-        return arg
-    }
 
     async function savePicture() {
         let receiptDetails = {
             amount: amount, memo: memo, store: store, uuid: uuidv4(), category: category,
-            purchasedAt: selectedDate.getFullYear() + "-" + checkPrependZero(selectedDate.getMonth() + 1) + "-" + checkPrependZero(selectedDate.getDate()),
+            purchasedAt: getSQLformattedDate(selectedDate),
             fileName: photo["uri"].split('/').pop()
         }
 

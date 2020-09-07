@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { AntDesign } from '@expo/vector-icons';
 import { View, TextInput, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import constants, { getFormattedDate, getFormattedDateAbbrev, getColor } from './common/constants'
+import constants, { getFormattedDateAbbrev, getColor, checkPrependZero, getSQLformattedDate } from './common/constants'
 
 import { commonStyles, theme } from './common/styles'
 import GradientBackground from './common/GradientBackground';
@@ -12,6 +12,7 @@ import TopToolbar from './TopToolbar';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ChangeDate from './common/ChangeDate';
 import LabelModal from './LabelModal';
+import { buildSearchQuery } from './common/Db';
 
 
 const SearchBar = props => {
@@ -25,7 +26,7 @@ const SearchBar = props => {
             <View style={{ marginRight: 10, marginTop: 12 }}>
                 <AntDesign name="search1" size={24} color="black" />
             </View>
-            <TextInput style={{ ...commonStyles.inputText, flex: 1 }} placeholder="Search" placeholderTextColor={theme.placeholderText} onChangeText={(e) => {setValue(e); props.setSearchVal(e)}}
+            <TextInput style={{ ...commonStyles.inputText, flex: 1 }} placeholder="Search" placeholderTextColor={theme.placeholderText} onChangeText={(e) => { setValue(e); props.setSearchVal(e) }}
                 value={value} autoCorrect={false} autoCapitalize='none' autoFocus={false} onBlur={() => { console.log(value) }} />
         </View>
     )
@@ -72,6 +73,7 @@ const Search = props => {
         }
     }
 
+
     const executeSearch = () => {
         console.log("here is search val", searchVal, "label val", selectedLabel, "start date", startDate, "end date", endDate, "categories", selectedCategory, "exact date", exactDate)
 
@@ -81,12 +83,8 @@ const Search = props => {
             return
         }
 
-        // check if the user provided exact date or a range of dates
-        // Search bar should go for memo and store name
-        // add filters on dates if provided
-        // Then inner join with category
-        // Then inner join with labels
-
+        let query = buildSearchQuery(searchVal, selectedLabel, selectedCategory, startDate, endDate, exactDate)
+        props.navigation.navigate("SearchResults", { query: query })
     }
 
     const formatSetDate = (arg) => {
@@ -123,7 +121,7 @@ const Search = props => {
                     <SearchBar setSearchVal={setSearchVal} />
 
                     <View style={{ height: "10%" }} />
-                    <View style={{borderBottomColor: "grey", borderBottomWidth: 1, width: 90, alignItems: "center"}}>
+                    <View style={{ borderBottomColor: "grey", borderBottomWidth: 1, width: 90, alignItems: "center" }}>
                         <Text style={{ fontSize: 15, fontWeight: "200" }}>FILTERS</Text>
                     </View>
                     <View style={{ height: 20 }} />
@@ -150,9 +148,11 @@ const Search = props => {
                     </View>
 
                     <View style={{ height: "30%" }} />
-                    <TouchableOpacity style={{ ...styles.square, borderWidth: 0.7, width: 200, marginHorizontal: 8 }} onPress={executeSearch} >
-                        <Text>Find</Text>
-                    </TouchableOpacity>
+                    <View style={{ ...commonStyles.button, width: "50%", borderWidth: 1, borderColor: "grey" }}>
+                        <TouchableOpacity style={{ width: 0.3 * constants.windowWidth }} onPress={executeSearch}>
+                            <Text style={commonStyles.buttonText}>Find</Text>
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
             </ GradientBackground>
@@ -190,15 +190,4 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 10
     },
-    textContainer: {
-        borderBottomWidth: 2,
-        marginBottom: 10,
-        width: constants.windowWidth - 50,
-    },
-    container: {
-        // flex: 1,
-        // backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    }
 });

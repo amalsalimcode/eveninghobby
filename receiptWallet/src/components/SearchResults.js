@@ -2,31 +2,22 @@
 
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, Text } from "react-native";
+import { View, ActivityIndicator, SafeAreaView } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import constants from "./common/constants"
-import ReceiptsBottomToolbar from "./ReceiptsBottomToolbar";
 import GradientBackground from "./common/GradientBackground";
 import { theme } from "./common/styles";
 import SingleReceipt from "./SingleReceipt";
-import { createTable, ReadReceipt } from "./common/Db";
-import { createImgDir } from "./common/FileSystem";
-import * as Permissions from 'expo-permissions';
+import { executeQuery } from "./common/Db";
+import TopToolbar from "./TopToolbar";
 
 
-const Receipts = props => {
+const SearchResults = props => {
+
+    const [value, setValue] = useState(null)
 
     useEffect(() => {
-
-        (async () => {
-            const { status3 } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-            console.log("here is the status of camera", status3)
-        })();
-
-        createImgDir()
-        createTable()
-        ReadReceipt(props.setReceipt)
+        executeQuery(props.route.params["query"], setValue)
     }, []);
 
     const renderItem = ({ item, index }) => {
@@ -45,26 +36,25 @@ const Receipts = props => {
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
     }
 
-    if (!props.allReceipts) {
+    if (!value) {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <View style={{ justifyContent: "center", alignContent: "center" }}>
+                    <TopToolbar {...props} />
                     <ActivityIndicator />
                 </View>
-                <ReceiptsBottomToolbar {...props} />
             </ GradientBackground>
         )
     } else {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <SafeAreaView style={{ height: constants.windowHeight - 55 }}>
-                    <FlatList
-                        bounces={false}
-                        data={props.allReceipts}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => {return item["fileName"]}} />
-                </SafeAreaView>
-                <ReceiptsBottomToolbar {...props} />
+                <TopToolbar {...props} />
+                <FlatList
+                    bounces={false}
+                    data={value}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => { return item["fileName"] }} />
+                <View style={{height:20}}/>
             </ GradientBackground >
         );
     }
@@ -85,4 +75,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Receipts)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults)

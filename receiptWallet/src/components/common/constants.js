@@ -55,13 +55,28 @@ export function getFormattedDateAbbrev(dt) {
 
 }
 
+export function getSQLformattedDate(arg) {
+
+  if (!arg) {
+    return arg
+  }
+  return arg.getFullYear() + "-" + checkPrependZero(arg.getMonth() + 1) + "-" + checkPrependZero(arg.getDate())
+}
+
 export const getColor = (value, defaultValue) => {
   if (value == defaultValue) {
-      return ("rgb(150, 150, 150)")
+    return ("rgb(150, 150, 150)")
   }
   else {
-      return ("black")
+    return ("black")
   }
+}
+
+export function checkPrependZero(arg) {
+  if (arg < 10) {
+    return "0" + arg
+  }
+  return arg
 }
 
 export default constants

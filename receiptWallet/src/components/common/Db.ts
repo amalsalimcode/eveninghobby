@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { getSQLformattedDate } from './constants';
 
 export const db = SQLite.openDatabase("db.db");
 
@@ -205,6 +206,68 @@ export const filterReceiptExactDate = (searchVal) => {
     db.transaction(
         tx => {
             tx.executeSql("SELECT * from RECEIPT where store in ?", searchVal, success, error);
+        },
+        null,
+        null
+    );
+}
+
+export const buildSearchQuery = (searchVal, selectedLabel, selectedCategory, startDate, endDate, exactDate) => {
+    let exactDateFmt = getSQLformattedDate(exactDate)
+    let startDateFmt = getSQLformattedDate(startDate)
+    let endDateFmt = getSQLformattedDate(endDate)
+
+    let curPrefix = " WHERE"
+    let query = "SELECT * FROM receipt"
+    if (selectedLabel.length) {
+        query += " INNER JOIN receiptlabelrelation on receipt.id = receiptlabelrelation.receiptid"
+    }
+
+    if (searchVal) {
+        query += `${curPrefix} store like '%${searchVal}%' OR memo like '%${searchVal}%'`
+        curPrefix = " AND"
+    }
+
+    if (selectedCategory.length) {
+        var arg = ""
+        selectedCategory.forEach((_, index) => { index != selectedCategory.length - 1 ? arg += `'${selectedCategory[index]}', ` : arg += `'${selectedCategory[index]}'` });
+        query += `${curPrefix} category in (${arg})`
+        curPrefix = " AND"
+    }
+
+    if (exactDateFmt) {
+        query += `${curPrefix} purchasedAt=DATE('${exactDateFmt}')`
+        curPrefix = " AND"
+    } else {
+
+        if (startDateFmt) {
+            query += `${curPrefix} purchasedAt>=Date('${startDateFmt}')`
+            curPrefix = " AND"
+        }
+
+        if (endDateFmt) {
+            query += `${curPrefix} purchasedAt<=Date('${endDateFmt}')`
+            curPrefix = " AND"
+        }
+
+    }
+
+    if (selectedLabel.length) {
+        var arg = ""
+        selectedLabel.forEach((_, index) => { index != selectedLabel.length - 1 ? arg += `'${selectedLabel[index]}', ` : arg += `'${selectedLabel[index]}'` });
+        query += `${curPrefix} ReceiptLabelRelation.label in (${arg}) `
+    }
+
+    query += "order by purchasedAt desc;"
+
+    return query
+}
+
+export const executeQuery = (query, setResult) => {
+    console.log("going to execute query", query)
+    db.transaction(
+        tx => {
+            tx.executeSql(query, [], (error, { rows }) => { setResult(rows["_array"]) });
         },
         null,
         null

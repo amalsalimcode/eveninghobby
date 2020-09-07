@@ -30,6 +30,8 @@ const getModalHeight = (resultLength, allowNewEntry) => {
     if (allowNewEntry) {
         let offset = resultLength < 6 ? 60 : 30
         allowedHeight += offset
+    } else {
+        allowedHeight -= 20
     }
     let resultHeight = allowedHeight > maxHeight ? maxHeight : allowedHeight
     return resultHeight

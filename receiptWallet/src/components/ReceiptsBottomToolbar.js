@@ -13,14 +13,21 @@ import { Feather, Entypo } from '@expo/vector-icons';
 import { theme } from './common/styles';
 import constants, { hasNotch } from './common/constants'
 import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 
 const ReceiptsBottomToolbar = props => {
+
+
+    async function getPermission() {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    }
 
     useEffect(() => {
     }, []);
 
     const pickImage = async () => {
+        getPermission()
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             quality: 1,
@@ -66,7 +73,7 @@ const ReceiptsBottomToolbar = props => {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => { props.navigation.navigate('CaptureReceipt') }} style={{ width: 60 }}>
+                        <TouchableOpacity onPress={() => { getPermission(); props.navigation.navigate('CaptureReceipt') }} style={{ width: 60 }}>
                             <View style={{ alignItems: "center" }}>
                                 <Feather name="camera" size={24} color="black" />
                                 <Text style={{ fontSize: 8 }}>Capture</Text>
