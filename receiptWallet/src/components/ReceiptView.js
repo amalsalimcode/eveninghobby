@@ -13,7 +13,7 @@ import ReceiptDetailsView from "./ReceiptDetailsView";
 
 const ReceiptView = props => {
 
-    const [img, setNewImg] = useState(constants.rootDir + "/" + props.route.params["fileName"])
+    const [img, setNewImg] = useState(props.route.params["fileId"])
     const [viewScroller, setViewScroller] = useState(null)
     const [imgDimension, setImgDimension] = useState({})
 
@@ -23,23 +23,34 @@ const ReceiptView = props => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
 
-    Image.getSize(img, (width, height) => { setImgDimensionFunc(width, height) });
+    const error = () => {
+        if (!imgDimension["height"]) {
+            setImgDimension({ "height": 200, "width": 200 })
+        }
+    }
+
+    Image.getSize(img, (width, height) => { setImgDimensionFunc(width, height) }, error);
 
     const availableHeight = constants.windowHeight - getBottomToolbarHeight() - getTopToolbarHeight()
 
-    let imageHeight = availableHeight
-    if (imgDimension["height"] < availableHeight) {
-        imageHeight = imgDimension["height"] * constants.windowWidth / imgDimension["width"]
-    }
+    const getImageSize = () => {
+        let imageHeight = availableHeight
+        if (imgDimension["height"] < availableHeight) {
+            imageHeight = imgDimension["height"] * constants.windowWidth / imgDimension["width"]
+        }
 
-    let imageWidth = 0
-    if (imgDimension["width"] < constants.windowWidth) {
-        imageWidth = constants.windowWidth + 10
-    } else {
-        imageWidth = constants.windowWidth
+        let imageWidth = 0
+        if (imgDimension["width"] < constants.windowWidth) {
+            imageWidth = constants.windowWidth + 10
+        } else {
+            imageWidth = constants.windowWidth
+        }
+
+        return ({ "height": imageHeight, "width": imageWidth })
     }
 
     const setImgDimensionFunc = (width, height) => {
+        console.log("im asked to set dimension")
         if (!imgDimension["height"]) {
             setImgDimension({ "height": height, "width": width })
         }
@@ -59,6 +70,7 @@ const ReceiptView = props => {
     }, []);
 
     const getImage = () => {
+        let imgSize = getImageSize()
         if (Platform.OS == 'ios') {
             return (
                 <ScrollView minimumZoomScale={1} maximumZoomScale={5} contentContainerStyle={{ backgroundColor: "black" }}>
@@ -67,9 +79,9 @@ const ReceiptView = props => {
                 </ScrollView>)
         } else {
             return (
-                <ImageZoom cropWidth={Dimensions.get('window').width} cropHeight={imageHeight}
-                    imageWidth={imageWidth} imageHeight={imageHeight} style={{ backgroundColor: "black" }}>
-                    <Image resizeMode="contain" style={{ width: imageWidth, height: imageHeight }}
+                <ImageZoom cropWidth={Dimensions.get('window').width} cropHeight={imgSize.imageHeight}
+                    imageWidth={imgSize.imageWidth} imageHeight={imgSize.imageHeight} style={{ backgroundColor: "black" }}>
+                    <Image resizeMode="contain" style={{ width: imgSize.imageWidth, height: imgSize.imageHeight }}
                         source={{ uri: img }} />
                 </ImageZoom>
             )
@@ -80,6 +92,7 @@ const ReceiptView = props => {
         return (
             <>
                 <View style={{ justifyContent: "center", alignContent: "center" }}>
+                    <TopToolbar {...props} />
                     <ActivityIndicator />
                 </View>
             </>

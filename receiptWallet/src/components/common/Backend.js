@@ -74,10 +74,10 @@ export async function sendPictureBackend(selectedDate, amount, memo, store, phot
 
     // ImagePicker saves the taken photo to disk and returns a local URI to it
     let localUri = photo["uri"]
-    let filename = localUri.split('/').pop();
+    let fileId = localUri.split('/').pop();
 
     // Infer the type of the image
-    let match = /\.(\w+)$/.exec(filename);
+    let match = /\.(\w+)$/.exec(fileId);
     let type = match ? `image/${match[1]}` : `image`;
 
     // Upload the image using the fetch and FormData APIs

@@ -9,13 +9,14 @@ import TopToolbar from "./TopToolbar"
 import { addReceiptDb, addReceiptLabelRelationDb } from "./common/Db"
 import ChangeDate from "./common/ChangeDate"
 import SelectCategoryAndroid from "./SetCategoryAndroid"
-import { saveImgToDir } from "./common/FileSystem"
+import { addPhotoToAlbum } from "./common/FileSystem"
 import { sendPictureBackend } from "./common/Backend"
 import { theme, commonStyles } from './common/styles'
 import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4, checkPrependZero, getSQLformattedDate } from "./common/constants"
 import SetLabelText from "./SetLabelText";
+
 
 
 const AddReceipt = props => {
@@ -41,12 +42,17 @@ const AddReceipt = props => {
     useEffect(() => {
     }, []);
 
-
     async function savePicture() {
+
+        let asset = await addPhotoToAlbum(photo["uri"])
+
+        // sql doesn't store time. It only stores date.
+        // hence js subtracts one day by if its exact midnight
+        selectedDate.setDate(selectedDate.getDate() + 1)
         let receiptDetails = {
             amount: amount, memo: memo, store: store, uuid: uuidv4(), category: category,
             purchasedAt: getSQLformattedDate(selectedDate),
-            fileName: photo["uri"].split('/').pop()
+            fileId: asset["uri"]
         }
 
         let receiptId = await addReceiptDb(receiptDetails)
@@ -57,9 +63,7 @@ const AddReceipt = props => {
         }
 
         sendPictureBackend(selectedDate, amount, memo, store, photo, props.addSingleReceipt)
-        saveImgToDir(photo["uri"]).then(() => {
-            props.addSingleReceipt(receiptDetails)
-        })
+        props.addSingleReceipt(receiptDetails)
     }
 
     const getImage = (imgUri) => {
@@ -112,7 +116,7 @@ const AddReceipt = props => {
                                     </View>
 
                                     <View style={{ marginHorizontal: "2%" }} />
-                                    <SelectCategoryAndroid initialValue={"Category"} onSubmit={setCategory} />
+                                    <SelectCategoryAndroid initialValue="Category" onSubmit={setCategory} />
 
                                 </View>
 
@@ -145,7 +149,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        addSingleReceipt: (receipt) => dispatch({ type: "ADD_SINGLE_RECEIPT", receipt: receipt })
+        addSingleReceipt: (receipt) => dispatch({ type: "ADD_SINGLE_RECEIPT", receipt: receipt }),
     }
 }
 

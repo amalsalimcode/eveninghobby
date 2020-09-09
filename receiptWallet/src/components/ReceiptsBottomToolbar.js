@@ -43,7 +43,6 @@ const ReceiptsBottomToolbar = props => {
 
     var toolbarHeight = hasNotch() ? 70 : 55
 
-    let iter = 0
     if (props.isSelected) {
         return (
             <>

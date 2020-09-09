@@ -8,7 +8,7 @@ import { TextInputMask } from "react-native-masked-text";
 
 import { theme, commonStyles } from "./common/styles";
 import GradientBackground from "./common/GradientBackground";
-import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDate, getColor } from "./common/constants";
+import constants, { getTopToolbarHeight, getBottomToolbarHeight, getFormattedDate, getColor, getSQLformattedDate } from "./common/constants";
 import ChangeDate from "./common/ChangeDate";
 import { ReadRLRFromReceipt, addReceiptDb, addReceiptLabelRelationDb, updateReceiptDb, deleteReceiptLabelRelationDb } from "./common/Db";
 import SetLabelBox from "./SetLabelBox";
@@ -70,7 +70,8 @@ const ReceiptDetailsView = props => {
 
     async function updateChanges() {
         let newChanges = {amount: amount, store: store, memo: memo, category: category}
-        newChanges.purchasedAt = selectedDate.getMonth() + 1 + "/" + selectedDate.getDate() + "/" + selectedDate.getFullYear()
+        selectedDate.setDate(selectedDate.getDate() + 1)
+        newChanges.purchasedAt = getSQLformattedDate(selectedDate)
         updateReceiptDb(newChanges, props.data["id"])
         props.updateSingleReceipt(newChanges, props.data["index"])
 
@@ -116,7 +117,7 @@ const ReceiptDetailsView = props => {
                                 </View>
                                 <View style={{ width: constants.windowWidth / 2 }}>
                                     <View>
-                                        <SetCategoryAndroid initialValue={category} longView={true} onSubmit={setCategory} labelStyle={{alignItems: "center", width: 120, justifyContent: "flex-end", height: 25}}/>
+                                        <SetCategoryAndroid initialValue={category ? category : "Category"} longView={true} onSubmit={setCategory} labelStyle={{alignItems: "center", width: 120, justifyContent: "flex-end", height: 25}}/>
                                     </View>
                                 </View>
                             </View>
@@ -127,7 +128,7 @@ const ReceiptDetailsView = props => {
 
                             <SetLabelBox selectedTrueLabel={dbLabel} setSelectedTrueLabel={setDbLabel} />
 
-                            <View style={{ ...commonStyles.button, width: "30%", marginTop: 0.20 * availableHeight, borderWidth: 1, borderColor: "grey" }}>
+                            <View style={{ ...commonStyles.button, width: "30%", marginTop: 0.10 * availableHeight, borderWidth: 1, borderColor: "grey" }}>
                                 <TouchableOpacity style={{ width: 0.3 * constants.windowWidth }} onPress={updateChanges}>
                                     <Text style={commonStyles.buttonText}>Update</Text>
                                 </TouchableOpacity>

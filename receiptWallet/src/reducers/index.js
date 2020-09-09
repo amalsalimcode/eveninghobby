@@ -4,7 +4,7 @@ import ReceiptSelectorReducer from './ReceiptSelectorReducer'
 
 const rootReducer = combineReducers({
     AllReceiptsReducer,
-    ReceiptSelectorReducer
+    ReceiptSelectorReducer,
 });
 
 export default rootReducer;

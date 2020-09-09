@@ -23,19 +23,18 @@ export const createTable = () => {
         tx.executeSql("CREATE TABLE IF NOT EXISTS label (type VARCHAR(100) PRIMARY KEY NOT NULL);", null, success, error);
         tx.executeSql("INSERT OR IGNORE INTO label (type) values (?), (?), (?)", ["Taxes 2020", "Utah Road Trip"], null, success, error);
         tx.executeSql("INSERT OR IGNORE INTO category (type) values (?), (?), (?)", ["groceries", "dining", "gas"], null, success, error);
-        tx.executeSql("CREATE TABLE IF NOT EXISTS receipt (id integer PRIMARY KEY NOT NULL, amount FLOAT, store VARCHAR(200), memo TEXT, fileName VARCHAR(100), purchasedAt DATE, isdeleted BOOLEAN DEFAULT FALSE, uuid VARCHAR(100), category VARCHAR(100) DEFAULT NULL, FOREIGN KEY (category) REFERENCES category(type));", null, success, error);
+        tx.executeSql("CREATE TABLE IF NOT EXISTS receipt (id integer PRIMARY KEY NOT NULL, amount FLOAT, store VARCHAR(200), memo TEXT, fileId VARCHAR(100), purchasedAt DATE, isdeleted BOOLEAN DEFAULT FALSE, uuid VARCHAR(100), category VARCHAR(100) DEFAULT NULL, FOREIGN KEY (category) REFERENCES category(type));", null, success, error);
         tx.executeSql("CREATE TABLE IF NOT EXISTS ReceiptLabelRelation (id integer PRIMARY KEY NOT NULL, receiptid INTEGER DEFAULT NULL, label VARCHAR(100) DEFAULT NULL, FOREIGN KEY (receiptid) REFERENCES receipt(id), FOREIGN KEY (label) REFERENCES label(type));", null, success, error)
     },
         null,
         () => { });
 }
 
-export function addReceiptDb(v: { amount: number, memo: String, store: String, purchasedAt: String, fileName: String, uuid: String, category: String }) {
-    console.log("here is the purchasedate", v.purchasedAt)
+export function addReceiptDb(v: { amount: number, memo: String, store: String, purchasedAt: String, fileId: String, uuid: String, category: String }) {
     return new Promise((resolve, reject) => {
         db.transaction(
             tx => {
-                tx.executeSql("insert into receipt (amount, store, memo, fileName, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, DATE(?), ?, ?, ?)", [v.amount, v.store, v.memo, v.fileName, v.purchasedAt, false, v.uuid, v.category],
+                tx.executeSql("insert into receipt (amount, store, memo, fileId, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, DATE(?), ?, ?, ?)", [v.amount, v.store, v.memo, v.fileId, v.purchasedAt, 0, v.uuid, v.category],
                     (_, result) => { resolve(result["insertId"]) }, null);
             },
             null,
@@ -57,11 +56,12 @@ export const updateReceiptDb = (v: { amount: number, memo: String, store: String
 }
 
 export const ReadReceipt = (setResult) => {
+    console.log("going to read receipts")
     db.transaction(
         tx => {
-            tx.executeSql("SELECT * FROM receipt WHERE isdeleted = FALSE ORDER BY purchasedAt DESC, id DESC", [], (error, { rows }) => { setResult(rows["_array"]) });
+            tx.executeSql("SELECT * FROM receipt WHERE isdeleted=0 ORDER BY purchasedAt DESC, id DESC", [], (error, { rows }) => { setResult(rows["_array"]) });
         },
-        null,
+        (e) => {console.log("error found", e)},
         null
     );
 }
@@ -166,7 +166,8 @@ export const deleteReceiptDb = (uuid) => {
     uuid.forEach((_, index) => { index != uuid.length - 1 ? arg += "?, " : arg += "?" });
     db.transaction(
         tx => {
-            tx.executeSql("UPDATE receipt SET isdeleted = TRUE where uuid in (" + arg + ")", uuid, success, error);
+            // tx.executeSql("UPDATE receipt SET isdeleted = 1 where uuid in (" + arg + ")", uuid, success, error);
+            tx.executeSql("DELETE from receipt where uuid in (" + arg + ")", uuid, success, error);
         },
         null,
         null
@@ -213,9 +214,6 @@ export const filterReceiptExactDate = (searchVal) => {
 }
 
 export const buildSearchQuery = (searchVal, selectedLabel, selectedCategory, startDate, endDate, exactDate) => {
-    let exactDateFmt = getSQLformattedDate(exactDate)
-    let startDateFmt = getSQLformattedDate(startDate)
-    let endDateFmt = getSQLformattedDate(endDate)
 
     let curPrefix = " WHERE"
     let query = "SELECT * FROM receipt"
@@ -235,17 +233,23 @@ export const buildSearchQuery = (searchVal, selectedLabel, selectedCategory, sta
         curPrefix = " AND"
     }
 
-    if (exactDateFmt) {
+    if (exactDate) {
+        exactDate.setDate(exactDate.getDate() + 1) 
+        let exactDateFmt = getSQLformattedDate(exactDate)
         query += `${curPrefix} purchasedAt=DATE('${exactDateFmt}')`
         curPrefix = " AND"
     } else {
 
-        if (startDateFmt) {
+        if (startDate) {
+            startDate.setDate(startDate.getDate() + 1)
+            let startDateFmt = getSQLformattedDate(startDate)
             query += `${curPrefix} purchasedAt>=Date('${startDateFmt}')`
             curPrefix = " AND"
         }
 
-        if (endDateFmt) {
+        if (endDate) {
+            endDate.setDate(endDate.getDate() + 1)
+            let endDateFmt = getSQLformattedDate(endDate)
             query += `${curPrefix} purchasedAt<=Date('${endDateFmt}')`
             curPrefix = " AND"
         }
@@ -267,7 +271,7 @@ export const executeQuery = (query, setResult) => {
     console.log("going to execute query", query)
     db.transaction(
         tx => {
-            tx.executeSql(query, [], (error, { rows }) => { setResult(rows["_array"]) });
+            tx.executeSql(query, [], (error, { rows }) => { console.log("here is query result", rows); setResult(rows["_array"]) });
         },
         null,
         null

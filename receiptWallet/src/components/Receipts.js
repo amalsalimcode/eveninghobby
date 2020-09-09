@@ -12,22 +12,16 @@ import { theme } from "./common/styles";
 import SingleReceipt from "./SingleReceipt";
 import { createTable, ReadReceipt } from "./common/Db";
 import { createImgDir } from "./common/FileSystem";
-import * as Permissions from 'expo-permissions';
 
 
 const Receipts = props => {
 
     useEffect(() => {
-
-        (async () => {
-            const { status3 } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-            console.log("here is the status of camera", status3)
-        })();
-
         createImgDir()
         createTable()
         ReadReceipt(props.setReceipt)
     }, []);
+
 
     const renderItem = ({ item, index }) => {
         if (props.deletedItems[item["uuid"]]) {
@@ -62,7 +56,7 @@ const Receipts = props => {
                         bounces={false}
                         data={props.allReceipts}
                         renderItem={renderItem}
-                        keyExtractor={(item) => {return item["fileName"]}} />
+                        keyExtractor={(item) => {return item["fileId"]}} />
                 </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />
             </ GradientBackground >
@@ -81,7 +75,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         setReceipt: (receipts) => dispatch({ type: "SET_RECEIPTS", receipts: receipts }),
-        incReceiptCountBatch: (receipts) => dispatch({ type: "INC_RECEIPT_COUNT_BATCH", receipts: receipts })
+        incReceiptCountBatch: (receipts) => dispatch({ type: "INC_RECEIPT_COUNT_BATCH", receipts: receipts }),
     }
 }
 

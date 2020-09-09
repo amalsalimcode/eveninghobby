@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { View, Platform, Text } from 'react-native';
 
 import { Overlay } from 'react-native-elements';
-import {Picker} from '@react-native-community/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { theme, commonStyles } from './styles';
@@ -19,7 +18,7 @@ const ChangeDate = props => {
     var minimumDate = new Date(d.setDate(diff));
 
     const onChange = (event, selectedDate) => {
-        
+
         const currentDate = selectedDate ? selectedDate : date;
         setDate(currentDate);
 

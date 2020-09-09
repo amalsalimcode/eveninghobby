@@ -75,7 +75,7 @@ const Search = props => {
 
 
     const executeSearch = () => {
-        console.log("here is search val", searchVal, "label val", selectedLabel, "start date", startDate, "end date", endDate, "categories", selectedCategory, "exact date", exactDate)
+        // console.log("here is search val", searchVal, "label val", selectedLabel, "start date", startDate, "end date", endDate, "categories", selectedCategory, "exact date", exactDate)
 
         // if no fields are pressed, then the button should give a pop up saying something needs to be filled
         if (!searchVal && !selectedLabel.length && !selectedCategory.length && !startDate && !endDate && !exactDate) {
@@ -88,7 +88,9 @@ const Search = props => {
     }
 
     const formatSetDate = (arg) => {
+
         let formattedDate = arg
+
         if (curDatePick == "start") {
             setStartDate(formattedDate)
             if (exactDate != null) {
@@ -147,7 +149,7 @@ const Search = props => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ height: "30%" }} />
+                    <View style={{ height: 0.2 * constants.windowHeight }} />
                     <View style={{ ...commonStyles.button, width: "50%", borderWidth: 1, borderColor: "grey" }}>
                         <TouchableOpacity style={{ width: 0.3 * constants.windowWidth }} onPress={executeSearch}>
                             <Text style={commonStyles.buttonText}>Find</Text>
