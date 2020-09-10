@@ -53,7 +53,7 @@ const SearchResults = props => {
                     bounces={false}
                     data={value}
                     renderItem={renderItem}
-                    keyExtractor={(item) => { return item["fileId"] }} />
+                    keyExtractor={(item) => { return item["fileuri"] }} />
                 <View style={{height:20}}/>
             </ GradientBackground >
         );

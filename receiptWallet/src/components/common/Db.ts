@@ -17,24 +17,34 @@ export const transactionError = (error) => {
 
 export const createTable = () => {
     db.transaction(tx => {
-        // tx.executeSql("DROP TABLE IF EXISTS receipt")
-        // tx.executeSql("DROP TABLE IF EXISTS category")
         tx.executeSql("CREATE TABLE IF NOT EXISTS category (type VARCHAR(100) PRIMARY KEY NOT NULL);", null, success, error);
         tx.executeSql("CREATE TABLE IF NOT EXISTS label (type VARCHAR(100) PRIMARY KEY NOT NULL);", null, success, error);
         tx.executeSql("INSERT OR IGNORE INTO label (type) values (?), (?), (?)", ["Taxes 2020", "Utah Road Trip"], null, success, error);
         tx.executeSql("INSERT OR IGNORE INTO category (type) values (?), (?), (?)", ["groceries", "dining", "gas"], null, success, error);
-        tx.executeSql("CREATE TABLE IF NOT EXISTS receipt (id integer PRIMARY KEY NOT NULL, amount FLOAT, store VARCHAR(200), memo TEXT, fileId VARCHAR(100), purchasedAt DATE, isdeleted BOOLEAN DEFAULT FALSE, uuid VARCHAR(100), category VARCHAR(100) DEFAULT NULL, FOREIGN KEY (category) REFERENCES category(type));", null, success, error);
-        tx.executeSql("CREATE TABLE IF NOT EXISTS ReceiptLabelRelation (id integer PRIMARY KEY NOT NULL, receiptid INTEGER DEFAULT NULL, label VARCHAR(100) DEFAULT NULL, FOREIGN KEY (receiptid) REFERENCES receipt(id), FOREIGN KEY (label) REFERENCES label(type));", null, success, error)
+        tx.executeSql("CREATE TABLE IF NOT EXISTS receipt (id integer PRIMARY KEY NOT NULL, amount FLOAT, store VARCHAR(200), memo TEXT, fileuri VARCHAR(200), fileId VARCHAR(100), purchasedAt DATE, isdeleted BOOLEAN DEFAULT FALSE, uuid VARCHAR(100), category VARCHAR(100) DEFAULT NULL, FOREIGN KEY (category) REFERENCES category(type));", null, success, error);
+        tx.executeSql("CREATE TABLE IF NOT EXISTS receiptlabelrelation (id integer PRIMARY KEY NOT NULL, receiptid INTEGER DEFAULT NULL, label VARCHAR(100) DEFAULT NULL, FOREIGN KEY (receiptid) REFERENCES receipt(id), FOREIGN KEY (label) REFERENCES label(type));", null, success, error)
     },
         null,
         () => { });
 }
 
-export function addReceiptDb(v: { amount: number, memo: String, store: String, purchasedAt: String, fileId: String, uuid: String, category: String }) {
+export const deleteAllTables = () => {
+    db.transaction(tx => {
+        tx.executeSql("DROP TABLE IF EXISTS receipt")
+        tx.executeSql("DROP TABLE IF EXISTS category")
+        tx.executeSql("DROP TABLE IF EXISTS label")
+        tx.executeSql("DROP TABLE IF EXISTS receiptlabelrelation")
+    },
+        null,
+        () => { });
+
+}
+
+export function addReceiptDb(v: { amount: number, memo: String, store: String, purchasedAt: String, fileuri: String, fileid: String, uuid: String, category: String }) {
     return new Promise((resolve, reject) => {
         db.transaction(
             tx => {
-                tx.executeSql("insert into receipt (amount, store, memo, fileId, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, DATE(?), ?, ?, ?)", [v.amount, v.store, v.memo, v.fileId, v.purchasedAt, 0, v.uuid, v.category],
+                tx.executeSql("insert into receipt (amount, store, memo, fileuri, fileid, purchasedAt, isdeleted, uuid, category) values (?, ?, ?, ?, ?, DATE(?), ?, ?, ?)", [v.amount, v.store, v.memo, v.fileuri, v.fileid, v.purchasedAt, 0, v.uuid, v.category],
                     (_, result) => { resolve(result["insertId"]) }, null);
             },
             null,
@@ -98,7 +108,7 @@ export function ReadLabelTypesAsync() {
         db.transaction(
             tx => {
                 tx.executeSql("SELECT type FROM label", [], (_, { rows }) => {
-                    let x = getLabelTypesResult(rows["_array"])
+                    let x = getResultFromKey(rows["_array"], "type")
                     resolve(x)
                 }, null);
             },
@@ -112,10 +122,11 @@ export function ReadCategoryTypesAsync() {
     return new Promise((resolve, _) => {
         db.transaction(
             tx => {
-                tx.executeSql("SELECT type FROM category", [], (_, { rows }) => {
-                    let x = getLabelTypesResult(rows["_array"])
-                    resolve(x)
-                }, null);
+                tx.executeSql("SELECT type FROM category", [],
+                    (_, { rows }) => {
+                        let x = getResultFromKey(rows["_array"], "type")
+                        resolve(x)
+                    }, null);
             },
             null,
             () => { }
@@ -143,10 +154,10 @@ export const AddNewCategoryType = (arg) => {
     );
 }
 
-const getLabelTypesResult = (output) => {
+const getResultFromKey = (output, valueKey) => {
     let values = []
     for (var key in output) {
-        values.push(output[key]["type"])
+        values.push(output[key][valueKey])
     }
     return values
 }
@@ -156,6 +167,24 @@ const filterSetResult = (output, setResult, column) => {
         values.push(output[key][column])
     }
     setResult(values)
+}
+
+export function getReceiptFileIdFromUUID(uuid) {
+    return new Promise((resolve, reject) => {
+        var arg = ""
+        uuid.forEach((_, index) => { index != uuid.length - 1 ? arg += "?, " : arg += "?" });
+        db.transaction(
+            tx => {
+                tx.executeSql("select fileid from receipt where uuid in (" + arg + ")", uuid,
+                    (_, { rows }) => {
+                        let x = getResultFromKey(rows["_array"], "fileId")
+                        resolve(x)
+                    }, null);
+            },
+            null,
+            () => { }
+        );
+    })
 }
 
 export const deleteReceiptDb = (uuid) => {

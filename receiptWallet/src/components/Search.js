@@ -22,7 +22,7 @@ const SearchBar = props => {
     }, []);
 
     return (
-        <View style={{ ...commonStyles.inputView, flexDirection: "row", paddingLeft: 15, borderColor: "red", borderWidth: 0.2, marginTop: 50 }} >
+        <View style={{ ...commonStyles.inputView, flexDirection: "row", paddingLeft: 15, borderWidth: 0.2, marginTop: 50 }} >
             <View style={{ marginRight: 10, marginTop: 12 }}>
                 <AntDesign name="search1" size={24} color="black" />
             </View>

@@ -10,13 +10,16 @@ import ReceiptsBottomToolbar from "./ReceiptsBottomToolbar";
 import GradientBackground from "./common/GradientBackground";
 import { theme } from "./common/styles";
 import SingleReceipt from "./SingleReceipt";
-import { createTable, ReadReceipt } from "./common/Db";
-import { createImgDir } from "./common/FileSystem";
+import { createTable, ReadReceipt, deleteAllTables } from "./common/Db";
+import { createImgDir, deleteAllPhotos } from "./common/FileSystem";
 
 
 const Receipts = props => {
 
     useEffect(() => {
+        deleteAllTables()
+        deleteAllPhotos()
+
         createImgDir()
         createTable()
         ReadReceipt(props.setReceipt)
@@ -56,7 +59,7 @@ const Receipts = props => {
                         bounces={false}
                         data={props.allReceipts}
                         renderItem={renderItem}
-                        keyExtractor={(item) => {return item["fileId"]}} />
+                        keyExtractor={(item) => {return item["fileuri"]}} />
                 </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />
             </ GradientBackground >

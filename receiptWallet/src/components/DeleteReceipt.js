@@ -2,15 +2,16 @@ import { connect } from "react-redux";
 import React, { useEffect, } from "react";
 import { View, Button } from "react-native";
 
-import { deleteReceiptDb } from "./common/Db";
+import { deleteReceiptDb, getReceiptFileIdFromUUID } from "./common/Db";
 import { deleteReceipt } from "./common/Backend";
 import GradientBackground from "./common/GradientBackground";
 import { theme, commonStyles } from "./common/styles";
 import { Text } from "native-base";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { deletePhotoFromAlbum } from "./common/FileSystem";
 
 
-function getKeyByValue(object) {
+function getObjectKeyIfTrue(object) {
     let selectKeys = []
     for (var key in object) {
         if (object[key]) {
@@ -25,8 +26,12 @@ const DeleteReceipt = props => {
     useEffect(() => {
     }, []);
 
-    function deletePhoto() {
-        let uuid = getKeyByValue(props.selectedItems)
+    async function deletePhoto() {
+        console.log("here is selecteditems", props.selectedItems)
+        let uuid = getObjectKeyIfTrue(props.selectedItems)
+        let fileId = await getReceiptFileIdFromUUID(uuid)
+        console.log("here is the fileId", fileId)
+        deletePhotoFromAlbum(fileId)
         deleteReceiptDb(uuid)
         deleteReceipt(Object.keys(props.selectedItems))
         props.deleteReceiptSelected()

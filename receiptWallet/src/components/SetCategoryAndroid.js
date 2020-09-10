@@ -69,7 +69,6 @@ const SetCategoryAndroid = props => {
     }
 
     useEffect(() => {
-        console.log("oh `oh oh ")
         getCategoryResponse()
 
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);

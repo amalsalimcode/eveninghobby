@@ -41,7 +41,7 @@ const SingleReceipt = props => {
                 props.decSelectCount(props.value["uuid"])
             }
         } else {
-            props.navigation.navigate('ReceiptView', { 'fileId': props.value["fileId"], 'value': props.value })
+            props.navigation.navigate('ReceiptView', { 'fileuri': props.value["fileuri"], 'value': props.value })
         }
     }
 
@@ -99,7 +99,7 @@ const SingleReceipt = props => {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <View style={{ flexDirection: "row", alignItems: "center", height: 60, width: "80%" }}>
                         {showImage ?
-                            <Image style={{ borderRadius: 2, height: 55, width: 40, marginLeft: 5, marginVertical: 1, resizeMode: "contain" }} source={{ uri: props.value["fileId"] }} onError={() => { setShowImage(false) }} />
+                            <Image style={{ borderRadius: 2, height: 55, width: 40, marginLeft: 5, marginVertical: 1, resizeMode: "contain" }} source={{ uri: props.value["fileuri"] }} onError={() => { setShowImage(false) }} />
                             : <></>}
                         <View style={{ justifyContent: "center" }}>
                             {props.value["store"] ? <Text style={{ marginLeft: 10 }}>{props.value["store"]}</Text> : <></>}

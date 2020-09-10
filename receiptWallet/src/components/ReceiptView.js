@@ -47,21 +47,21 @@ const ReceiptView = props => {
             return (
                 <ScrollView minimumZoomScale={1} maximumZoomScale={5} contentContainerStyle={{ backgroundColor: "black" }}>
                     <Image resizeMode="contain" style={{ width: constants.windowWidth, height: availableHeight, backgroundColor: "black" }}
-                        source={{ uri: props.route.params["fileId"] }} />
+                        source={{ uri: props.route.params["fileuri"] }} />
                 </ScrollView>)
         } else {
             return (
                 <ImageZoom cropWidth={Dimensions.get('window').width} cropHeight={imgDimension.height}
                     imageWidth={imgDimension.width} imageHeight={imgDimension.height} style={{ backgroundColor: "black" }}>
                     <Image resizeMode="contain" style={{ width: imgDimension.width, height: imgDimension.height}}
-                        source={{ uri: props.route.params["fileId"]}} />
+                        source={{ uri: props.route.params["fileuri"]}} />
                 </ImageZoom>
             )
         }
     }
 
     if (!imgDimension["height"]) {
-        Image.getSize(props.route.params["fileId"], (width, height) => { setImgDimensionFunc(width, height) }, error);
+        Image.getSize(props.route.params["fileuri"], (width, height) => { setImgDimensionFunc(width, height) }, error);
         return (
             <>
                 <View style={{ justifyContent: "center", alignContent: "center" }}>

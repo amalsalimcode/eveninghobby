@@ -13,9 +13,17 @@ export const createImgDir = () => {
 }
 
 export async function saveImgToDir(uri) {
-    let fileId = uri.split('/').pop();
-    let newUri = constants.rootDir + "/" + fileId
+    let fileuri = uri.split('/').pop();
+    let newUri = constants.rootDir + "/" + fileuri
     await FileSystem.copyAsync({ "from": uri, "to": newUri }).then(() => { })
+}
+
+export async function deleteAllPhotos() {
+    let album = await MediaLibrary.getAlbumAsync("receiptWallet")
+    if (!album) {
+        return null
+    }
+    MediaLibrary.deleteAlbumsAsync([album], true)
 }
 
 export async function RetrieveImageBatch(startId) {
@@ -24,7 +32,6 @@ export async function RetrieveImageBatch(startId) {
     if (!album) {
         return null
     }
-    // MediaLibrary.deleteAlbumsAsync([album], true)
 
     let options = { "first": 20, "album": album, "sortBy": ["creationTime"] }
     if (startId) {
@@ -40,8 +47,12 @@ export async function addPhotoToAlbum(uri) {
     if (!album) {
         MediaLibrary.createAlbumAsync("receiptWallet", asset)
     } else {
-        MediaLibrary.addAssetsToAlbumAsync([asset], album, false)
+        MediaLibrary.addAssetsToAlbumAsync([asset], album, true)
     }
 
     return asset
+}
+
+export async function deletePhotoFromAlbum(fileId) {
+    MediaLibrary.deleteAssetsAsync(fileId)
 }

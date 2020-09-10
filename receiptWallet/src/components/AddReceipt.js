@@ -52,7 +52,8 @@ const AddReceipt = props => {
         let receiptDetails = {
             amount: amount, memo: memo, store: store, uuid: uuidv4(), category: category,
             purchasedAt: getSQLformattedDate(selectedDate),
-            fileId: asset["uri"]
+            fileuri: asset["uri"],
+            fileid: asset["id"]
         }
 
         let receiptId = await addReceiptDb(receiptDetails)
