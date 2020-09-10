@@ -17,8 +17,8 @@ import { createImgDir, deleteAllPhotos } from "./common/FileSystem";
 const Receipts = props => {
 
     useEffect(() => {
-        deleteAllTables()
-        deleteAllPhotos()
+        // deleteAllTables()
+        // deleteAllPhotos()
 
         createImgDir()
         createTable()

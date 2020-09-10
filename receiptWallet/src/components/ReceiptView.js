@@ -25,15 +25,18 @@ const ReceiptView = props => {
     }
 
     const setImgDimensionFunc = (width, height) => {
-        if (imgDimension["height"] < availableHeight) {
-            imageHeight = imgDimension["height"] * constants.windowWidth / imgDimension["width"]
-        }
 
         let imageWidth = 0
-        if (imgDimension["width"] < constants.windowWidth) {
+        if (width < constants.windowWidth) {
             imageWidth = constants.windowWidth + 10
         } else {
             imageWidth = constants.windowWidth
+        }
+
+        if (height < availableHeight) {
+            imageHeight = height * constants.windowWidth / width
+        } else {
+            imageHeight = availableHeight
         }
 
         setImgDimension({ "height": imageHeight, "width": imageWidth })
