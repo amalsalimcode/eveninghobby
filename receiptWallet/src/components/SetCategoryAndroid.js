@@ -31,6 +31,8 @@ const getModalHeight = (resultLength) => {
     return resultHeight
 }
 
+
+
 const SetCategoryAndroid = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [keyboardOffset, setKeyboardOffset] = useState(0);
@@ -67,9 +69,8 @@ const SetCategoryAndroid = props => {
     }
 
     useEffect(() => {
-        if (!dbResult.length) {
-            getCategoryResponse()
-        }
+        console.log("oh `oh oh ")
+        getCategoryResponse()
 
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);

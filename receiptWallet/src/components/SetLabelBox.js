@@ -50,7 +50,7 @@ const SetLabelBox = props => {
                     </TouchableWithoutFeedback>
                 </ScrollView>
             </TouchableWithoutFeedback>
-            <LabelModal allowNewEntry={true} donePressed={donePressed} selectedTrueLabel={props.selectedTrueLabel} modalVisible={modalVisible} />
+            <LabelModal allowNewEntry={true} donePressed={donePressed} selectedTrueLabel={props.selectedTrueLabel} modalVisible={modalVisible} {...props}/>
         </>
     )
 

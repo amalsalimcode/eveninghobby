@@ -4,7 +4,7 @@ import { getSQLformattedDate } from './constants';
 export const db = SQLite.openDatabase("db.db");
 
 export const success = (_, result) => {
-    console.log("SQL Success", result)
+    // console.log("SQL Success", result)
 }
 
 export const error = (tx, result) => {
@@ -44,11 +44,9 @@ export function addReceiptDb(v: { amount: number, memo: String, store: String, p
 }
 
 export const updateReceiptDb = (v: { amount: number, memo: String, store: String, purchasedAt: String, category: String }, receiptId) => {
-    console.log("args", v)
-    console.log("receiptId", receiptId)
     db.transaction(
         tx => {
-            tx.executeSql("UPDATE receipt SET amount=?, memo=?, store=?, purchasedAt=?, category=? WHERE id=?", [v.amount, v.memo, v.store, v.purchasedAt, v.category, receiptId], (error, { rows }) => { console.log(rows) });
+            tx.executeSql("UPDATE receipt SET amount=?, memo=?, store=?, purchasedAt=?, category=? WHERE id=?", [v.amount, v.memo, v.store, v.purchasedAt, v.category, receiptId], (error, { rows }) => { });
         },
         null,
         null
@@ -56,12 +54,11 @@ export const updateReceiptDb = (v: { amount: number, memo: String, store: String
 }
 
 export const ReadReceipt = (setResult) => {
-    console.log("going to read receipts")
     db.transaction(
         tx => {
             tx.executeSql("SELECT * FROM receipt WHERE isdeleted=0 ORDER BY purchasedAt DESC, id DESC", [], (error, { rows }) => { setResult(rows["_array"]) });
         },
-        (e) => {console.log("error found", e)},
+        (e) => { console.log("error found", e) },
         null
     );
 }
@@ -203,6 +200,19 @@ export const deleteReceiptLabelRelationDb = (label, id) => {
     return
 }
 
+export const deleteLabel = (label) => {
+    var arg = ""
+    label.forEach((_, index) => { index != label.length - 1 ? arg += "?, " : arg += "?" });
+    db.transaction(
+        tx => {
+            tx.executeSql("DELETE from label where type in (" + arg + ")", label, success, error);
+        },
+        null,
+        null
+    );
+    return
+}
+
 export const filterReceiptExactDate = (searchVal) => {
     db.transaction(
         tx => {
@@ -234,7 +244,7 @@ export const buildSearchQuery = (searchVal, selectedLabel, selectedCategory, sta
     }
 
     if (exactDate) {
-        exactDate.setDate(exactDate.getDate() + 1) 
+        exactDate.setDate(exactDate.getDate() + 1)
         let exactDateFmt = getSQLformattedDate(exactDate)
         query += `${curPrefix} purchasedAt=DATE('${exactDateFmt}')`
         curPrefix = " AND"
@@ -268,10 +278,9 @@ export const buildSearchQuery = (searchVal, selectedLabel, selectedCategory, sta
 }
 
 export const executeQuery = (query, setResult) => {
-    console.log("going to execute query", query)
     db.transaction(
         tx => {
-            tx.executeSql(query, [], (error, { rows }) => { console.log("here is query result", rows); setResult(rows["_array"]) });
+            tx.executeSql(query, [], (error, { rows }) => { setResult(rows["_array"]) });
         },
         null,
         null

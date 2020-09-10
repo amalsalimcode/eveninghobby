@@ -27,7 +27,7 @@ const SearchBar = props => {
                 <AntDesign name="search1" size={24} color="black" />
             </View>
             <TextInput style={{ ...commonStyles.inputText, flex: 1 }} placeholder="Search" placeholderTextColor={theme.placeholderText} onChangeText={(e) => { setValue(e); props.setSearchVal(e) }}
-                value={value} autoCorrect={false} autoCapitalize='none' autoFocus={false} onBlur={() => { console.log(value) }} />
+                value={value} autoCorrect={false} autoCapitalize='none' autoFocus={false} onBlur={() => {  }} />
         </View>
     )
 }
@@ -55,7 +55,6 @@ const Search = props => {
     const donePressed = (labelsSetTrue) => {
         setModalVisible(!modalVisible)
         setSelectedLabel(labelsSetTrue)
-        console.log("chosen labels", labelsSetTrue)
         if (labelsSetTrue.length == 1) {
             setLabelValue(labelsSetTrue.length + " Label Chosen")
         } else {
@@ -75,11 +74,8 @@ const Search = props => {
 
 
     const executeSearch = () => {
-        // console.log("here is search val", searchVal, "label val", selectedLabel, "start date", startDate, "end date", endDate, "categories", selectedCategory, "exact date", exactDate)
-
         // if no fields are pressed, then the button should give a pop up saying something needs to be filled
         if (!searchVal && !selectedLabel.length && !selectedCategory.length && !startDate && !endDate && !exactDate) {
-            console.log("no search val entered")
             return
         }
 
@@ -159,8 +155,8 @@ const Search = props => {
                 </View>
             </ GradientBackground>
             <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} setDate={formatSetDate} />
-            <LabelModal type={"label"} donePressed={donePressed} selectedTrueLabel={selectedLabel} modalVisible={modalVisible} />
-            <LabelModal type={"category"} donePressed={donePressedCategory} selectedTrueLabel={selectedCategory} modalVisible={modalCategoryVisible} />
+            <LabelModal type={"label"} donePressed={donePressed} selectedTrueLabel={selectedLabel} modalVisible={modalVisible} allowDelete={true} />
+            <LabelModal type={"category"} donePressed={donePressedCategory} selectedTrueLabel={selectedCategory} modalVisible={modalCategoryVisible} allowDelete={true}/>
         </>
     )
 

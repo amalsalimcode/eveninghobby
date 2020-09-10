@@ -13,7 +13,7 @@ import constants from "./common/constants";
 import SingleLabel from "./SingleLabel";
 import NewEntry from "./NewLabel";
 import { commonStyles } from './common/styles';
-import { ReadLabelTypesAsync, ReadCategoryTypesAsync } from './common/Db';
+import { ReadLabelTypesAsync, ReadCategoryTypesAsync, deleteLabel } from './common/Db';
 import { AddNewLabelType } from "./common/Db";
 
 const getModalOffset = (resultLength) => {
@@ -21,20 +21,24 @@ const getModalOffset = (resultLength) => {
     if (height < constants.windowHeight * 0.15) {
         height = constants.windowHeight * 0.15
     }
+    console.log("calculated modal offset")
     return height
 }
 
-const getModalHeight = (resultLength, allowNewEntry) => {
-    let maxHeight = constants.windowHeight * 0.60
-    let allowedHeight = (resultLength * 60)
-    if (allowNewEntry) {
-        let offset = resultLength < 6 ? 60 : 30
-        allowedHeight += offset
+const getModalHeight = (resultLength) => {
+    let heightMap = { 1: 50, 2: 100, 3: 155, 4: 210, 5: 260, 6: 315, 7: 370, 8: 390, 9: 450 }
+    let height = 0
+    if (!(resultLength in Object.keys(heightMap))) {
+        height = 450
     } else {
-        allowedHeight -= 20
+        height = heightMap[resultLength]
     }
-    let resultHeight = allowedHeight > maxHeight ? maxHeight : allowedHeight
-    return resultHeight
+
+    if (height > constants.windowHeight * 0.5) {
+        return constants.windowHeight * 0.5
+    } else {
+        return height
+    }
 }
 
 const getInitialLabel = (arg) => {
@@ -53,6 +57,14 @@ const LabelModal = props => {
     const [modalHeight, setModalHeight] = useState(200)
     const [modalOffset, setModalOffset] = useState(200)
 
+    const [action, setAction] = useState("done")
+
+    function convertAction() {
+        if (props.allowDelete) {
+            action == "done" ? setAction("delete") : setAction("done")
+        }
+    }
+
     function toggleCheckbox(title, value) {
         /* handler single label press */
         selectedLabel[title] = value
@@ -70,7 +82,7 @@ const LabelModal = props => {
         // add new entry to frontend
         dbResult.splice(dbResult.length - 2, 0, arg);
         setDbResult(dbResult)
-        setModalHeight(getModalHeight(dbResult.length, props.allowNewEntry))
+        setModalHeight(getModalHeight(dbResult.length))
         setModalOffset(getModalOffset(dbResult.length))
 
         AddNewLabelType(arg)
@@ -90,7 +102,7 @@ const LabelModal = props => {
             x.push("newentrydeadbeef")
         }
         setDbResult(x)
-        setModalHeight(getModalHeight(x.length, props.allowNewEntry))
+        setModalHeight(getModalHeight(x.length))
         setModalOffset(getModalOffset(x.length))
     }
 
@@ -100,9 +112,7 @@ const LabelModal = props => {
     }
 
     useEffect(() => {
-        if (!dbResult.length) {
-            getLabelResponse()
-        }
+        getLabelResponse()
 
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
@@ -123,13 +133,25 @@ const LabelModal = props => {
 
     const handleDone = () => {
         var labelsSetTrue = []
-        console.log("these are the selected labels", selectedLabel)
         for (var key in selectedLabel) {
             if (selectedLabel[key]) {
                 labelsSetTrue.push(key)
             }
         }
-        props.donePressed(labelsSetTrue)
+
+        if (action == "delete") {
+            deleteLabel(labelsSetTrue)
+            let nonDeletedLabel = dbResult.filter(val => !labelsSetTrue.includes(val));
+            setDbResult(nonDeletedLabel)
+            setAction("done")
+        } else {
+            props.donePressed(labelsSetTrue)
+        }
+
+    }
+
+    const onDelete = () => {
+        console.log("on delete called")
     }
 
     const renderItem = ({ item, index }) => {
@@ -137,7 +159,7 @@ const LabelModal = props => {
             return (<NewEntry setNewLabel={handleNewLabel} />)
         } else {
             let enabled = props.selectedTrueLabel.includes(item) ? true : false
-            return (<SingleLabel title={item} toggleCheckbox={toggleCheckbox} enabled={enabled} />)
+            return (<SingleLabel title={item} toggleCheckbox={toggleCheckbox} enabled={enabled} callback={onDelete} longPress={convertAction} />)
         }
     }
 
@@ -153,9 +175,15 @@ const LabelModal = props => {
                                 renderItem={renderItem}
                                 keyExtractor={(item) => { return item }} />
                         </View>
-                        <TouchableHighlight style={{ ...commonStyles.button, marginVertical: 20, width: 100 }} onPress={handleDone}>
-                            <Text style={commonStyles.buttonText}>Done</Text>
-                        </TouchableHighlight>
+                        {action == "done" ?
+                            <TouchableHighlight style={{ ...commonStyles.button, marginVertical: 20, width: 100 }} onPress={handleDone}>
+                                <Text style={commonStyles.buttonText}>Done</Text>
+                            </TouchableHighlight>
+                            :
+                            <TouchableHighlight style={{ ...commonStyles.button, marginVertical: 20, width: 100, backgroundColor: "red" }} onPress={handleDone}>
+                                <Text style={commonStyles.buttonText}>Delete</Text>
+                            </TouchableHighlight>
+                        }
                     </View>
                 </View>
             </Modal >

@@ -4,6 +4,10 @@ import { View, Button } from "react-native";
 
 import { deleteReceiptDb } from "./common/Db";
 import { deleteReceipt } from "./common/Backend";
+import GradientBackground from "./common/GradientBackground";
+import { theme, commonStyles } from "./common/styles";
+import { Text } from "native-base";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 function getKeyByValue(object) {
@@ -30,10 +34,26 @@ const DeleteReceipt = props => {
         props.navigation.navigate("Receipts")
     }
 
+
+    let deleteCount = Object.keys(props.selectedItems).length
     return (
-        <View style={{ justifyContent: "center", flex: 1, alignItems: "center" }}>
-            <Button title="Press to Confirm" onPress={deletePhoto} />
-        </View>
+        < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+            <View style={{ justifyContent: "center", flex: 1, alignItems: "center" }}>
+                <Text>Delete {deleteCount} receipt{deleteCount > 1 ? "s" : ""}</Text>
+                <View style={{ flexDirection: "row", marginTop: 50 }}>
+                    <View style={{ ...commonStyles.button, borderWidth: 1, borderColor: "grey", marginRight: 50 }}>
+                        <TouchableOpacity style={{ width: 100 }} onPress={() => { props.navigation.goBack() }}>
+                            <Text style={commonStyles.buttonText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ ...commonStyles.button, borderWidth: 1, borderColor: "grey" }}>
+                        <TouchableOpacity style={{ width: 100 }} onPress={deletePhoto}>
+                            <Text style={commonStyles.buttonText}>Confirm</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </ GradientBackground>
     );
 }
 

@@ -59,7 +59,6 @@ const ReceiptDetailsView = props => {
 
 
     useEffect(() => {
-        console.log("use Effect called!")
         ReadRLRFromReceipt(dbLabelResponseHandler, props.data["id"])
     }, []);
 
@@ -74,8 +73,6 @@ const ReceiptDetailsView = props => {
         newChanges.purchasedAt = getSQLformattedDate(selectedDate)
         updateReceiptDb(newChanges, props.data["id"])
         props.updateSingleReceipt(newChanges, props.data["index"])
-
-        console.log("here is initial", initialDbLabel, "here are latter", dbLabel)
 
         let addedLabel = dbLabel.filter(x => !initialDbLabel.includes(x));
         if (addedLabel.length) {

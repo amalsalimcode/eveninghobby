@@ -34,7 +34,7 @@ const SetLabelText = props => {
                     <Text style={{ color: getColor(value, "Label") }}>{value}</Text>
                 </TouchableWithoutFeedback>
             </View>
-            <LabelModal allowNewEntry={true} donePressed={donePressed} selectedTrueLabel={props.selectedTrueLabel} modalVisible={modalVisible}/>
+            <LabelModal allowNewEntry={true} donePressed={donePressed} selectedTrueLabel={props.selectedTrueLabel} modalVisible={modalVisible} {...props}/>
         </>
     );
 };

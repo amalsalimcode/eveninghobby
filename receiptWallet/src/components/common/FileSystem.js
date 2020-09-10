@@ -3,7 +3,6 @@ import constants from "./constants"
 import * as MediaLibrary from 'expo-media-library';
 
 export const createImgDir = () => {
-    console.log("Location of File System", FileSystem.documentDirectory)
     FileSystem.getInfoAsync(constants.rootDir).then(
         tmp => {
             if (!tmp.exists) {

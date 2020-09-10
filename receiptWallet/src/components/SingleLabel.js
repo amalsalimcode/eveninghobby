@@ -18,11 +18,10 @@ const SingleLabel = props => {
     const checkBoxPressed = () => {
         props.toggleCheckbox(props.title, !isChecked)
         setIsChecked(!isChecked)
-
     }
 
     return (
-        <TouchableOpacity style={commonStyles.singleEntryoutline} onPress={checkBoxPressed} onLongPress={() => { }}>
+        <TouchableOpacity style={commonStyles.singleEntryoutline} onPress={checkBoxPressed} onLongPress={() => {checkBoxPressed(); props.longPress()}}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginRight: 15 }}> 
                 <CheckBox style={{ flex: 1 }} onClick={checkBoxPressed} isChecked={isChecked} leftText={props.title}/>
             </View >
