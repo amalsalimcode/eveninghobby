@@ -1,7 +1,7 @@
 import pytest
 
 # from src import server as flask_app
-from src.app import server as flask_app
+from app import server as flask_app
 
 
 print("here is the flask_app", flask_app)

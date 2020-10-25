@@ -2,7 +2,7 @@
 FROM python:3.8
 
 # set the working directory in the container
-WORKDIR /src
+WORKDIR /app
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
@@ -13,8 +13,5 @@ RUN pip install -r requirements.txt
 # copy the content of the local src directory to the working directory
 COPY src/ .
 
-CMD [ "export", "FLASK_APP", "src/app.py" ]
-
 # command to run on container start
-CMD [ "python", "-m", "flask", "run" ]
-
+CMD [ "python", "-u", "./app.py" ]

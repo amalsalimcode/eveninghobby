@@ -1,10 +1,10 @@
-from src import db
+import db
 
 from flask import Flask, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
-from src.common import gen_jwt_token, verify_user
+from forms.forms import RegistrationForm, LoginForm, ResetPasswordForm
+from common import gen_jwt_token, verify_user
 from flask_wtf.csrf import CSRFProtect
-from src.forms.forms import RegistrationForm, LoginForm, ResetPasswordForm
 
 import json
 
@@ -19,7 +19,6 @@ def user_list():
 @server.route("/register", methods=['POST', 'GET'])
 def register():
     f = RegistrationForm(request.form)
-
     if request.method == "POST" and f.validate_on_submit():
         return register_user(f.username.data, f.password.data)
     else:
@@ -27,6 +26,7 @@ def register():
 
 
 def register_user(username, password):
+    """helper function to register a user"""
     if db.user_exists(username):
         return "User already exists", 400
 
@@ -34,13 +34,6 @@ def register_user(username, password):
     db.create_user(username, hashed_pass)
     return "User Created", 200
 
-
-# multiple users with same username
-# all functions need a decorator that handles general logging and exceptions
-# should you send password over internet
-# open api
-# use react and decoupled files for frontend
-# user getting locked after retries
 
 @server.route('/login', methods=['POST', 'GET'])
 def login():
@@ -52,6 +45,7 @@ def login():
 
 
 def login_user(username, password):
+    """helper function to login a user"""
     if verify_user(username, password):
         token = gen_jwt_token()
         return jsonify({'token': token}), 200
@@ -71,6 +65,7 @@ def resetpassword():
 
 
 def reset_passwd(username, o_passwd, n_passwd):
+    """helper function to reset password"""
     if not verify_user(username, o_passwd):
         return jsonify({'error': 'User or password are incorrect'}), 401
 
