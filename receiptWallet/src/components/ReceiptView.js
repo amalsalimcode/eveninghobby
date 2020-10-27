@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { View, Dimensions, Text, ActivityIndicator, Image } from "react-native";
+import { View, Dimensions, Text, ActivityIndicator, Image, KeyboardAvoidingView } from "react-native";
 import { ScrollView, TouchableWithoutFeedback, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 
 import ImageZoom from "react-native-image-pan-zoom";
@@ -56,8 +56,8 @@ const ReceiptView = props => {
             return (
                 <ImageZoom cropWidth={Dimensions.get('window').width} cropHeight={imgDimension.height}
                     imageWidth={imgDimension.width} imageHeight={imgDimension.height} style={{ backgroundColor: "black" }}>
-                    <Image resizeMode="contain" style={{ width: imgDimension.width, height: imgDimension.height}}
-                        source={{ uri: props.route.params["fileuri"]}} />
+                    <Image resizeMode="contain" style={{ width: imgDimension.width, height: imgDimension.height }}
+                        source={{ uri: props.route.params["fileuri"] }} />
                 </ImageZoom>
             )
         }
@@ -76,14 +76,17 @@ const ReceiptView = props => {
     } else {
         return (
             <>
-                <TopToolbar {...props} goBack={props.navigation.goBack} />
-                <ScrollView scrollEnabled={false} horizontal={true} ref={(node) => setViewScroller(node)} >
-                    <View style={{ flex: 1, height: availableHeight, justifyContent: "center", width: constants.windowWidth, backgroundColor: "black" }}>
-                        {getImage()}
-                    </View>
-                    <ReceiptDetailsView data={props.route.params["value"]} {...props} />
-                </ScrollView>
-                <ReceiptViewBottomToolbar scroller={viewScroller} />
+                <KeyboardAvoidingView style={{ flex: 1, height: availableHeight, width: constants.windowWidth }}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"} enabled={false}>
+                    <TopToolbar {...props} goBack={props.navigation.goBack} />
+                    <ScrollView scrollEnabled={false} horizontal={true} ref={(node) => setViewScroller(node)} >
+                        <View style={{ flex: 1, height: availableHeight, justifyContent: "center", width: constants.windowWidth, backgroundColor: "black" }}>
+                            {getImage()}
+                        </View>
+                        <ReceiptDetailsView data={props.route.params["value"]} {...props} />
+                    </ScrollView>
+                    <ReceiptViewBottomToolbar scroller={viewScroller} />
+                </KeyboardAvoidingView>
             </>
         );
     }

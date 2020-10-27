@@ -72,7 +72,7 @@ const ReceiptsBottomToolbar = props => {
                             </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => { getPermission(); props.navigation.navigate('CaptureReceipt') }} style={{ width: 60 }}>
+                        <TouchableOpacity onPress={() => { props.navigation.navigate('CaptureReceipt') }} style={{ width: 60 }}>
                             <View style={{ alignItems: "center" }}>
                                 <Feather name="camera" size={24} color="black" />
                                 <Text style={{ fontSize: 8 }}>Capture</Text>

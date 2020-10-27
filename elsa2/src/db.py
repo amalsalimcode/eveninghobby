@@ -6,10 +6,28 @@ def get_db(read=False):
         con.row_factory = sql.Row
     return con.cursor(), con
 
-def create_credentials_table():
+def init_table():
     cur, con = get_db(True)
-    con.execute('CREATE TABLE IF NOT EXISTS credentials (USERNAME varchar(255), PASSWORD varchar(255))')
+    con.execute('CREATE TABLE IF NOT EXISTS alarm '
+                '(type varchar(100),'
+                'time DATETIME,'
+                'lat TEXT,'
+                'long TEXT)')
+
+    con.execute('CREATE TABLE IF NOT EXISTS video_file'
+                '(id integer PRIMARY KEY NOT NULL,'
+                'file_name VARCHAR(100),'
+                'alarm_id INTEGER,'
+                'location varchar(255),'
+                'FOREIGN KEY (alarm_id) REFERENCES alarm(id))')
+
     con.close()
+
+
+def create_alarm():
+    cur, con = get_db(True)
+    con.execute('INSERT INTO alarm ()')
+
 
 def get_users_all():
     cur, con = get_db(True)
@@ -18,15 +36,15 @@ def get_users_all():
     user_lst = [[x[0], x[1]] for x in rows] if len(rows) else []
     return user_lst
 
-def user_exists(username):
+def user_exists(imei):
     cur, con = get_db()
-    exists = cur.execute("SELECT 1 FROM credentials WHERE username = (?)", [username]).fetchall()
+    exists = cur.execute("SELECT 1 FROM credentials WHERE imei = (?)", [imei]).fetchall()
     con.close()
     return bool(len(exists))
 
-def create_user(username, hashed_pass):
+def create_user(imei, hashed_imei):
     cur, con = get_db()
-    cur.execute("INSERT INTO credentials (username, password) VALUES (?, ?)", [username, hashed_pass])
+    cur.execute("INSERT INTO credentials (imei, password) VALUES (?, ?)", [imei, hashed_imei])
     con.commit()
     con.close()
 

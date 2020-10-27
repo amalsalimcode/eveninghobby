@@ -16,7 +16,7 @@ import { TextInputMask } from 'react-native-masked-text'
 import GradientBackground from "./common/GradientBackground"
 import constants, { getTopToolbarHeight, getFormattedDate, uuidv4, checkPrependZero, getSQLformattedDate } from "./common/constants"
 import SetLabelText from "./SetLabelText";
-
+import * as Permissions from 'expo-permissions';
 
 
 const AddReceipt = props => {
@@ -25,10 +25,11 @@ const AddReceipt = props => {
     const [store, setStore] = useState('');
     const [memo, setMemo] = useState('');
 
+    const [label, setLabel] = useState([]);
+    const [category, setCategory] = useState('');
+    const [hasPermission, setHasPermission] = useState(null);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [category, setCategory] = useState('');
-    const [label, setLabel] = useState([]);
 
     const photo = props.route.params
     const imageWidth = photo["width"]
@@ -40,11 +41,18 @@ const AddReceipt = props => {
     const formHeight = constants.windowHeight - imageHeight - getTopToolbarHeight() - 50 // 50 is form Margin
 
     useEffect(() => {
+        (async () => {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            console.log("received permission", status)
+            setHasPermission(status === "granted");
+        })()
     }, []);
 
     async function savePicture() {
 
         let asset = await addPhotoToAlbum(photo["uri"])
+
+        console.log("here is the asset", asset)
 
         // sql doesn't store time. It only stores date.
         // hence js subtracts one day by if its exact midnight
@@ -83,6 +91,10 @@ const AddReceipt = props => {
     }
 
     const textInputStyle = { ...commonStyles.textInput }
+
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
 
     return (
         <>

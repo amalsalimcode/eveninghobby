@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import constants from "./constants"
 import * as MediaLibrary from 'expo-media-library';
+import { Platform } from 'react-native';
 
 export const createImgDir = () => {
     FileSystem.getInfoAsync(constants.rootDir).then(
@@ -54,5 +55,14 @@ export async function addPhotoToAlbum(uri) {
 }
 
 export async function deletePhotoFromAlbum(fileId) {
-    MediaLibrary.deleteAssetsAsync(fileId)
+    if (Platform.OS == "ios") {
+        MediaLibrary.deleteAssetsAsync(fileId)
+        return
+    }
+    let album = await MediaLibrary.getAlbumAsync("receiptWallet")
+    for (let idx = 0; idx < fileId.length; idx++) {
+        let x = await MediaLibrary.getAssetInfoAsync(fileId[idx].toString())
+        MediaLibrary.removeAssetsFromAlbumAsync(x, album)
+        MediaLibrary.deleteAssetsAsync(fileId[idx])
+    }
 }

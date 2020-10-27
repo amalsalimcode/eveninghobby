@@ -28,7 +28,7 @@ def register():
 def register_user(username, password):
     """helper function to register a user"""
     if db.user_exists(username):
-        return "User already exists", 400
+        return "User already exists", 409
 
     hashed_pass = generate_password_hash(password)
     db.create_user(username, hashed_pass)

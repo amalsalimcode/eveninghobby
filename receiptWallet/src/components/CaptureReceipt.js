@@ -17,12 +17,15 @@ const CaptureReceipt = props => {
     const [hasPermission, setHasPermission] = useState(null);
     const [isCameraReady, setIsCameraReady] = useState(false);
 
+    console.log("called")
+
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestPermissionsAsync();
+            console.log("received permission", status)
             setHasPermission(status === "granted");
         })();
-    }, []);
+    });
 
     const onCameraReady = () => {
         setIsCameraReady(true);
@@ -39,7 +42,6 @@ const CaptureReceipt = props => {
             width: photo["width"]
             // width: 500
         })
-
     }
 
     let cam = null
@@ -48,7 +50,7 @@ const CaptureReceipt = props => {
         return <View />;
     }
     if (hasPermission === false) {
-        return <Text style={styles.text}>No access to camera</Text>;
+        return <Text>No access to camera</Text>;
     }
 
     if (!newImg) {

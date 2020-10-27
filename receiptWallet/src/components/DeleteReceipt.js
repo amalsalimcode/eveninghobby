@@ -39,7 +39,6 @@ const DeleteReceipt = props => {
         props.navigation.navigate("Receipts")
     }
 
-
     let deleteCount = Object.keys(props.selectedItems).length
     return (
         < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >

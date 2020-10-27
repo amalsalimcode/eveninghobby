@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "receiptFinal",
-    "slug": "receiptFinal",
+    "name": "receiptWallet",
+    "slug": "receiptwallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ebecf0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,6 +21,8 @@
       "android"
     ],
     "ios": {
+      "bundleIdentifier": "com.salim.receiptwallet",
+      "buildNumber": "1.0.1",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets.",
@@ -32,8 +34,14 @@
         "NSPhotoLibraryUsageDescription": "Give Expo experiences permission to access your photos"
       }
     },
+    "android": {
+      "package": "com.salim.receiptwallet",
+      "versionCode": 2,
+      "windowsoftinputmode": "adjustnothing"
+    },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "A platform to hold all your receipts"
   }
 }

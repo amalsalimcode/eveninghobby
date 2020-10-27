@@ -20,18 +20,20 @@ const ChangeDate = props => {
     const onChange = (event, selectedDate) => {
 
         const currentDate = selectedDate ? selectedDate : date;
-        setDate(currentDate);
 
         // android has its own close button which we can't handle,
         // so when a date is picked, we just set it
         if (Platform.OS != 'ios') {
             applyDateChange(currentDate)
+        } else {
+            setDate(currentDate);
         }
     };
 
-    const applyDateChange = () => {
+    const applyDateChange = (currentDate) => {
         props.setVisible(false)
-        props.setDate(date)
+        props.setDate(currentDate)
+        setDate(currentDate)
     }
 
     const getDatePicker = () => {

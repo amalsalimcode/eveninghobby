@@ -14,6 +14,8 @@ let constants = {
   disableBackend: true,
 }
 
+console.log("this is the root dir", constants.rootDir)
+
 export function getTopToolbarHeight() {
   return hasNotch() ? 80 : constants.windowHeight * 0.08
 }

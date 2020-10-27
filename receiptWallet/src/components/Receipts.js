@@ -2,7 +2,7 @@
 
 import { connect } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, Text } from "react-native";
+import { View, ActivityIndicator, Text, Image } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import constants from "./common/constants"
@@ -16,14 +16,25 @@ import { createImgDir, deleteAllPhotos } from "./common/FileSystem";
 
 const Receipts = props => {
 
+    const [showWelcomeScreen, setShowWelcomeScreen] = useState(false)
+
     useEffect(() => {
         // deleteAllTables()
         // deleteAllPhotos()
 
         createImgDir()
         createTable()
-        ReadReceipt(props.setReceipt)
+        ReadReceipt(setResult)
     }, []);
+
+    const setResult = (result) => {
+        props.setReceipt(result)
+        if (!result.length) {
+            setShowWelcomeScreen(true)
+        } else {
+            setShowWelcomeScreen(false)
+        }
+    }
 
 
     const renderItem = ({ item, index }) => {
@@ -42,16 +53,37 @@ const Receipts = props => {
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
     }
 
-    if (!props.allReceipts) {
+    if (props.allReceipts.length && showWelcomeScreen) {
+        setShowWelcomeScreen(false)
+    }
+
+    console.log("here is receipts", props.allReceipts.length)
+    if (!props.allReceipts.length && !showWelcomeScreen) {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <View style={{ justifyContent: "center", alignContent: "center" }}>
+                <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
                     <ActivityIndicator />
                 </View>
                 <ReceiptsBottomToolbar {...props} />
             </ GradientBackground>
         )
-    } else {
+    } else if (showWelcomeScreen) {
+        return (
+            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Image style={{ height: 150, width: 150 }} source={require('../../assets/salute.png')} />
+                    <Text>        Welcome!</Text>
+                    <Text></Text>
+                    <Text></Text>
+                    <Text></Text>
+                    <Text></Text>
+                    <Text>Use the below buttons to add your first receipt</Text>
+                    <ReceiptsBottomToolbar {...props} />
+                </View>
+            </ GradientBackground>
+        )
+    }
+    else {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
                 <SafeAreaView style={{ height: constants.windowHeight - 55 }}>
@@ -59,7 +91,7 @@ const Receipts = props => {
                         bounces={false}
                         data={props.allReceipts}
                         renderItem={renderItem}
-                        keyExtractor={(item) => {return item["fileuri"]}} />
+                        keyExtractor={(item) => { return item["fileuri"] }} />
                 </SafeAreaView>
                 <ReceiptsBottomToolbar {...props} />
             </ GradientBackground >

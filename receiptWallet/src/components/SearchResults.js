@@ -10,15 +10,24 @@ import { theme } from "./common/styles";
 import SingleReceipt from "./SingleReceipt";
 import { executeQuery } from "./common/Db";
 import TopToolbar from "./TopToolbar";
+import { Text } from "native-base";
 
 
 const SearchResults = props => {
 
     const [value, setValue] = useState(null)
+    const [noResults, setNoresults] = useState(false)
 
     useEffect(() => {
-        executeQuery(props.route.params["query"], setValue)
+        executeQuery(props.route.params["query"], setDbResults)
     }, []);
+
+    const setDbResults = (arg) => {
+        if (!arg.length) {
+            setNoresults(true)
+        }
+        setValue(arg)
+    }
 
     const renderItem = ({ item, index }) => {
         if (props.deletedItems[item["uuid"]]) {
@@ -36,6 +45,16 @@ const SearchResults = props => {
         return <SingleReceipt {...props} value={item} prev_dt={prev_dt} />
     }
 
+    if (noResults) {
+        return (
+            < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
+                <TopToolbar {...props} />
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text>No receipts found for your search</Text>
+                </View>
+            </ GradientBackground>
+        )
+    }
     if (!value) {
         return (
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
@@ -54,7 +73,7 @@ const SearchResults = props => {
                     data={value}
                     renderItem={renderItem}
                     keyExtractor={(item) => { return item["fileuri"] }} />
-                <View style={{height:20}}/>
+                <View style={{ height: 20 }} />
             </ GradientBackground >
         );
     }

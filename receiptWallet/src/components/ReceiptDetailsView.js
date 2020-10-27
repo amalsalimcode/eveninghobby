@@ -68,7 +68,7 @@ const ReceiptDetailsView = props => {
     }
 
     async function updateChanges() {
-        let newChanges = {amount: amount, store: store, memo: memo, category: category}
+        let newChanges = { amount: amount, store: store, memo: memo, category: category }
         selectedDate.setDate(selectedDate.getDate() + 1)
         newChanges.purchasedAt = getSQLformattedDate(selectedDate)
         updateReceiptDb(newChanges, props.data["id"])
@@ -91,10 +91,8 @@ const ReceiptDetailsView = props => {
     return (
         <>
             < GradientBackground colors={[theme.subleSecondary, theme.subtlePrimary]} >
-                <KeyboardAvoidingView style={{ flex: 1, height: availableHeight, width: constants.windowWidth }}
-                    behavior={Platform.OS === "ios" ? "padding" : "height"} enabled={false}>
-                    <View style={{ justifyContent: "flex-end", flex: 1, paddingBottom: 0 }}>
 
+                    <View style={{ justifyContent: "flex-end", flex: 1, paddingBottom: 0, height: availableHeight, width: constants.windowWidth }}>
                         <View style={{ height: constants.windowHeight - getTopToolbarHeight() - getBottomToolbarHeight() }}>
 
                             <DateView selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
@@ -114,7 +112,7 @@ const ReceiptDetailsView = props => {
                                 </View>
                                 <View style={{ width: constants.windowWidth / 2 }}>
                                     <View>
-                                        <SetCategoryAndroid initialValue={category ? category : "Category"} longView={true} onSubmit={setCategory} labelStyle={{alignItems: "center", width: 120, justifyContent: "flex-end", height: 25}}/>
+                                        <SetCategoryAndroid initialValue={category ? category : "Category"} longView={true} onSubmit={setCategory} labelStyle={{ alignItems: "center", width: 120, justifyContent: "flex-end", height: 25 }} />
                                     </View>
                                 </View>
                             </View>
@@ -133,7 +131,6 @@ const ReceiptDetailsView = props => {
 
                         </View>
                     </View>
-                </KeyboardAvoidingView>
             </ GradientBackground>
         </>
 
