@@ -41,7 +41,7 @@ class AccountInfo(View):
                    'firstName', 'email', 'restricted', 'extraData').order_by('firstName',
                                                                              'credentials__bank')
 
-        return HttpResponse(json.dumps(list(acc_val)))
+        return HttpResponse(200, json.dumps(list(acc_val)))
 
 
 # http://127.0.0.1:8000/account/create?personEmail=amal.salim@gmail.com&environment=sandbox

@@ -16,5 +16,6 @@ def wells_test(request):
     with open('django_ec2_project/wells.json') as f:
         stmt = json.load(f)
 
+    stmt = {'testing endpoint': 'look at this dictionary value'}
     return HttpResponse(json.dumps(stmt))
 

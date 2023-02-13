@@ -1,0 +1,49 @@
+# Version of Docker-compose
+version: '3.8'
+services:
+  # Service name
+  node:
+    # Creating a custom image
+    build:
+      # Location to the Dockerfile
+      context: .
+      # Name of the Dockerfile
+      dockerfile: Dockerfile
+    volumes:
+      # ADD THE CONFIGURATION FROM THIS POINT to sync the working directory
+      # for the application to the /app directory in the container
+      - .:/server:ro
+      - /server/node_modules
+    ports:
+        # External port:Internal port
+      - 5000:5000
+
+    # ADD THE CONFIGURATION FROM THIS POINT to build the MongoDB service
+    environment:
+      - PORT=5000
+      # For security, specify a username and password as environmental variables
+      # Username for the mongo database
+      - MONGO_INITDB_ROOT_USERNAME=mern
+      # Password for the mongo database
+      - MONGO_INITDB_ROOT_PASSWORD=merndocker
+    # Enables the mongo service to start before the node service
+    depends_on:
+      - mongo
+  # Name of mongo service
+  mongo:
+    # Official mongo image from docker.hub
+    image: mongo
+    environment:
+      # Username for the mongo database
+      - MONGO_INITDB_ROOT_USERNAME=mern
+      # Password for the mongo database
+      - MONGO_INITDB_ROOT_PASSWORD=merndocker
+    volumes:
+      # <nameOfVolume>:<directorInDocker>
+      - mongoDB:/data/db
+  redis:
+    image: redis
+volumes:
+  # Making the volume accessible by other containers
+  mongoDB:
+
