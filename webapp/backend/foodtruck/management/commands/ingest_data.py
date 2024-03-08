@@ -1,5 +1,6 @@
 # management/commands/ingest_data.py
 from datetime import datetime
+import json
 from django.core.management.base import BaseCommand
 import csv
 
@@ -10,47 +11,46 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('csv_file', type=str, help='Path to the CSV file to import')
-
+    
+    def format_food(self, categories):
+        formatted_menu = []
+        for category in categories.split(". "):
+            if category:
+                parts = category.split(": ", 1)
+                category_name = parts[0]
+                items = parts[1] if len(parts) > 1 else ""  # Handle cases where there are no items listed
+                items_list = [x.strip().lower() for x in items.split(":")]
+                formatted_menu.append({"category_name": category_name.lower().capitalize(), "items": items_list})
+        return json.dumps(formatted_menu)
+        
+        
     def handle(self, *args, **options):
         csv_file = options['csv_file']
         
         with open(csv_file, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                import pprint
-                pprint.pprint(row)
                 row['ExpirationDate'] = datetime.strptime(row['ExpirationDate'], '%m/%d/%Y %I:%M:%S %p') if row['ExpirationDate'] else ''
                 row['Approved'] = datetime.strptime(row['Approved'], '%m/%d/%Y %I:%M:%S %p') if row['Approved'] else ''
+                row['FoodItems'] = self.format_food(row.get('FoodItems'))
 
                 obj = FoodVendor.objects.create(
-                    locationid=row.get('locationid'),
-                    Applicant=row.get('Applicant'),
-                    FacilityType=row.get('FacilityType'),
-                    cnn=row.get('cnn'),
-                    LocationDescription=row.get('LocationDescription'),
-                    Address=row.get('Address'),
-                    blocklot=row.get('blocklot'),
-                    block=row.get('block'),
-                    lot=row.get('lot'),
+                    location_id=row.get('locationid'),
+                    applicant=row.get('Applicant'),
+                    facility_type=row.get('FacilityType'),
+                    location_description=row.get('LocationDescription'),
+                    address=row.get('Address'),
                     permit=row.get('permit'),
-                    Status=row.get('Status'),
-                    FoodItems=row.get('FoodItems'),
-                    X=row.get('X') or None,
-                    Y=row.get('Y') or None,
-                    Latitude=row.get('Latitude'),
-                    Longitude=row.get('Longitude'),
-                    Schedule=row.get('Schedule'),
-                    dayshours=row.get('dayshours'),
-                    NOISent=row.get('NOISent'),
-                    Approved=row.get('Approved'),
-                    Received=row.get('Received'),
-                    PriorPermit=row.get('PriorPermit'),
-                    ExpirationDate=row.get('ExpirationDate') or '9999-01-01',
-                    FirePreventionDistricts=row.get('Fire Prevention Districts') or None,
-                    PoliceDistricts=row.get('Police Districts') or None,
-                    SupervisorDistricts=row.get('Supervisor Districts') or None,
-                    ZipCodes=row.get('Zip Codes') or None,
-                    Neighborhoods=row.get('Neighborhoods (old)')
+                    status=row.get('Status'),
+                    food_items=row.get('FoodItems'),
+                    latitude=row.get('Latitude'),
+                    longitude=row.get('Longitude'),
+                    days_hours=row.get('dayshours'),
+                    approved=row.get('Approved'),
+                    received=row.get('Received'),
+                    prior_permit=row.get('PriorPermit'),
+                    expiration_date=row.get('ExpirationDate') or '9999-01-01',
+                    zip_codes=row.get('Zip Codes') or None,
                 )
                 obj.save()
 

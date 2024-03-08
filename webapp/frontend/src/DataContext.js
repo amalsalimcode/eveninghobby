@@ -10,6 +10,9 @@ export const DataProvider = ({ children }) => {
   const [markers, setMarkers] = useState([])
   const [radius, setRadius] = useState(2)
 
+  const defaultLatitude = 37.7790
+  const defaultLongitude = -122.4138
+
   const getLocation = async () => {
     try {
       if (currentLocation.latitude === 0) {
@@ -20,7 +23,7 @@ export const DataProvider = ({ children }) => {
         sendLocationToServer(currentLocation.latitude, currentLocation.longitude);
       }
     } catch (error) {
-      console.error('Error getting location:', error);
+      setCurrentLocation({ latitude: defaultLatitude, longitude: defaultLongitude});
     }
   };
 
@@ -41,6 +44,7 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     getLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [radius, currentLocation.latitude, currentLocation.longitude]);
 
   return (

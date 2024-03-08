@@ -1,9 +1,6 @@
 import json
 from django.shortcuts import render
-from django.core import serializers
-from django.db.models import F, Func, FloatField, ExpressionWrapper
 from math import sin, cos, sqrt, atan2, radians
-from django.utils import timezone
 
 
 # Create your views here.
@@ -17,13 +14,12 @@ def item_list(request):
 
     R = 6371.0
 
+    fv = FoodVendor.objects.filter(status="APPROVED")
     ans = []
-
-    fv = FoodVendor.objects.filter(ExpirationDate__gt=timezone.now().date(),
-                                   Status='APPROVED')
     for vendor in fv:
-        lat2 = radians(vendor.Latitude)
-        lon2 = radians(vendor.Longitude)
+
+        lat2 = radians(vendor.latitude)
+        lon2 = radians(vendor.longitude)
 
         dlon = lon2 - lon1
         dlat = lat2 - lat1
@@ -31,9 +27,10 @@ def item_list(request):
         a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
+
         if R * c < given_distance_km:
-            ans += [{'lat': float(vendor.Latitude), 'lon': float(vendor.Longitude), 'address': vendor.Address,
-                     'name': vendor.Applicant, 'items': vendor.FoodItems, 'dayshours': vendor.dayshours,
-                     'distance': R*c}]
+            ans += [{'lat': float(vendor.latitude), 'lon': float(vendor.longitude), 'address': vendor.address,
+                     'name': vendor.applicant, 'food_items': json.loads(vendor.food_items), 'days_hours': vendor.days_hours,
+                     'distance': R*c, 'permit': vendor.permit, 'expiration_date': vendor.expiration_date}]
 
     return JsonResponse(sorted(ans, key=lambda x: x['distance']), safe=False)
