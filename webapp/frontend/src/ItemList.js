@@ -1,32 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useData } from './DataContext';
 
 function ItemList() {
-    const [items, setItems] = useState([{
-        "address": "85 02ND ST",
-        "dayshours": "",
-        "items": "Lomo Saltado: Jalea: Ceviche: Calamar: Tilapia plate: chicken special. Soda: Water.",
-        "lat": 37.788457028828915,
-        "lon": -122.3998841605663,
-        "name": "El Calamar Perubian Food Truck"
-    },
-    {
-        "address": "85 02ND ST",
-        "dayshours": "",
-        "items": "Lomo Saltado: Jalea: Ceviche: Calamar: Tilapia plate: chicken special. Soda: Water.",
-        "lat": 37.788457028828915,
-        "lon": -122.3998841605663,
-        "name": "El Calamar Perubian Food Truck"
-    }]);
+
+    const {items, markers} = useData();
 
     useEffect(() => {
     }, []);
 
     return (
-        <div style={{maxHeight: '100px'}}>
-            {items.map(item => (
+        <div style={{}}>
+            {items.map((item, index) => (
 
                 <div
-                    key={1}
+                    key={item.address}
                     style={{
                         border: '1px solid black',
                         borderRadius: '5px',
@@ -41,7 +28,18 @@ function ItemList() {
                         fontWeight: 'bold',
                         fontSize: '16px',
                     }}
-                    onClick={() => { }}
+                    onClick={() => {
+                        console.log(markers[index]);
+                        markers[index].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+
+                        const greenIconSuffix = 'green-dot.png';
+                        markers.forEach((marker, i) => {
+                            if (i !== index && marker.icon.endsWith(greenIconSuffix)){
+                                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
+
+                            }
+                        })
+                    }}
                 >
                     <p style={{ marginBottom: '1px', fontSize: '18px', color: '#555', textAlign: 'left' }}>{item.name}</p>
                     <p style={{ textAlign: 'left'}}>Address: {item.address}</p>

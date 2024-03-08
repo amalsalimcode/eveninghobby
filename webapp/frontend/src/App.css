@@ -4,23 +4,11 @@
 }
 
 .item-list {
-  /* position: absolute; */
-  /* top: 200px; */
-  /* left: 0; */
-  /* bottom: 0; */
-  /* width: 200px; Adjust the width as needed */
   overflow-y: auto;
-  height: 300px
-}
+  max-height: 100vh;
+  padding: 20px
 
-.map-container {
-  /* position: absolute; */
-  /* top: 0; */
-  /* right: 0; */
-  /* bottom: 0; */
-  /* left: 200px; Adjust the left offset to leave space for the item list */
 }
-
 
 .App-logo {
   height: 40vmin;

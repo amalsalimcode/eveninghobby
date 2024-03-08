@@ -11,10 +11,10 @@ from django.http import JsonResponse
 from .models import FoodVendor
 
 def item_list(request):
-    lat1 = radians(float(request.GET.get('latitude', '0')))
-    lon1 = radians(float(request.GET.get('longitude', '0')))
+    lat1 = radians(float(request.GET['latitude']))
+    lon1 = radians(float(request.GET['longitude']))
+    given_distance_km = float(request.GET['radius'])
 
-    given_distance_km = 2.0
     R = 6371.0
 
     ans = []
@@ -33,7 +33,9 @@ def item_list(request):
 
         if R * c < given_distance_km:
             ans += [{'lat': float(vendor.Latitude), 'lon': float(vendor.Longitude), 'address': vendor.Address,
-                     'name': vendor.Applicant, 'items': vendor.FoodItems, 'dayshours': vendor.dayshours}]
+                     'name': vendor.Applicant, 'items': vendor.FoodItems, 'dayshours': vendor.dayshours,
+                     'distance': R*c}]
+        else:
+            print("out of range", R, c, R*c)
 
-    print(len(ans))
-    return JsonResponse(ans, safe=False)
+    return JsonResponse(sorted(ans, key=lambda x: x['distance']), safe=False)

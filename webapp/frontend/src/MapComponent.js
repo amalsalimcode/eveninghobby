@@ -1,29 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useData } from './DataContext';
 
-const MapComponent = ({ latitude, longitude }) => {
-  const [currentLocation, setCurrentLocation] = useState({ latitude: 0, longitude: 0 });
-  const [markers, setMarkers] = useState([]);
-
-  useEffect(() => {
-    const getLocation = async () => {
-      try {
-        if (!latitude || !longitude) {
-          const position = await getCurrentPosition();
-          const { latitude, longitude } = position.coords;
-          setCurrentLocation({ latitude, longitude });
-          sendLocationToServer(latitude, longitude);
-        } else {
-          setCurrentLocation({ latitude, longitude });
-          sendLocationToServer(latitude, longitude);
-        }
-      } catch (error) {
-        console.error('Error getting location:', error);
-      }
-    };
-
-    getLocation();
-  }, [latitude, longitude]);
+const MapComponent = () => {
+  const { currentLocation, items, setMarkers, radius} = useData();
 
   useEffect(() => {
     const loadMap = () => {
@@ -32,11 +11,17 @@ const MapComponent = ({ latitude, longitude }) => {
       const map = new window.google.maps.Map(document.getElementById('map'), {
         center: { lat: currentLocation.latitude, lng: currentLocation.longitude },
         zoom: 13,
-        
+        zoomControl: true, 
+        mapTypeControl: false,
+        clickable: false,
+        styles: [
+          {
+            featureType: 'poi',
+            stylers: [{ visibility: 'off' }] // Hide points of interest
+          }
+        ]
       });
 
-
-      // Add a circle overlay with 5km radius
       new window.google.maps.Circle({
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -45,10 +30,8 @@ const MapComponent = ({ latitude, longitude }) => {
         map: map,
         clickable: false,
         center: { lat: currentLocation.latitude, lng: currentLocation.longitude },
-        radius: 2000 // 5km in meters
+        radius: radius 
       });
-
-
 
       // Add a marker for the current location
       new window.google.maps.Marker({
@@ -59,42 +42,24 @@ const MapComponent = ({ latitude, longitude }) => {
         clickable: false
       });
 
-      if (Array.isArray(markers) && markers.length > 0) {
-        markers.forEach(marker => {
+      if (Array.isArray(items) && items.length > 0) {
+        const m = []
+        items.forEach(marker => {
           const newMarker = new window.google.maps.Marker({
             position: { lat: marker.lat, lng: marker.lon },
             map: map,
             title: marker.title,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            clickable: false
           });
-    
-          // Add click event listener to each marker
-          newMarker.addListener('click', () => {
-            // Change color or any other properties of the clicked marker
-            newMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-          });
+          m.push(newMarker)
         });
+        setMarkers(m)
       };
     }
 
     loadMap();
-  }, [currentLocation.latitude, currentLocation.longitude, markers]);
-
-  const getCurrentPosition = () => {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
-    });
-  };
-
-  const sendLocationToServer = async (latitude, longitude) => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000?latitude=${latitude}&longitude=${longitude}`);
-      console.log("received data", response.data)
-      setMarkers(response.data);
-    } catch (error) {
-      console.error('Error sending location to server:', error);
-    }
-  };
+  }, [currentLocation.latitude, currentLocation.longitude, items]);
 
   return <div id="map" style={{ width: '100%', height: '300px' }}></div>;
 };
