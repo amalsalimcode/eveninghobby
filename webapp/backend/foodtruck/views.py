@@ -35,7 +35,5 @@ def item_list(request):
             ans += [{'lat': float(vendor.Latitude), 'lon': float(vendor.Longitude), 'address': vendor.Address,
                      'name': vendor.Applicant, 'items': vendor.FoodItems, 'dayshours': vendor.dayshours,
                      'distance': R*c}]
-        else:
-            print("out of range", R, c, R*c)
 
     return JsonResponse(sorted(ans, key=lambda x: x['distance']), safe=False)

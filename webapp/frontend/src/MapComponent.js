@@ -30,7 +30,7 @@ const MapComponent = () => {
         map: map,
         clickable: false,
         center: { lat: currentLocation.latitude, lng: currentLocation.longitude },
-        radius: radius 
+        radius: radius * 1000
       });
 
       // Add a marker for the current location
@@ -59,7 +59,7 @@ const MapComponent = () => {
     }
 
     loadMap();
-  }, [currentLocation.latitude, currentLocation.longitude, items]);
+  }, [currentLocation.latitude, currentLocation.longitude, items, radius]);
 
   return <div id="map" style={{ width: '100%', height: '300px' }}></div>;
 };

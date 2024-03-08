@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react';
 import { useData } from './DataContext';
+import { v4 as uuidv4 } from 'uuid'; // Import uuidv4
 
 function ItemList() {
-
-    const {items, markers} = useData();
-
-    useEffect(() => {
-    }, []);
+    const { items, markers } = useData();
 
     return (
         <div style={{}}>
             {items.map((item, index) => (
-
                 <div
-                    key={item.address}
+                    key={uuidv4()} // Generate a unique ID using uuidv4()
                     style={{
                         border: '1px solid black',
                         borderRadius: '5px',
@@ -34,7 +30,7 @@ function ItemList() {
 
                         const greenIconSuffix = 'green-dot.png';
                         markers.forEach((marker, i) => {
-                            if (i !== index && marker.icon.endsWith(greenIconSuffix)){
+                            if (i !== index && marker.icon.endsWith(greenIconSuffix)) {
                                 marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png')
 
                             }
@@ -43,14 +39,12 @@ function ItemList() {
                 >
                     <p style={{ marginBottom: '1px', fontSize: '18px', color: '#555', textAlign: 'left' }}>{item.name}</p>
                     <p style={{ textAlign: 'left'}}>Address: {item.address}</p>
-                    <p style={{textAlign: 'left'}}>Hours: {item.dayshours}</p>
-                    <p style={{textAlign: 'left'}}>Menu: {item.items}</p>
+                    <p style={{ textAlign: 'left'}}>Hours: {item.dayshours}</p>
+                    <p style={{ textAlign: 'left'}}>Menu: {item.items}</p>
                 </div>
             ))}
         </div>
-
     );
 }
 
 export default ItemList;
-
