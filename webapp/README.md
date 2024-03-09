@@ -1,11 +1,4 @@
-Certainly! Here's the entire README content as a single Markdown blob:
-
-```markdown
-# Project Name
-
-This project is aimed at [describe the purpose of the project briefly].
-
-## Installation
+# Find Food Vendor
 
 ### Using Docker (Recommended)
 
