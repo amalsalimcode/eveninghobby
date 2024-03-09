@@ -8,6 +8,12 @@ from django.http import JsonResponse
 from .models import FoodVendor
 
 def item_list(request):
+
+    # for backend, we require the fields to be set
+    if 'latitude' not in request.GET or 'longitude' not in request.GET or 'radius' not in request.GET:
+        return JsonResponse({'error': 'Latitude, longitude, and radius are required fields.'}, status=400)
+
+
     lat1 = radians(float(request.GET['latitude']))
     lon1 = radians(float(request.GET['longitude']))
     given_distance_km = float(request.GET['radius'])
