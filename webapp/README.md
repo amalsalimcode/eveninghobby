@@ -87,5 +87,3 @@ If you wish to re-ingest the data or start from scratch:
    ```
 
 ```
-
-Feel free to copy and paste this into your README.md file in your GitHub repository.
