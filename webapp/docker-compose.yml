@@ -3,19 +3,19 @@ version: '3'
 services:
   backend:
     build:
-      context: ./backend
+      context: ./backend/zoro
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/app
+      - ./backend/zoro:/app
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "80:80"
     volumes:
       - ./frontend:/app
 

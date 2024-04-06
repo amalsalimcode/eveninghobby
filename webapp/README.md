@@ -72,18 +72,19 @@ The data is already ingested, and SQLite is available in the repository in case 
 
 If you wish to re-ingest the data or start from scratch:
 
-1. Delete the `db.sqlite3` file.
-2. Run migrations:
+1. cd into the backend folder
+   ```bash
+   cd backend
+   ```
+2. Delete the `db.sqlite3` file.
+3. Run migrations:
 
    ```bash
-   python manage.py makemigrations
    python manage.py migrate
    ```
 
-3. Ingest the data:
+5. Ingest the data (file also included in repos):
 
    ```bash
-   python manage.py ingest_data <file_name>
+   python manage.py ingest_data food-truck-data.csv
    ```
-
-```

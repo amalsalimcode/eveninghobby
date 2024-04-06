@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  zoro:
+    build: .
+    container_name: zoro-container
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app

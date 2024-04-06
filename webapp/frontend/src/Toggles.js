@@ -21,7 +21,7 @@ const Toggles = () => {
     <div className="toggles-container">
       <div className="toggles-row">
         <label className="toggle-label">
-          <span className="toggle-label-text">Latitude:</span>
+          <span className="toggle-label-text">Latitudesss:</span>
           <input type="number" value={currentLocation.latitude.toFixed(4)} onChange={(e) => handleLocationChange('latitude', parseFloat(e.target.value))} step="0.01" className="toggle-input" />
         </label>
         <label className="toggle-label">

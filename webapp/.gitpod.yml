@@ -1,0 +1,6 @@
+# .gitpod.yml
+
+tasks:
+  - name: begin docker containers
+    command: 
+      docker-compose up

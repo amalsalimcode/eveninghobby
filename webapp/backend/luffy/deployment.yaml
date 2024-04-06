@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: luffy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: luffy
+  template:
+    metadata:
+      labels:
+        app: luffy
+    spec:
+      containers:
+      - name: luffy
+        image: amalsalim/luffy:latest
+        ports:
+        - containerPort: 3000
+
