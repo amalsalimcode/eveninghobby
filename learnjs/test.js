@@ -1,3 +1,4 @@
+
 p = console.log;
 
 String.prototype.measure = function () { return this + ":" + this.length }
@@ -10,7 +11,6 @@ function Tune(song, artist) {
 // new turns it into a constructor call
 var happySongs = new Tune("Put", "Ella")
 console.log(happySongs.access1())
-return
 
 
 /* ----------------- FUNCTION ---------------- */
@@ -25,7 +25,6 @@ var foo = function (arg, cb) {
 var cb = function (v) { p("here is res", v); };
 
 setTimeout(() => (foo(777, cb)), 0);
-return
 
 
 
@@ -47,8 +46,6 @@ var y = function (a, b) {
 
 p(y(10, x))
 
-return
-
 
 // string to array
 var s = "123"
@@ -56,7 +53,6 @@ var arr = [...s].map((v, i, arr) => Number(v))
 
 // dict to arr
 Object.entries({ 1: 'a', 2: 'b' }).forEach(([k, v], i) => i === 0 ? r = [Number(k)] : r.push(Number(k)))
-return
 
 
 // iterate array
@@ -95,6 +91,7 @@ var a = [1, 2, 3], b = [1, 2, 3, 4]
 //array to string
 var str = a.join()
 
+// reduce will take init arg {}. if you don't provide init will be first value, iter will begin from second
 var x = a.concat(b).reduce((accumulator, cv, index) => (
 	{ ...accumulator, [cv]: accumulator[cv] ? accumulator[cv] + 1 : 1 }
 ), {});
@@ -135,7 +132,11 @@ var x = '0', y = '1'
 p(Number(x) === 0)
 
 //string to array
-var x = [..."hello world"]
+var x = [..."hello world. This is a second space"]
+
+// last index of
+x.reduce((acc, v, i) => (acc = v === " " ? i : acc), 0) === x.lastIndexOf(' ')
+
 
 z = x + y
 

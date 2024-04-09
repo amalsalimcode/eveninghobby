@@ -62,7 +62,7 @@ const BarSummary = props => {
     var dt_str = getFormattedDate(new Date(props.fullDate))
 
     return (
-        <TouchableOpacity onPress={() => {setShowDatePicker(true)}} style={{ ...styles.square, justifyContent: "center" }}>
+        <TouchableOpacity onPress={() => { setShowDatePicker(true) }} style={{ ...styles.square, justifyContent: "center" }}>
             <View style={{ marginLeft: 10 }} shadowOffset={{ height: 10 }}
                 shadowColor='black'
                 shadowOpacity={0.4}
@@ -84,7 +84,7 @@ const BarSummary = props => {
                         <Text>    ${props.totalSpent} </Text>
                     </View>
                 </View>
-                <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker}/>
+                <ChangeDate visible={showDatePicker} setVisible={setShowDatePicker} />
             </View>
         </TouchableOpacity>
     )

@@ -1,6 +1,8 @@
 // app.js
 const express = require('express');
 const mongoose = require('mongoose');
+const snippet = require('./snippet');
+const parser = require('./CSVParser')
 
 const app = express();
 const PORT = 3000;
@@ -24,9 +26,9 @@ const Todo = mongoose.model('Todo', todoSchema);
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-
-app.get('', async(req, res) => {
-  res.json("hello worlds")
+app.get('', async (req, res) => {
+  const x = parser('sample.csv')
+  res.json("HI")
 })
 
 // Routes
