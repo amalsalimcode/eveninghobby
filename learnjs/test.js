@@ -155,8 +155,12 @@ p(str1.substring(st + 1, end))
 str1 = str1.replace("amal", "voilawala")
 p(str1)
 
+str1 = " ".repeat(4)
+
 // more str func
 p(str1.charAt(2), str1.length, str1 + ":" + str1)
+p(str1.lastIndexOf(" "))
+p(str1.indexOf(" "))
 
 
 // str to arr
