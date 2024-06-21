@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Formats for VSCode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h2>NoSQL:</h2>
+
+    <table class="database-table">
+        <tr>
+            <th>Name</th>
+            <th>Feature</th>
+            <th>Use Case</th>
+        </tr>
+        <tr>
+            <td>MongoDB</td>
+            <td>Provides schemas and sophisticated query. BSON like data</td>
+            <td>Microservice architecture, content management system</td>
+        </tr>
+        <tr>
+            <td>dynamoDB</td>
+            <td>Quick reads and writes. Serverless, hence predictable performance. Doesn't contain query language.</td>
+            <td>Gaming leaderboard, user sessions</td>
+        </tr>
+        <tr>
+            <td>Cassandra</td>
+            <td>High write throughput, high availability</td>
+            <td>IoT sensor data</td>
+        </tr>
+        <tr>
+            <td>Redis</td>
+            <td>In-memory cache leading to low latency on frequent reads</td>
+            <td>User session</td>
+        </tr>
+        <tr>
+            <td>Memcached</td>
+            <td>A lightweight version of Redis without persistent data</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>CouchBase</td>
+            <td>Memory-first database, hence low latency</td>
+            <td>Gaming</td>
+        </tr>
+        <tr>
+            <td>CouchDb</td>
+            <td>Offline-first, features mapReduce (aggregate) query functionality, MVCC (concurrency control using
+                versioning), HTTP interface.</td>
+            <td>No internet access mobile phones</td>
+        </tr>
+    </table>
+
+    <h2>Graph DB:</h2>
+
+    <table class="database-table">
+        <tr>
+            <th>Name</th>
+            <th>Feature</th>
+            <th>Use Case</th>
+        </tr>
+        <tr>
+            <td>Neo4j</td>
+            <td>Strong query language, single node, ACID compliant, has built-in features like shortest path</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>TigerGraph</td>
+            <td>Allows billions of nodes, built on Cassandra.</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Neptune</td>
+            <td>Supports RDF (triplet) + Property Graph</td>
+            <td>Interoperability of different kinds of sources, as RDF is W3C compliant</td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

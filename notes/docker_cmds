@@ -1,0 +1,54 @@
+CREATING AND PUSHING IMAGE:
+aws ecr create-repository --repository-name frontend --region us-east-2
+
+docker build -t frontend .
+
+docker tag frontend 891377328208.dkr.ecr.us-east-2.amazonaws.com/frontend
+
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 891377328208.dkr.ecr.us-east-2.amazonaws.com
+
+docker push 891377328208.dkr.ecr.us-east-2.amazonaws.com/frontend
+
+NOTE: docker doesn't have context of ../ prev folder. instead you will have to change the build command to change the context:
+docker build -t simple-nodejs-app-image -f ./docker/Dockerfile .
+
+DONT forget to specify port when running docker run command on local machine
+
+
+FIRST TIME INIT NODEJS
+npm init -y
+npm install express mongoose
+<put contents in docker file>
+docker build -t <tag> .
+docker run -p 3000:3000 -d --name luffy-container --network my-network luffy
+
+
+REPEAT
+docker network create my-network
+docker build -t luffy .
+docker pull mongo
+docker run -d --name mongo-container -p 27017:27017 --network my-network mongo
+docker run -p 3000:3000 -d --name luffy-container --network my-network luffy
+
+
+
+Running debugger on nodejs, just open vs code with folder luffy
+Then do the play and debug icon
+
+
+To connect to mongo-container, change the host to 0.0.0.0 because thats where the mongo container is hosted
+
+package.json contains start, dev under script
+npm run dev // runs the script in dev
+
+nodemon is the tool to connect to npm
+
+
+CREATING AND PUSHING IMAGE TO DOCKER + CREATING REPO:
+docker tag luffy:latest amalsalim/luffy:latest
+docker push luffy/nodejs-app:latest
+
+minikubectl start
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+

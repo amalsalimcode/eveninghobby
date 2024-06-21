@@ -51,6 +51,9 @@ p(y(10, x))
 var s = "123"
 var arr = [...s].map((v, i, arr) => Number(v))
 
+// array to string
+p([1, 2, 3].join(''))
+
 // dict to arr
 Object.entries({ 1: 'a', 2: 'b' }).forEach(([k, v], i) => i === 0 ? r = [Number(k)] : r.push(Number(k)))
 
@@ -61,6 +64,7 @@ for (let x in arr) {
 	p(x)
 }
 arr.forEach((v, i, arr) => p(v))
+p(arr.reduce((p,c,i,a) => (p+c)))
 
 /* ----------------- SET ---------------- */
 

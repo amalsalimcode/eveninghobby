@@ -1,0 +1,45 @@
+/* CSS styles for index.html */
+
+body {
+	font-family: 'Roboto', sans-serif;
+	line-height: 1.6;
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3 {
+	color: black;
+	font-family: 'Monteserrat', sans-serif;
+}
+
+p {
+	margin: 0 0 20px;
+	font-family: 'Open Sans', sans-serif
+}
+/* styles.css */
+
+body {
+	padding: 20px;
+	/* Adjust the padding value as needed */
+}
+
+.database-table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.database-table th,
+.database-table td {
+	border: 1px solid #ddd;
+	/* Light grey border */
+	padding: 8px;
+	text-align: left;
+}
+
+.database-table th {
+	background-color: #f2f2f2;
+}
+
+strong {
+	font-weight: bold;
+}

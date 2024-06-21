@@ -2,14 +2,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const snippet = require('./snippet');
-const parser = require('./CSVParser')
 
 const app = express();
 const PORT = 3000;
 
 // Connect to MongoDB
 // replace mongo-container with 0.0.0.0 when running locally
-mongoose.connect('mongodb://mongo-container:27017/test', {
+mongoose.connect('mongodb://mongodb-service:27017/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('Connected to MongoDB'))
@@ -26,8 +25,8 @@ const Todo = mongoose.model('Todo', todoSchema);
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+
 app.get('', async (req, res) => {
-  const x = parser('sample.csv')
   res.json("HI")
 })
 
@@ -44,7 +43,7 @@ app.get('/todos', async (req, res) => {
 app.post('/todos', async (req, res) => {
   try {
     const todo = new Todo(req.body);
-    console.log("here  is is the request ", req.body)
+    console.log("here  is is the request.. amal salim ", req.body)
     await todo.save();
     res.status(201).json(todo);
   } catch (err) {

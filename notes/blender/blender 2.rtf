@@ -1,0 +1,279 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww15140\viewh12200\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 BLENDER Maya Mode:\
+\
+\
+N in keyboard, will bring transform tool\
+w, e, r size rotate and position\
+alt and two fingers will rotate screen\
+pinch to zoom in\
+\
+OBJECT MODE AND EDIT MODE\
+tab will go between object mode and edit mode. edit mode is when you get to change face, edge\
+you can press shift and hit another vertex, and new vertices are selected at the same time\
+once in edit mode, there is a button next to the face button. This will make switch between mesh\
+\
+MULTIPLE SELECTION\
+alt and shift. to select all faces or vertices connected to it\
+hit shift and click, to add more to selection\
+hit shift and click again, to deselect\
+hw: find out how to use lasso\
+\
+\
+CHANGING SHAPES\
+if you press shift while elongating, it will be smoother\
+select->linked flat faces. (all flat faces will be selected. remember, they have to be flat)\
+if you increase sharpness, it will select more around\
+select->inverse, will inverse all your selection\
+\
+GROUPING SHAPES\
+There is a button to your right of the screen. Its an icon that looks like a triangle upside down. next to a spanner\
+Select a bunch of vertices and then you can add a vertex group. This way, the group will always have the selection\
+\
+\
+DUPLICATES AND SEPARATION OF JOINED SHAPES\
+shift-d will duplicate a selection\
+u can select multiple, go to object and then click join\
+go to edit mode, select a face, hover the mouse in the white circle, and hit L to highlight the single object before join\
+\
+select it, then go to mesh->vertices->separate->by selection\
+then object->transform->geometry to origin\
+\
+shift-A will add a new object. Same as Create on the side\
+\
+there is a circle that keeps following you as you click around\
+mesh->snap->cursor to selected\
+\
+object->transfer->origin to 3d cursor\
+\
+snap\
+\
+To DELETE: use \'93delete\'94 key on your keyboard\
+\
+\
+Press N and select back face culling to show the face and upside down face. Upside down, will be invisible\
+\
+all dimension numbers are in mm.\
+always check your normals\
+make sure all objects are touching each other.\
+\
+\
+\
+\
+export a file as SVG\
+blender: file->Import->SVG\
+object->transform->origin to geometry\
+\
+\
+object->convert to-> mesh from curve (alt-c in object mode)\
+go to the wrench and click decimate, go to object mode, and change the ratio down\
+\
+\
+\
+\
+BLENDER blender mode:\
+\
+*******Navigation*******\
+\
+To rotate:\
+	Use 2,4,6,8\
+\
+To move screen:\
+	Use ctrl + 2,4,6,8\
+\
+To zoom:\
+	Use \'91+/-\'91\
+\
+To have only one object on screen:\
+	Select the object and press \'91\\\'92\
+\
+To select something \'91right mouse click\'92.\
+	To select multiple, use \'91shift\'92 + \'91right mouse click\'92\
+\
+To select an entire object associated to a selected face, \'92ctrl-l\'92\
+\
+To delete something \'91x\'92 and enter\
+\
+To rotate \'91r\'92.\
+	If you want to rotate 90deg on x axis. \'91r\'92->\'92x\'92->\'9290\'92\
+\
+To Extrude \'91e\'92, then move mouse\
+	Try \'91ctrl-e\'92 for faces\
+\
+Scroll screen left/right \'91shift\'92+\'92mouse move\'92\
+\
+To change between wire and object view, \'92z\'92\
+\
+To stretch/squash \'92s\'92\
+	If you want to stretch or squash only on x axis. \'92s\'92->\'92x\'92->\'92use mouse\'92\
+\
+Extrude a Font\
+	you will see \'91F\'92 on the right side. Click it and look under Geometry. Increase \'91Extr\'92\
+\
+Go edit mode \'91tab\'92\
+\
+Select a range of edges\
+	\'91edit mode\'92->\'92b\'92->\'92draw box with mouse\'92\
+	\'91ctrl\'92 + \'91draw a shape\'92\
+\
+To add a new edge\
+	\'91ctrl\'92 + \'91r\'92\
+\
+To deselect \'91a\'92 multiple times \
+\
+To copy/paste \'91shift+d\'92\
+\
+To go to camera mode \'910\'92\
+\
+To place camera where the screen is \'91ctrl\'92 + \'91alt\'92 + \'910\'92\
+\
+To have only the selected object to be seen on screen \'91\\\'92\
+\
+To add effect \'91Object\'92->\'92quick effects\'92->\'92quick explode\'92\
+\
+\
+To Join \'91select object ( \'91b\'92 -> draw selection )\'92 -> ctrl-j\
+\
+To unJoin \'91select object ( \'91b\'92 -> draw selection )\'92 -> \'91p\'92\
+\
+To move origin of the object to center\
+	Object->Transform->origin to geometry\
+\
+Full Screen \'91shift-space\'92\
+\
+*******Move object origin*********\
+\'91Shift\'92 + \'91ctrl\'92 + \'91alt\'92 + \'92C\'92\
+\
+\
+*******Putting Image on object********\
+\
+Select \'91Cycles Render\'92.\
+		Next to Help, Default, Scene, you will see \'91Blender Render\'92, Change to \'91Cycles Render\'92\
+Add Image\
+		Select object->Click on Material (a bicolor sphere button on the right)->\
+		New->Image texture under Color->select Image\
+Unwrap\
+		In edit mode (\'91tab\'92) -> \'91U\'92 -> Project from view (bounds)\
+\
+View image on object\
+		Select bicolor sphere instead of wire frame. (Look bottom, next to object mode)\
+\
+Note: if adding image to font, before adding image you have to:\
+	select font->object mode(\'91tab\'92)->\'92alt-c\'92->\'92mesh from meta/curve/text\'92\
+	Make sure, you have selected the font \'91a\'92, in edit mode \'91tab\'92\
+\
+Note: There is an icon on the top-left, next to Window, Help.\
+          Click on UV Editing. Then select any face on the object, \'91U\'92->\'92Unwrap\'92.\
+          You can now customize your unwrap\
+\
+******************************************\
+\
+**************2d image to 3d***********\
+\
+Convert jpg to svg online\
+\
+File->Import->scalable-vector-graphics\
+\
+Convert curve to mesh\
+Edit mode (\'91tab\'92) -> alt-c -> mesh from curve\
+\
+Extrude the object\
+Edit mode (\'92tab\'92) -> \'91E\'92\
+\
+******************************************\
+\
+***************Sculpt Mode**************\
+\
+Add Cube\
+Add modifier -> multi resolution -> subdivide -> Apply\
+Go from object mode -> sculpt mode\
+\
+Pull new shapes, from existing model\
+	In Sculpt mode -> enable dyntopo (relative detail)->snake hook brush,\
+\
+Change the intensity of the brush \'91f\'92\
+\
+To hide certain part of the model, to avoid distraction \'91alt-B\'92\
+\
+Make manipulator arms disappear \'91ctrl - space\'92\
+\
+To make grid disappear \'92N\'92 -> display -> \'91Grid Floor\'92\
+To make everything except object disappear \'92N\'92-> display -> only render model\
+\
+To increase the brush size \'91f\'92\
+\
+******************************************\
+\
+***************Texturing*****************\
+\
+Requires the following:\
+\
+Reflection map (Image Texture -> Diffuse BDSF+Glossy BDSF -> Mix Shader (shader)-> Material Output)\
+Bump map (Image Texture (non-color data) -> Bump (height) -> Diffuse BDSF + Glossy BDSF -> Mix Shader (shader) -> Material Output)\
+Diffuse map (Image Texture (non-color data) -> Mix Shader (factor)\
+\
+******************************************\
+\
+***************Rigging Example*****************\
+\
+Create a cube. \
+Create a new bone under armature (\'91shift-A\'92 + \'91armature\'92 + \'91single bone\'92)\
+In the armature settings (bone image in properties window) and click X ray\
+Extrude bone as needed in edit mode. Subdivide the cube as needed\
+Select the cube and then the bone in object mode. (\'91Ctrl-P\'92 -> \'91automatic weights\'92)\
+\
+******************************************\
+\
+\
+***************Animation Example continued from rigging*****************\
+\
+In a New sub window change view from \'913d view\'92 to \'91DopeSheet summary\'92 (This is in timeline panel)\
+Click on \'91Action Editor\'92 from scroll down menu next to \'91Key\'92\
+Set the frame window at \'910\'92 (timeline panel), then click on the Double key icon and set it to LogRotScale\
+In Pose mode, click all bones, switch the frame to 0 and hit the single key icon on the bottom\
+Go to another frame, rotate a bone in Pose Mode, and then hit the single key icon again\
+Now you have an animation\
+\
+******************************************\
+\
+\
+\
+Blender Window Names:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://blenderartists.org/forum/showthread.php?396636-What-are-these-Side-Panels-called-in-the-interface"}}{\fldrslt \cf0 https://blenderartists.org/forum/showthread.php?396636-What-are-these-Side-Panels-called-in-the-interface}}\
+\
+\
+\
+\
+\
+To see size of object in inches \'92n\'92->Dimensions (under Transform)\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+what does \'91v\'92 do?\
+\
+\
+\
+\
+\
+counters - VSeries testing (test-RA)\
+changes made in assert()\
+\
+\
+\
+\
+}

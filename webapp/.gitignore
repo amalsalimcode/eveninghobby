@@ -1,4 +1,5 @@
 backend/foodtruck/__pycache__/*
 frontend/package-lock.json
 backend/luffy/node_modules/*
+backend/grandLineAuth/node_modules
 

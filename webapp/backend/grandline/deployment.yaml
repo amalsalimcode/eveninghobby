@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grandline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grandline
+  template:
+    metadata:
+      labels:
+        app: grandline
+    spec:
+      containers:
+        - name: grandline
+          image: amalsalim/grandline:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001
