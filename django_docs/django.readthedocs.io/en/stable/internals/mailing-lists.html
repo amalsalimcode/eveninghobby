@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Mailing lists and Forum &#8212; Django 5.0.7 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css%3Fv=d10597a4.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css%3Fv=bf4d74af.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_/static/css/badge_only.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js%3Fv=27878027"></script>
+    <script src="../_static/doctools.js%3Fv=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js%3Fv=4825356b"></script>
+    <script async="async" src="../../../_/static/javascript/readthedocs-doc-embed.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Organization of the Django Project" href="organization.html" />
+    <link rel="prev" title="Committing code" href="contributing/committing-code.html" />
+
+
+
+ 
+<script src="https://django.readthedocs.io/en/stable/templatebuiltins.js"></script>
+<script>
+(function($) {
+    if (!django_template_builtins) {
+       // templatebuiltins.js missing, do nothing.
+       return;
+    }
+    $(document).ready(function() {
+        // Hyperlink Django template tags and filters
+        var base = "../ref/templates/builtins.html";
+        if (base == "#") {
+            // Special case for builtins.html itself
+            base = "";
+        }
+        // Tags are keywords, class '.k'
+        $("div.highlight\\-html\\+django span.k").each(function(i, elem) {
+             var tagname = $(elem).text();
+             if ($.inArray(tagname, django_template_builtins.ttags) != -1) {
+                 var fragment = tagname.replace(/_/, '-');
+                 $(elem).html("<a href='https://django.readthedocs.io/en/stable/internals/&quot;&#32;+&#32;base&#32;+&#32;&quot;#" + fragment + "'>" + tagname + "</a>");
+             }
+        });
+        // Filters are functions, class '.nf'
+        $("div.highlight\\-html\\+django span.nf").each(function(i, elem) {
+             var filtername = $(elem).text();
+             if ($.inArray(filtername, django_template_builtins.tfilters) != -1) {
+                 var fragment = filtername.replace(/_/, '-');
+                 $(elem).html("<a href='https://django.readthedocs.io/en/stable/internals/&quot;&#32;+&#32;base&#32;+&#32;&quot;#" + fragment + "'>" + filtername + "</a>");
+             }
+        });
+    });
+})(jQuery);</script>
+
+  
+<!-- RTD Extra Head -->
+
+<link rel="stylesheet" href="../../../_/static/css/readthedocs-doc-embed.css" type="text/css" />
+
+<script type="application/json" id="READTHEDOCS_DATA">{"ad_free": false, "api_host": "https://readthedocs.org", "builder": "sphinx", "canonical_url": null, "docroot": "/docs/", "features": {"docsearch_disabled": false}, "global_analytics_code": "UA-17997319-1", "language": "en", "page": "internals/mailing-lists", "programming_language": "py", "project": "django", "proxied_api_host": "/_", "source_suffix": ".txt", "subprojects": {}, "theme": "djangodocs", "user_analytics_code": "", "version": "stable"}</script>
+
+<!--
+Using this variable directly instead of using `JSON.parse` is deprecated.
+The READTHEDOCS_DATA global variable will be removed in the future.
+-->
+<script type="text/javascript">
+READTHEDOCS_DATA = JSON.parse(document.getElementById('READTHEDOCS_DATA').innerHTML);
+</script>
+
+<script type="text/javascript" src="../../../_/static/javascript/readthedocs-analytics.js" async="async"></script>
+
+<!-- end RTD <extrahead> -->
+</head><body>
+
+    <div class="document">
+  <div id="custom-doc" class="yui-t6">
+    <div id="hd">
+      <h1><a href="../index.html">Django 5.0.7 documentation</a></h1>
+      <div id="global-nav">
+        <a title="Home page" href="../index.html">Home</a>  |
+        <a title="Table of contents" href="../contents.html">Table of contents</a>  |
+        <a title="Global index" href="../genindex.html">Index</a>  |
+        <a title="Module index" href="../py-modindex.html">Modules</a>
+      </div>
+      <div class="nav">
+    &laquo; <a href="contributing/committing-code.html" title="Committing code">previous</a>
+     |
+    <a href="index.html" title="Django internals" accesskey="U">up</a>
+   |
+    <a href="organization.html" title="Organization of the Django Project">next</a> &raquo;</div>
+    </div>
+
+    <div id="bd">
+      <div id="yui-main">
+        <div class="yui-b">
+          <div class="yui-g" id="internals-mailing-lists">
+            
+  <section id="mailing-lists-and-forum">
+<h1>Mailing lists and Forum<a class="headerlink" href="mailing-lists.html#mailing-lists-and-forum" title="Permalink to this heading">¶</a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Please report security issues <strong>only</strong> to
+<a class="reference external" href="mailto:security&#37;&#52;&#48;djangoproject&#46;com">security<span>&#64;</span>djangoproject<span>&#46;</span>com</a>.  This is a private list only open to
+long-time, highly trusted Django developers, and its archives are
+not public. For further details, please see <a class="reference internal" href="security.html"><span class="doc">our security
+policies</span></a>.</p>
+</div>
+<section id="django-forum">
+<h2>Django Forum<a class="headerlink" href="mailing-lists.html#django-forum" title="Permalink to this heading">¶</a></h2>
+<p>Django has an <a class="reference external" href="https://forum.djangoproject.com">official Forum</a> where you can input and ask questions.</p>
+<p>There are several categories of discussion including:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://forum.djangoproject.com/c/users/6">Using Django</a>: to ask any question regarding the installation, usage, or
+debugging of Django.</p></li>
+<li><p><a class="reference external" href="https://forum.djangoproject.com/c/internals/5">Internals</a>: for discussion of the development of Django itself.</p></li>
+</ul>
+<p>In addition, Django has several official mailing lists on Google Groups that
+are open to anyone.</p>
+</section>
+<section id="django-users">
+<span id="django-users-mailing-list"></span><h2><code class="docutils literal notranslate"><span class="pre">django-users</span></code><a class="headerlink" href="mailing-lists.html#django-users" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference external" href="https://forum.djangoproject.com/c/users/6">Using Django</a> category of the <a class="reference external" href="https://forum.djangoproject.com">official Forum</a> is now the preferred
+venue for asking usage questions.</p>
+</div>
+<p>This is the right place if you are looking to ask any question regarding the
+installation, usage, or debugging of Django.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If it’s the first time you send an email to this list, your email must be
+accepted first so don’t worry if <a class="reference internal" href="../faq/help.html#message-does-not-appear-on-django-users"><span class="std std-ref">your message does not appear</span></a> instantly.</p>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://groups.google.com/g/django-users">django-users mailing archive</a></p></li>
+<li><p><a class="reference external" href="mailto:django-users+subscribe&#37;&#52;&#48;googlegroups&#46;com">django-users subscription email address</a></p></li>
+<li><p><a class="reference external" href="mailto:django-users&#37;&#52;&#48;googlegroups&#46;com">django-users posting email</a></p></li>
+</ul>
+</section>
+<section id="django-developers">
+<span id="django-developers-mailing-list"></span><h2><code class="docutils literal notranslate"><span class="pre">django-developers</span></code><a class="headerlink" href="mailing-lists.html#django-developers" title="Permalink to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference external" href="https://forum.djangoproject.com/c/internals/5">Internals</a> category of the <a class="reference external" href="https://forum.djangoproject.com">official Forum</a> is now the preferred
+venue for discussing the development of Django.</p>
+</div>
+<p>The discussion about the development of Django itself takes place here.</p>
+<p>Before asking a question about how to contribute, read
+<a class="reference internal" href="contributing/index.html"><span class="doc">Contributing to Django</span></a>. Many frequently asked questions are
+answered there.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please make use of
+<a class="reference internal" href="mailing-lists.html#django-users-mailing-list"><span class="std std-ref">django-users mailing list</span></a> if you want
+to ask for tech support, doing so in this list is inappropriate.</p>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://groups.google.com/g/django-developers">django-developers mailing archive</a></p></li>
+<li><p><a class="reference external" href="mailto:django-developers+subscribe&#37;&#52;&#48;googlegroups&#46;com">django-developers subscription email address</a></p></li>
+<li><p><a class="reference external" href="mailto:django-developers&#37;&#52;&#48;googlegroups&#46;com">django-developers posting email</a></p></li>
+</ul>
+</section>
+<section id="django-announce">
+<span id="django-announce-mailing-list"></span><h2><code class="docutils literal notranslate"><span class="pre">django-announce</span></code><a class="headerlink" href="mailing-lists.html#django-announce" title="Permalink to this heading">¶</a></h2>
+<p>A (very) low-traffic list for announcing <a class="reference internal" href="security.html#security-disclosure"><span class="std std-ref">upcoming security releases</span></a>, new releases of Django, and security advisories.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://groups.google.com/g/django-announce">django-announce mailing archive</a></p></li>
+<li><p><a class="reference external" href="mailto:django-announce+subscribe&#37;&#52;&#48;googlegroups&#46;com">django-announce subscription email address</a></p></li>
+<li><p><a class="reference external" href="mailto:django-announce&#37;&#52;&#48;googlegroups&#46;com">django-announce posting email</a></p></li>
+</ul>
+</section>
+<section id="django-updates">
+<span id="django-updates-mailing-list"></span><h2><code class="docutils literal notranslate"><span class="pre">django-updates</span></code><a class="headerlink" href="mailing-lists.html#django-updates" title="Permalink to this heading">¶</a></h2>
+<p>All the ticket updates are mailed automatically to this list, which is tracked
+by developers and interested community members.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://groups.google.com/g/django-updates">django-updates mailing archive</a></p></li>
+<li><p><a class="reference external" href="mailto:django-updates+subscribe&#37;&#52;&#48;googlegroups&#46;com">django-updates subscription email address</a></p></li>
+<li><p><a class="reference external" href="mailto:django-updates&#37;&#52;&#48;googlegroups&#46;com">django-updates posting email</a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+      
+        
+          <div class="yui-b" id="sidebar">
+            
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../contents.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="mailing-lists.html#">Mailing lists and Forum</a><ul>
+<li><a class="reference internal" href="mailing-lists.html#django-forum">Django Forum</a></li>
+<li><a class="reference internal" href="mailing-lists.html#django-users"><code class="docutils literal notranslate"><span class="pre">django-users</span></code></a></li>
+<li><a class="reference internal" href="mailing-lists.html#django-developers"><code class="docutils literal notranslate"><span class="pre">django-developers</span></code></a></li>
+<li><a class="reference internal" href="mailing-lists.html#django-announce"><code class="docutils literal notranslate"><span class="pre">django-announce</span></code></a></li>
+<li><a class="reference internal" href="mailing-lists.html#django-updates"><code class="docutils literal notranslate"><span class="pre">django-updates</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="contributing/committing-code.html"
+                          title="previous chapter">Committing code</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="organization.html"
+                          title="next chapter">Organization of the Django Project</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/internals/mailing-lists.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+              <h3>Last update:</h3>
+              <p class="topless">Jul 09, 2024</p>
+          </div>
+        
+      
+    </div>
+
+    <div id="ft">
+      <div class="nav">
+    &laquo; <a href="contributing/committing-code.html" title="Committing code">previous</a>
+     |
+    <a href="index.html" title="Django internals" accesskey="U">up</a>
+   |
+    <a href="organization.html" title="Organization of the Django Project">next</a> &raquo;</div>
+    </div>
+  </div>
+
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>
